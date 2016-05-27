@@ -325,16 +325,30 @@ blockquote.theorem-like.box {
   padding: 15px 0px 0px 15px;
   margin-bottom: 15px;
 }
+
 blockquote.proof::after {
   content: "■";
   float: right;
-  margin-top: -48px;
   margin-right: -20px;
   font-size: 150%;
 }
 
+@media all {blockquote.proof::after { margin-top: -48px; }}
+@media all and (max-width:940px){ blockquote.proof::after { margin-top: -46px; }}
+@media all and (max-width:850px){ blockquote.proof::after { margin-top: -38px; }}
+@media all and (max-width:830px){ blockquote.proof::after { margin-top: -34px; }}
+@media all and (max-width:740px){ blockquote.proof::after { margin-top: -43px; }}
+@media all and (max-width:700px){ blockquote.proof::after { margin-top: -41px; }}
+@media all and (max-width:630px){ blockquote.proof::after { margin-top: -38px; }}
+@media all and (max-width:610px){ blockquote.proof::after { margin-top: -34px; }}
+@media all and (max-width:550px){ blockquote.proof::after { margin-top: -32px; }}
+@media all and (max-width:520px){ blockquote.proof::after { margin-top: -30px; }}
+
+
+
+
 .hide-by-default {
-  visibility: hidden;
+  display: none;
 }
 
 .link-show-box {

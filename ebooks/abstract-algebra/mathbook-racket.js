@@ -20,10 +20,10 @@ AddOnLoad(function() {
         var companion = document.getElementById(
           elem.id.substring(0, elem.id.length - 5) + '-box');
         elem.onmouseover = function(){
-          companion.style.visibility = 'visible';
+          companion.style.display = 'block';
         }
         elem.onmouseout = function(){
-          companion.style.visibility = 'hidden';
+          companion.style.display = 'none';
         }
     }
 })
