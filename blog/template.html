@@ -1,0 +1,16 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Sorawee's Website</title>
+  <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="styles.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="styles-github.css" />
+  @(->html (make-highlight-css))
+</head>
+<body>
+  <div class="main-content">
+     <h1>@(hash-ref metas 'title)</h1>
+    @(->html doc #:splice? #t)
+  </div>
+</body>
+</html>
