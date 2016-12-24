@@ -1,2 +1,2 @@
 all:
-	raco pollen render index.ptree
+	raco pollen render index.ptree; raco pollen publish . ../mygithubpage/blog
