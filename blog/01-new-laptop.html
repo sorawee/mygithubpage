@@ -155,7 +155,7 @@ chsh -s /bin/zsh
 <span class="c1"># use it like this: run_long_command; alert</span>
 <span class="nb">alias</span> <span class="nv">alert</span><span class="o">=</span><span class="s1">&#39;notify-send --urgency=low -i "$([ $? = 0 ] &amp;&amp; echo terminal || echo error)" \</span>
 <span class="s1">"$(history|tail -n1|sed -e &#39;</span><span class="se">\&#39;</span><span class="s1">&#39;s/^\s*[0-9]\+\s*//;s/[;&amp;|]\s*alert$//&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;)"&#39;</span>
-</pre></div></td></tr></tbody></table></div></div><p>I like OS X’s <code>open</code> a lot. Here we have <code>xdg-open</code>, but it vomits a lot of text while running in background. Thus, I created <code></code></p><div class="filebox"><div class="filename" decode="exclude">~/bin/open</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+</pre></div></td></tr></tbody></table></div></div><p>I like OS X’s <code>open</code> a lot. Here we have <code>xdg-open</code>, but it vomits a lot of text while running in background. Thus, I created:</p><div class="filebox"><div class="filename" decode="exclude">~/bin/open</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3</pre></div></td><td class="code"><div class="source"><pre><span></span><span class="ch">#!/usr/bin/zsh</span>
 
