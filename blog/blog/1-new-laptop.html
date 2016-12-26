@@ -1,10 +1,19 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>Sorawee's Website</title>
+  <title>
+    My New Laptop & Settings — Sorawee's Website
+  </title>
   <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" media="all" href="styles.css" />
-  <link rel="stylesheet" type="text/css" media="all" href="styles-github.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles-github.css" />
+  <script type="text/javascript"
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$']]}});
+  </script>
   <style type="text/css">.highlight .hll { background-color: #ffffcc }
 .highlight  { background: #f8f8f8; }
 .highlight .c { color: #408080; font-style: italic } /* Comment */
@@ -69,9 +78,32 @@
 .highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
 </head>
 <body>
-  <div class="main-content">
-     <h1>My New Laptop & Settings</h1>
-    <p>I switched from Ubuntu to Macbook Pro since 2013 and was very happy with it. About 5 months ago, the screen was broken, so I planned to buy a new one. Knowing that the new version will have a major change, I was very excited and decided to wait until it’s released in order to buy it. To my disappointment, <a href="http://www.theverge.com/2016/11/7/13548052/the-macbook-pro-lie">it incredibly sucks</a>.</p><p>A lot of my friends suggested me to get a Thinkpad X1 Yoga which looks really cool. I waited until Thanksgiving to get a big discount. The laptop arrived in early December. The first thing I did is to install Ubuntu 16.10 because I hate Windows <i class="em em-stuck_out_tongue"></i>.</p><p>Following are my settings. I write these particularly for myself in the future so that when I need to set things up again, I won’t have to spend a lot of time figuring out what to do!</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+  <nav><ul>
+
+    <li><a href="../index.html">&uarr; Home</a></li>
+
+    <li>
+      <a href="1-new-laptop.pdf">
+        <img src="../css/pdficon.png" width="15" height="15" alt="Download PDF" />
+        <span class="caps" style="font-style: normal">PDF</span>
+      </a>
+    </li>
+    <li style="width: auto;">
+      <a href="1-new-laptop.pollen.html" title="View the Pollen source for this file"
+         class="sourcelink code">&loz; Pollen Source
+      </a>
+    </li>
+  </ul></nav>
+  <section class="page-header">
+    <h1 class="project-name"><a href="/index.html">Sorawee's Website</a></h1>
+    <h2 class="project-tagline"></h2>
+    <a href="/index.html" class="btn">Blog</a>
+    <a href="/books.html" class="btn">Books</a>
+    <a href="/feed.xml" class="btn">RSS</a>
+    <a href="/about.html" class="btn">About Me</a>
+  </section>
+  <section class="main-content">
+  <!><h1>My New Laptop &amp; Settings</h1><!><p>I switched from Ubuntu to Macbook Pro since 2013 and was very happy with it. About 5 months ago, the screen was broken, so I planned to buy a new one. Knowing that the new version will have a major change, I was very excited and decided to wait until it’s released in order to buy it. To my disappointment, <a href="http://www.theverge.com/2016/11/7/13548052/the-macbook-pro-lie">it incredibly sucks</a><!><label for="37c147f3-b426-4570-bb52-11be790eb682" class="margin-toggle sidenote-number"></label><input type="checkbox" id="37c147f3-b426-4570-bb52-11be790eb682" class="margin-toggle"/><span class="sidenote">I would have loved it if I were not a programmer–the missing <!><kbd>Esc</kbd></!> and traditional USB ports matter a lot to me</span></!>.</p><p>A lot of my friends suggested me to get a Thinkpad X1 Yoga which looks really cool. I waited until Thanksgiving to get a big discount. The laptop arrived in early December. The first thing I did is to install Ubuntu 16.10 because I hate Windows! <i class="em em-stuck_out_tongue"></i></p><p>Following are my settings. I write these particularly for myself in the future so that when I need to set things up again, I won’t have to spend a lot of time figuring out what to do!</p><p><see-more></see-more></p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -100,7 +132,7 @@ rm -f .zshrc
   ln -s <span class="s2">"</span><span class="nv">$rcfile</span><span class="s2">"</span> <span class="s2">"</span><span class="si">${</span><span class="nv">ZDOTDIR</span><span class="k">:-</span><span class="nv">$HOME</span><span class="si">}</span><span class="s2">/.</span><span class="si">${</span><span class="nv">rcfile</span><span class="p">:</span><span class="nv">t</span><span class="si">}</span><span class="s2">"</span>
 <span class="k">done</span>
 chsh -s /bin/zsh
-</pre></div></td></tr></tbody></table></div><p>The configuration of <code>.zpreztorc</code> is straightforward. The only major thing I did is to add the history substring search plugin. Note that <code>'prompt'</code> must be the latest.</p><div class="filebox"><div class="filename" decode="exclude">~/.zpreztorc</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+</pre></div></td></tr></tbody></table></div><p>The configuration of <code>.zpreztorc</code> is straightforward. The only major thing I did is to add the history substring search plugin. Note that <code>'prompt'</code> must be the last one.</p><div class="filebox"><div class="filename" decode="exclude">~/.zpreztorc</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4</pre></div></td><td class="code"><div class="source"><pre><span></span>...
@@ -238,7 +270,10 @@ xdg-open <span class="nv">$@</span> <span class="p">&amp;</span>&gt; /dev/null
 76
 77
 78
-79</pre></div></td><td class="code"><div class="source"><pre><span></span>sudo apt-get install emacs24
+79
+80
+81
+82</pre></div></td><td class="code"><div class="source"><pre><span></span>sudo apt-get install emacs24
 
 sudo apt-get install atom
 
@@ -317,6 +352,9 @@ sudo easy_install --upgrade Pygments
 
 sudo apt-get install dropbox
 sudo apt-get install xournal
+
+curl -sL https://deb.nodesource.com/setup_6.x <span class="p">|</span> sudo -E bash -
+sudo apt-get install -y nodejs
 </pre></div></td></tr></tbody></table></div><p>As a non-English speaker, I use dictionaries a lot. I also want it to be offline. The best program I could fine (which is also the same one I used 4 years ago) is <code>goldendict</code>. Here’s the setup:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -354,7 +392,7 @@ mv stardict-dictd-web1913-2.4.2 ~/dict
 rm -rf dictionary *.tar.bz2
 <span class="c1"># also need to add ~/dict as a directory to search for dictionaries</span>
 <span class="c1"># *recursively* in goldendict</span>
-</pre></div></td></tr></tbody></table></div><p>For Spotify, after the installation, we need to set the scale to make it display properly with HiDPI: change <code>/usr/share/applications/spotify.desktop</code> to use <code>Exec=spotify --force-device-scale-factor=2 %U</code>.</p><p>For Skype, I find that the version in the repository uses Qt 4, which sucks (especially on HiDPI). It’s better to get the beta version which is Qt-5-based from the <a href="https://web.skype.com/en/">webapp</a></p><p>Slack works very well without any additional configuration.</p><p>Now, I happen to often run stuff that will hang the computer, which would require me to hard-reset it if I don’t have any other plan. Although I’m using SSD now which means there is little risk of damaging the disk when hard-resetting, I still don’t want to do it. Thus, I will enable two keyboard shortcuts for the soft reset:</p><ul><li><code>sudo dpkg-reconfigure keyboard-configuration</code> in order to set <span class="kbds"><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Backspace</kbd></span> to restart X server.</li><li>Edit <code>/etc/sysctl.conf</code> and set <code>kernel.sysrq=1</code> so that we can use <a href="https://en.wikipedia.org/wiki/Magic_SysRq_key">Magic SysRq key</a></li></ul><p>Last but not least, Thinkpad tweaking!</p><p>Thinkpad is overall very nice, but the keyboard layout sucks. Who the hell thinks it’s a good idea to remove “play/pause” key and replace it with those dumb “search” button? This is however easy to get back. Just go to <b>Keyboard &gt; Shortcuts &gt; Sound and Media</b> and set “Play (or play/pause)“, “Previous track”, and “Next track” to new keys.</p><p>The next one is a little bit more difficult. In Macbook Pro, I would use <span class="kbds"><kbd>Fn</kbd> + <kbd>←</kbd></span> and <span class="kbds"><kbd>Fn</kbd> + <kbd>→</kbd></span> for <span class="kbds"><kbd>Home</kbd></span> and <span class="kbds"><kbd>End</kbd></span>, and <span class="kbds"><kbd>Fn</kbd> + <kbd>↑</kbd></span> and <span class="kbds"><kbd>Fn</kbd> + <kbd>↓</kbd></span> for <span class="kbds"><kbd>PageUp</kbd></span> and <span class="kbds"><kbd>PageDn</kbd></span>. In Thinkpad, all <span class="kbds"><kbd>Home</kbd></span>, <span class="kbds"><kbd>End</kbd></span>, <span class="kbds"><kbd>PageUp</kbd></span>, and <span class="kbds"><kbd>PageDn</kbd></span> are keys! <span class="kbds"><kbd>PageUp</kbd></span> and <span class="kbds"><kbd>PageDn</kbd></span> seem to be in the right place, but <span class="kbds"><kbd>Home</kbd></span> and <span class="kbds"><kbd>End</kbd></span> are at the damned top row! Why?!</p><p>Ideally, I would want <span class="kbds"><kbd>Fn</kbd> + <kbd>←</kbd></span> and <span class="kbds"><kbd>Fn</kbd> + <kbd>→</kbd></span> back, but after a lot of Googling, I found that <span class="kbds"><kbd>Fn</kbd></span> in Thinkpad is a special key which is not really configurable. Fine. But when I program, I tend to use <span class="kbds"><kbd>Home</kbd></span> and <span class="kbds"><kbd>End</kbd></span> <i>a lot</i>, so I thought, I want to swap <span class="kbds"><kbd>Home</kbd></span>, <span class="kbds"><kbd>End</kbd></span> with <span class="kbds"><kbd>PageUp</kbd></span>, <span class="kbds"><kbd>PageDn</kbd></span>. This is really easy to do using <code>xkb</code>:</p><div class="filebox"><div class="filename" decode="exclude">/usr/share/X11/xkb/symbols/pc</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+</pre></div></td></tr></tbody></table></div><p>For Spotify, after the installation, we need to set the scale to make it display properly with HiDPI: change <code>/usr/share/applications/spotify.desktop</code> to use <code>Exec=spotify --force-device-scale-factor=2 %U</code>.</p><p>For Skype, I find that the version in the repository uses Qt 4, which sucks (especially on HiDPI). It’s better to get the beta version which is Qt-5-based from the <a href="https://web.skype.com/en/">webapp</a></p><p>Slack works very well without any additional configuration.</p><p>Now, I happen to often run stuff that will hang the computer, which would require me to hard-reset it if I don’t have any other plan. Although I’m using SSD now which means there is little risk of damaging the disk when hard-resetting, I still don’t want to do it. Thus, I will enable two keyboard shortcuts for the soft reset:</p><ul><li><code>sudo dpkg-reconfigure keyboard-configuration</code> in order to set <!><kbd>Ctrl</kbd> + <kbd>Alt</kbd> + <kbd>Backspace</kbd></!> to restart X server.</li><li>Edit <code>/etc/sysctl.conf</code> and set <code>kernel.sysrq=1</code> so that we can use <a href="https://en.wikipedia.org/wiki/Magic_SysRq_key">Magic SysRq key</a></li></ul><p>Last but not least, Thinkpad tweaking!</p><p>Thinkpad is overall very nice, but the keyboard layout sucks. Who the hell thinks it’s a good idea to remove “play/pause” key and replace it with those dumb “search” button? This is however easy to get back. Just go to <!><u>Keyboard</u> &gt; <u>Shortcuts</u> &gt; <u>Sound and Media</u></!> and set “Play (or play/pause)“, “Previous track”, and “Next track” to new keys.</p><p>The next one is a little bit more difficult. In Macbook Pro, I would use <!><kbd>Fn</kbd> + <kbd>Left</kbd></!> and <!><kbd>Fn</kbd> + <kbd>Right</kbd></!> for <!><kbd>Home</kbd></!> and <!><kbd>End</kbd></!>, and <!><kbd>Fn</kbd> + <kbd>Up</kbd></!> and <!><kbd>Fn</kbd> + <kbd>Down</kbd></!> for <!><kbd>PageUp</kbd></!> and <!><kbd>PageDn</kbd></!>. In Thinkpad, all <!><kbd>Home</kbd></!>, <!><kbd>End</kbd></!>, <!><kbd>PageUp</kbd></!>, and <!><kbd>PageDn</kbd></!> are keys! <!><kbd>PageUp</kbd></!> and <!><kbd>PageDn</kbd></!> seem to be in the right place, but <!><kbd>Home</kbd></!> and <!><kbd>End</kbd></!> are at the damned top row! Why?!</p><p>Ideally, I would want <!><kbd>Fn</kbd> + <kbd>Left</kbd></!> and <!><kbd>Fn</kbd> + <kbd>Right</kbd></!> back, but after a lot of Googling, I found that <!><kbd>Fn</kbd></!> in Thinkpad is a special key which is not really configurable. Fine. But when I program, I tend to use <!><kbd>Home</kbd></!> and <!><kbd>End</kbd></!> <i>a lot</i>, so I thought, I want to swap <!><kbd>Home</kbd></!>, <!><kbd>End</kbd></!> with <!><kbd>PageUp</kbd></!>, <!><kbd>PageDn</kbd></!>. This is really easy to do using <code>xkb</code>:</p><div class="filebox"><div class="filename" decode="exclude">/usr/share/X11/xkb/symbols/pc</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -385,7 +423,7 @@ rm -rf dictionary *.tar.bz2
 
      key   &lt;UP&gt; {	[  Up			]	};
      key &lt;LEFT&gt; {	[  Left			]	};
-</pre></div></td></tr></tbody></table></div></div><p>But when I want to read articles or news, I would use <span class="kbds"><kbd>PageUp</kbd></span> and <span class="kbds"><kbd>PageDn</kbd></span> a lot. Pressing keys on the top row would not be ideal. Thus, I created:</p><div class="filebox"><div class="filename" decode="exclude">~/bin/switch-reading-mode</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+</pre></div></td></tr></tbody></table></div></div><p>But when I want to read articles or news, I would use <!><kbd>PageUp</kbd></!> and <!><kbd>PageDn</kbd></!> a lot. Pressing keys on the top row would not be ideal. Thus, I created:</p><div class="filebox"><div class="filename" decode="exclude">~/bin/switch-reading-mode</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -426,7 +464,7 @@ rm -rf dictionary *.tar.bz2
   killall notify-osd
   notify-send <span class="s2">"Reading mode"</span>
 <span class="k">fi</span>
-</pre></div></td></tr></tbody></table></div></div><p>Then, in <b>Keyboard &gt; Shortcuts</b>, create a custom command which invokes <code>~/bin/switch-reading-mode</code> when pressing <span class="kbds"><kbd>CapsLock</kbd></span>. Indeed, when entering the reading mode, the Capslock would be on, but in reading mode, you don’t type, so it’s fine <i class="em em-smiley"></i>. Note that the reasons I choose Capslock is that it has the physical light indicator on the keyboard, meaning that I will know whether I am in the reading mode or not without having to try pressing <span class="kbds"><kbd>Home</kbd></span> or other keys.</p><p>Life of Thinkpad in Ubuntu also kinda sucks. Fingerprint reader <a href="https://forums.lenovo.com/t5/forums/v3_1/forumtopicpage/board-id/Special_Interest_Linux/thread-id/7920/page/1">doesn’t work</a>. Neither are Tablet mode auto-rotation. In fact, I couldn’t even connect the accelerometer although I’m sure there is one because it works in Windows. So I need to manually tell Ubuntu to rotate screen, which is kinda awkward. I make it easier by calling this script (which also does other things like disabling trackpad, etc.):</p><div class="filebox"><div class="filename" decode="exclude">/usr/local/bin/rotate-screen</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+</pre></div></td></tr></tbody></table></div></div><p>Then, in <!><u>Keyboard</u> &gt; <u>Shortcuts</u></!>, create a custom command which invokes <code>~/bin/switch-reading-mode</code> when pressing <!><kbd>CapsLock</kbd></!>. Indeed, when entering the reading mode, the Capslock would be on, but in the reading mode, you don’t type, so it’s fine! <i class="em em-smiley"></i> Note that the reason I choose Capslock is that it has the physical light indicator on the keyboard, meaning that I will know whether I am in the reading mode or not without having to try pressing <!><kbd>Home</kbd></!> or other keys.</p><p>Life of Thinkpad in Ubuntu also kinda sucks. Fingerprint reader <a href="https://forums.lenovo.com/t5/forums/v3_1/forumtopicpage/board-id/Special_Interest_Linux/thread-id/7920/page/1">doesn’t work</a>. Neither are Tablet mode auto-rotation. In fact, I couldn’t even connect the accelerometer although I’m sure there is one because it works in Windows. So I need to manually tell Ubuntu to rotate screen, which is kinda awkward. I make it easier by calling this script (which also does other things like disabling trackpad, etc.):</p><div class="filebox"><div class="filename" decode="exclude">/usr/local/bin/rotate-screen</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -574,7 +612,7 @@ Icon=system-config-displayca
 Name=Laptop Mode
 Exec=/usr/local/bin/rotate-screen
 Categories=Utility;
-</pre></div></td></tr></tbody></table></div></div><p>And drag all of these to the Unity bar. Also drag <code>/usr/share/applications/onboard.desktop</code> to the Unity bar for on-screen keyboard for non-laptop mode.</p><p>FIN <i class="em em-smiley"></i></p>
-  </div>
+</pre></div></td></tr></tbody></table></div></div><p>And drag all of these to the Unity bar. Also drag <code>/usr/share/applications/onboard.desktop</code> to the Unity bar for on-screen keyboard for non-laptop mode.</p><p>FIN <i class="em em-smiley"></i></p></!></!>
+  </section>
 </body>
 </html>

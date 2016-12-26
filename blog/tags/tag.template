@@ -1,0 +1,5 @@
+#lang pollen
+
+@(define-meta title "Tag: $tagname")
+@(define-meta type "tag")
+@`(! ,@(map make-post (list $posts)))
