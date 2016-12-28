@@ -72,8 +72,8 @@
   <section class="main-content">
   @(->html
     (case type
-      [("index" "tag") `(! (h1 ,(hash-ref metas 'title)) ,(splice-top doc))]
-      [("post") `(! (h1 ,(hash-ref metas 'title)) ,(make-post here #:header #f))]
+      [("index" "tag") (! (list `(h1 ,(hash-ref metas 'title)) (splice-top doc)))]
+      [("post") (! (list `(h1 ,(hash-ref metas 'title)) (make-post here #:header #f)))]
       [else "Under Construction!"]))
   </section>
 </body>
