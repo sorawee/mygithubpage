@@ -2,4 +2,4 @@
 
 @(define-meta title "Tag: $tagname")
 @(define-meta type "tag")
-@`(! ,@(map make-post (list $posts)))
+@(! (map (lambda (post) (make-post post #:see-more #t)) (list $posts)))

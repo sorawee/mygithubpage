@@ -2,7 +2,7 @@
   (cond
     [(string-contains (symbol->string here) "tags/") "../../"]
     [(string-contains (symbol->string here) "/") "../"]
-    [else ""]))
+    [else "/"]))
 @(define source-file (select-from-metas 'here-path metas))
 @(define pollen-source-listing (regexp-replace #px"(.*)\\/(.+).html"
                                                (symbol->string here)
@@ -15,7 +15,7 @@
       <li><a href="@|path-prefix|@|(previous here)|">&larr; Previous</a></li>
     }
     @when/splice[(not (eq? here 'index.html))]{
-      <li><a href="@|path-prefix|index.html">&uarr; Home</a></li>
+      <li><a href="@|path-prefix|">&uarr; Home</a></li>
     }
     @when/splice[(and (next here) (member (next here) (siblings here)))]{
       <li><a href="@|path-prefix|@|(next here)|">Next &rarr;</a></li>
@@ -72,7 +72,8 @@
   <section class="main-content">
   @(->html
     (case type
-      [("index" "post" "tag") `(! (h1 ,(hash-ref metas 'title)) ,(splice-top doc))]
+      [("index" "tag") `(! (h1 ,(hash-ref metas 'title)) ,(splice-top doc))]
+      [("post") `(! (h1 ,(hash-ref metas 'title)) ,(make-post here #:header #f))]
       [else "Under Construction!"]))
   </section>
 </body>
