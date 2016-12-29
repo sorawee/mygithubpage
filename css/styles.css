@@ -52,9 +52,15 @@
                    top: -0.5rem; }
 
 
-section.main-content {
-  margin-left: -5%;
-  width: 85%;
+#the-main {
+  width: 100%;
+  max-width: 100%;
+  padding-left: 2rem;
+  padding-right: 2rem;
+}
+
+#real-content {
+  width: 75%;
 }
 
 h1.project-name {
@@ -82,9 +88,8 @@ label.margin-toggle:not(.sidenote-number) { display: none; }
 label { cursor: pointer; }
 
 @media (max-width: 760px) {
-  section.main-content {
+  #real-content {
     width: 100%;
-    margin: auto;
   }
   label.margin-toggle:not(.sidenote-number) { display: inline; }
   .sidenote, .marginnote { display: none; }

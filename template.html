@@ -69,12 +69,14 @@
     <a href="@|path-prefix|feed.xml" class="btn">RSS</a>
     <a href="@|path-prefix|about.html" class="btn">About Me</a>
   </section>
-  <section class="main-content">
-  @(->html
-    (case type
-      [("index" "tag") (! (list `(h1 ,(hash-ref metas 'title)) (splice-top doc)))]
-      [("post") (! (list `(h1 ,(hash-ref metas 'title)) (make-post here #:header #f)))]
-      [else "Under Construction!"]))
+  <section class="main-content" id="the-main">
+    <div id="real-content">
+      @(->html
+        (case type
+          [("index" "tag") (! (list `(h1 ,(hash-ref metas 'title)) (splice-top doc)))]
+          [("post") (! (list `(h1 ,(hash-ref metas 'title)) (make-post here #:header #f)))]
+          [else "Under Construction!"]))
+    </div>
   </section>
 </body>
 </html>
