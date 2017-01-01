@@ -1,6 +1,6 @@
 @(define path-prefix
   (cond
-    [(string-contains (symbol->string here) "tags/") "../../"]
+    [(string-contains (symbol->string here) "tags/") "../../"] ; TODO: find a better way
     [(string-contains (symbol->string here) "/") "../"]
     [else "/"]))
 @(define source-file (select-from-metas 'here-path metas))
@@ -8,7 +8,6 @@
                                                (symbol->string here)
                                                "\\2.pollen.html"))
 @(define type (or (select 'type metas) "post"))
-
 @(define (get-navbar) @ids{
   <nav><ul>
     @when/splice[(and (previous here) (not (eq? (parent here) (previous here))))]{
@@ -34,6 +33,22 @@
       </a>
     </li>
   </ul></nav>})
+@(define (get-comment path)
+  (println path)
+  @ids{
+<div id="disqus_thread"></div>
+<script>
+var disqus_config = function () {
+this.page.identifier = "@path"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+};
+(function() { // DON'T EDIT BELOW THIS LINE
+var d = document, s = d.createElement('script');
+s.src = '//sorawee.disqus.com/embed.js';
+s.setAttribute('data-timestamp', +new Date());
+(d.head || d.body).appendChild(s);
+})();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>})
 
 <html>
 <head>
@@ -41,7 +56,7 @@
   <title>
     @(if (equal? "index" type)
          super-title
-         (string-append (select 'title metas) " — " super-title))
+         (string-append (or (select 'title metas) (select 'special-title metas)) " — " super-title))
   </title>
   <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" media="all" href="@|path-prefix|css/styles.css" />
@@ -73,10 +88,13 @@
     <div id="real-content">
       @(->html
         (case type
-          [("index" "tag") (! (list `(h1 ,(hash-ref metas 'title)) (splice-top doc)))]
+          [("index" "tag") (! (list `(h1 ,(hash-ref metas 'special-title)) (splice-top doc)))]
           [("post") (! (list `(h1 ,(hash-ref metas 'title)) (make-post here #:header #f)))]
           [else "Under Construction!"]))
     </div>
+    @(case type
+      [("post") (get-comment (symbol->string here))]
+      [else ""])
   </section>
 </body>
 </html>

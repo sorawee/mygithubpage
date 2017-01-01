@@ -1,5 +1,5 @@
 #lang pollen
 
-@(define-meta title "Tag: $tagname")
+@(define-meta special-title "Tag: $tagname")
 @(define-meta type "tag")
 @(! (map (lambda (post) (make-post post #:see-more #t)) (list $posts)))
