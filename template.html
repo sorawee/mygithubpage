@@ -4,9 +4,9 @@
     [(string-contains (symbol->string here) "/") "../"]
     [else "/"]))
 @(define source-file (select-from-metas 'here-path metas))
-@(define pollen-source-listing (regexp-replace #px"(.*)\\/(.+).html"
-                                               (symbol->string here)
-                                               "\\2.pollen.html"))
+@(define pollen-source-listing
+  (string-append "https://github.com/sorawee/my-website/blob/master/"
+                 (path->string (get-markup-source here))))
 @(define type (or (select 'type metas) "post"))
 @(define (get-navbar) @ids{
   <nav><ul>
@@ -34,7 +34,6 @@
     </li>
   </ul></nav>})
 @(define (get-comment path)
-  (println path)
   @ids{
 <div id="disqus_thread"></div>
 <script>
