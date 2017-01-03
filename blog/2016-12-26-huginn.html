@@ -106,7 +106,106 @@
   </section>
   <section class="main-content" id="the-main">
     <div id="real-content">
-      <h1>Huginn</h1><p class="tags">Tags: <a href="/tags/huginn">huginn</a>, <a href="/tags/rss">rss</a></p><p class="pubdate">Published on Monday, December 26th, 2016</p><div class="content"><p>Yahoo! <a href="http://lifehacker.com/yahoo-pipes-is-closing-down-1709067642">terminated</a> Yahoo! Pipes on June 4, 2015. It breaks my heart to see another good service dying. However, I recently found another project which has an ability just like Yahoo! Pipes: <a href="github.com/cantino/huginn">Huginn</a></p><p><see-more></see-more></p><p>Huginn seems to be more robust than Yahoo! Pipes, actually. The downside is that it is much more difficult to set things up. Also, it’s just an app. I need to either set up a local server to run it or host it somewhere. Since I’m too lazy to maintain the local server, I hosted it with Heroku. With the free plan, there are a lot of restrictions, but this should be enough for the basic tasks I want to do.</p></div><hr/>
+      <h1>Huginn</h1><p class="tags">Tags: <a href="/tags/huginn">huginn</a>, <a href="/tags/rss">rss</a></p><p class="pubdate">Published on Monday, December 26th, 2016</p><div class="content"><p>Yahoo! <a href="http://lifehacker.com/yahoo-pipes-is-closing-down-1709067642">terminated</a> Yahoo! Pipes on June 4, 2015. It breaks my heart to see another good service dying. However, I recently found another project which has an ability just like Yahoo! Pipes: <a href="github.com/cantino/huginn">Huginn</a></p><p><see-more></see-more></p><p>Huginn seems to be more robust than Yahoo! Pipes, actually. The downside is that it is much more difficult to set things up. Also, it’s just an app. I need to either set up a local server to run it or host it somewhere. Since I’m too lazy to maintain the local server, I hosted it with Heroku. With the free plan, there are a lot of restrictions, but this should be enough for the basic tasks I want to do.</p><p>Here comes an example:</p><p>I am following a Thai manga named <i>EXEcutional</i>. For other manga, I would need to wait until I get back to Thailand and read them. Luckily, <i>EXEcutional</i> has an <a href="https://www.mebmarket.com/index.php?action=SeriesDetail&amp;series_id=563&amp;page_no=1">e-book version</a>, so I could just buy it online. I however want to be notified whenever a new issue is released.</p><p>First, I <code>curl</code> the webpage to see if there is any data I could scrape. To my disappointment, there is no data at all. This means the data is likely loaded later by JavaScript, so I try to find the relevant code.</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="source"><pre><span></span>...
+<span class="p">&lt;</span><span class="nt">script</span> <span class="p">&gt;</span>
+<span class="kd">var</span> <span class="nx">series_id</span> <span class="o">=</span> <span class="s1">&#39;563&#39;</span><span class="p">;</span>
+<span class="c1">//var series_name = &#39;&#39;;</span>
+<span class="kd">var</span> <span class="nx">app_id</span> <span class="o">=</span> <span class="s1">&#39;ASK&#39;</span><span class="p">;</span>
+<span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">"https://www.mebmarket.com/web/Assets/Scripts/Templates/series_details.js?221"</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+...
+</pre></div></td></tr></tbody></table></div><p>Cool! Next I <code>curl</code> this JavaScript file, then I find:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="source"><pre><span></span><span class="nx">$</span><span class="p">.</span><span class="nx">ajax</span><span class="p">({</span>
+  <span class="nx">type</span><span class="o">:</span> <span class="s2">"POST"</span><span class="p">,</span>
+  <span class="nx">url</span><span class="o">:</span> <span class="s2">"Ajax.php?action=CallWrapper"</span><span class="p">,</span>
+  <span class="nx">data</span><span class="o">:</span> <span class="p">({</span>
+          <span class="nx">api_call</span> <span class="o">:</span> <span class="s1">&#39;Store&#39;</span><span class="p">,</span>
+          <span class="nx">method_call</span> <span class="o">:</span> <span class="s1">&#39;userGetCacheBooks&#39;</span><span class="p">,</span>
+          <span class="nx">token</span> <span class="o">:</span> <span class="nx">token</span><span class="p">,</span>
+          <span class="nx">Option</span> <span class="o">:</span><span class="p">{</span>
+                      <span class="nx">value</span><span class="o">:</span> <span class="nx">series_id</span><span class="p">,</span>
+                      <span class="nx">condition</span><span class="o">:</span><span class="s1">&#39;all&#39;</span><span class="p">,</span>
+                  <span class="p">},</span>
+          <span class="nx">pageCache</span> <span class="o">:</span> <span class="s1">&#39;series&#39;</span><span class="p">,</span>
+          <span class="nx">app_platform</span> <span class="o">:</span> <span class="s1">&#39;WEB&#39;</span><span class="p">,</span>
+          <span class="nx">page_no</span> <span class="o">:</span> <span class="nx">page_no</span><span class="p">,</span>
+          <span class="nx">result_per_page</span> <span class="o">:</span> <span class="nx">result_per_page</span><span class="p">,</span>
+          <span class="nx">app_id</span> <span class="o">:</span> <span class="nx">app_id</span>
+  <span class="p">}),</span>
+</pre></div></td></tr></tbody></table></div><p>Even though the type of request is POST, but perhaps GET will work too? Let’s try...</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="source"><pre><span></span>$ curl <span class="s2">"https://www.mebmarket.com/Ajax.php?action=CallWrapper&amp;api_call=Store&amp;method_call=userGetCacheBooks&amp;Option%5Bvalue%5D=563&amp;Option%5Bcondition%5D=all&amp;pageCache=series&amp;page_no=1"</span>
+<span class="o">{</span><span class="s2">"status"</span>:<span class="o">{</span><span class="s2">"success"</span>:true,<span class="s2">"message"</span>:<span class="s2">"STOREUsGetCachSuccessGetCache"</span><span class="o">}</span>,<span class="s2">"data"</span>:<span class="o">{</span><span class="s2">"page_count"</span>:2,<span class="s2">"count"</span>:33,<span class="s2">"result_per_page"</span>:20,<span class="s2">"books"</span>:<span class="o">[{</span><span class="s2">"book_id"</span>:<span class="s2">"49151"</span>,<span class="s2">"series_id"</span>:<span class="s2">"563"</span>,<span class="s2">"book_publisher"</span>:<span class="s2">"Siam Inter Comics"</span>,<span class="s2">"category_id"</span>:<span class="s2">"12"</span>,<span class="s2">"category_name"</span>:<span class="s2">"\u0e01\u0e32\u0e23\u0e4c\u0e15\u0e39\u0e19"</span>,<span class="s2">"book_name"</span>:<span class="s2">"EXEcutional \u0e21\u0e2b\u0e32\u0e2a\u0e07\u0e04\u0e23\u0e32\u0e21\u0e2d\u0e2d\u0e19\u0e44\u0e25\u0e19\u0e4c\u0e16\u0e25\u0e48\u0e21\u0e08\u0e31\u0e01\u0e23\u0e27\u0e32\u0e25 \u0e40\u0e25\u0e48\u0e21 32"</span>...
+</pre></div></td></tr></tbody></table></div><p>Exactly what I want! Now, we will turn this to RSS feed by using Huginn.</p><p>To scrape this data, create a “Website Agent” with the following configurations:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="source"><pre><span></span><span class="p">{</span>
+  <span class="nt">"expected_update_period_in_days"</span><span class="p">:</span> <span class="s2">"2"</span><span class="p">,</span>
+  <span class="nt">"url"</span><span class="p">:</span> <span class="s2">"https://www.mebmarket.com/Ajax.php?action=CallWrapper&amp;api_call=Store&amp;method_call=userGetCacheBooks&amp;Option%5Bvalue%5D=563&amp;Option%5Bcondition%5D=all&amp;pageCache=series&amp;page_no=1"</span><span class="p">,</span>
+  <span class="nt">"type"</span><span class="p">:</span> <span class="s2">"json"</span><span class="p">,</span>
+  <span class="nt">"mode"</span><span class="p">:</span> <span class="s2">"on_change"</span><span class="p">,</span>
+  <span class="nt">"extract"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"name"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">"path"</span><span class="p">:</span> <span class="s2">"$..book_name"</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div></td></tr></tbody></table></div><p>This uses a query language named <a href="http://goessner.net/articles/JsonPath/">JSONPath</a> to scrape all <code>book_name</code>.</p><p>Next, we will export this as a feed, so create a “Data Output Agent” with the following configurations:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="source"><pre><span></span><span class="p">{</span>
+  <span class="nt">"secrets"</span><span class="p">:</span> <span class="p">[</span>
+    <span class="s2">"THIS_IS_SUPER_SECRET"</span>
+  <span class="p">],</span>
+  <span class="nt">"expected_receive_period_in_days"</span><span class="p">:</span> <span class="s2">"2"</span><span class="p">,</span>
+  <span class="nt">"template"</span><span class="p">:</span> <span class="p">{</span>
+    <span class="nt">"title"</span><span class="p">:</span> <span class="s2">"EXEcutional"</span><span class="p">,</span>
+    <span class="nt">"description"</span><span class="p">:</span> <span class="s2">"EXEcutional"</span><span class="p">,</span>
+    <span class="nt">"item"</span><span class="p">:</span> <span class="p">{</span>
+      <span class="nt">"title"</span><span class="p">:</span> <span class="s2">"{{name}}"</span><span class="p">,</span>
+      <span class="nt">"link"</span><span class="p">:</span> <span class="s2">"https://www.mebmarket.com/index.php?action=SeriesDetail&amp;series_id=563&amp;page_no=1"</span>
+    <span class="p">}</span>
+  <span class="p">}</span>
+<span class="p">}</span>
+</pre></div></td></tr></tbody></table></div><p>And set it to read source from the first agent. This completes the setup in Huginn.</p><p>Huginn then provides us a URL to access the data. The XML one in particular is in RSS format (it’s actually Atom, but I will call them interchangably), so copy that one and paste it in an RSS reader.</p><p><img src="/blog/img/huginn-feed.png"/></p><p><i class="em em-smiley"></i></p></div><hr/>
     </div>
     <div id="disqus_thread"></div>
     <script>
