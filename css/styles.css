@@ -215,3 +215,150 @@ nav ul li a:link img { width: auto; }
 body {
   counter-reset: sidenote-counter;
 }
+
+/* The paren stuff, copied from http://community.schemewiki.org/?wiki-css */
+
+/* Top level */
+PRE.racket > SPAN.paren:hover { background-color: #FFCFCF }
+
+/* Paren level 1 */
+PRE.racket > SPAN.paren
+> SPAN.paren:hover { background-color: #CFFFCF }
+
+/* Paren level 2 */
+PRE.racket > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #CFCFFF }
+
+/* Paren level 3 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #CFFFFF }
+
+/* Paren level 4 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #FFCFFF }
+
+/* Paren level 5 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #FFFFCF }
+
+/* Paren level 6 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren
+> SPAN.paren:hover { background-color: #B4E1EA }
+
+/* Paren level 7 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #BDEAB4 }
+
+/* Paren level 8 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #EAD4B4 }
+
+/* Paren level 9 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #F4D0EC }
+
+/* Paren level 10 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #D0D9F4 }
+
+/* Paren level 11 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren
+> SPAN.paren:hover { background-color: #FFCFCF }
+
+/* Paren level 12 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #CFFFCF }
+
+/* Paren level 13 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #CFCFFF }
+
+/* Paren level 14 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #CFFFFF }
+
+/* Paren level 15 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #FFCFFF }
+
+
+/* Paren level 16 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren
+> SPAN.paren:hover { background-color: #FFFFCF }
+
+/* Paren level 17 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #BDEAB4 }
+
+/* Paren level 18 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #EAD4B4 }
+
+/* Paren level 19 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #F4D0EC }
+
+/* Paren level 20 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #D0D9F4 }
+
+/* Paren level 21 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren
+> SPAN.paren:hover { background-color: #FFCFCF }
+
+/* Paren level 22 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #CFFFCF }
+
+/* Paren level 23 */
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:hover { background-color: #CFFFCF }
+
+PRE.racket > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren > SPAN.paren
+           > SPAN.paren > SPAN.paren > SPAN.paren
+> SPAN.paren:before { content: "{{23 levels of indentation?! Yiakes!}}" }
