@@ -1,0 +1,148 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Undecidability of First-Order Logic — Sorawee's Website
+  </title>
+  <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles-github.css" />
+  <script type="text/javascript"
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+      TeX: {
+        Macros: {
+          seq: ["{\\langle #1 \\rangle}", 1],
+          set: ["{\\{ #1 \\}}", 1],
+          setof: ["{\\{ #1 \\ | \\ #2 \\}}", 2],
+          not: "{\\lnot}",
+          and: "{\\land}",
+          or: "{\\lor}",
+          N: "{\\mathbb N}",
+          R: "{\\mathbb R}",
+          Z: "{\\mathbb Z}",
+          Q: "{\\mathbb Q}",
+          floor: ["{\\lfloor #1 \\rfloor}", 1],
+          ceil: ["{\\lceil #1 \\rceil}", 1],
+        }
+      }
+    });
+  </script>
+  <style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+</head>
+<body>
+  <nav><ul>
+
+    <li><a href="../">&uarr; Home</a></li>
+
+    <li>
+      <a href="_2017-01-09-undecidability-of-first-order-logic.pdf">
+        <img src="../css/pdficon.png" width="15" height="15" alt="Download PDF" />
+        <span class="caps" style="font-style: normal">PDF</span>
+      </a>
+    </li>
+    <li style="width: auto;">
+      <a href="https://github.com/sorawee/my-website/blob/master/blog/_2017-01-09-undecidability-of-first-order-logic.poly.pm" title="View the Pollen source for this file"
+         class="sourcelink code">&loz; Pollen Source
+      </a>
+    </li>
+  </ul></nav>
+  <section class="page-header">
+    <h1 class="project-name">
+      <a href="../">Sorawee's Website</a>
+    </h1>
+    <h2 class="project-tagline"></h2>
+    <a href="../" class="btn">Blog</a>
+    <a href="../books.html" class="btn">Books</a>
+    <a href="../feed.xml" class="btn">RSS</a>
+    <a href="../about.html" class="btn">About Me</a>
+  </section>
+  <section class="main-content" id="the-main">
+    <div id="real-content">
+      <h1>Undecidability of First-Order Logic</h1><p class="tags">Tags: <a href="/tags/logic">logic</a>, <a href="/tags/computation">computation</a></p><p class="pubdate">Published on Monday, January 9th, 2017</p><div class="content"><p>I have been hearing people saying that first-order logic is undecidable. Last semester, I took both theory of computation and first-order logic classes, and they, too, kept repeating that without proving it. However, now I have basic knowledge of theory of computation and first-order logic. So, fine, I will prove it now!</p><p><see-more></see-more></p><h3>Definition</h3><p>When we say first-order logic is undecidable, it means a set of all theorems <mathjax>$\Delta$</mathjax> (formula which are provable) is undecidable. That is, given any formula <mathjax>$\phi$</mathjax>, there is no Turing machine (abbrev. TM) which will accept if <mathjax>$\phi$</mathjax> is provable; reject if unprovable. Due to soundness/completeness of first-order logic, this is exactly equivalent to saying that a set of all valid formula (formula which are true under every interpretation) is undecidable.</p><h3>Big Picture</h3><p>We will use a standard way to show that first-order logic is undecidable: suppose for the sake of contradiction that first-order logic is decidable, then we will show that some known undecidable problem is decidable, which is absurd. This would then show that first-order logic is in fact undecidable. The known undecidable problem that we will use is going to be the classic <mathjax>$A_{TM}$</mathjax>: a problem of determining whether or not a TM <mathjax>$M$</mathjax> accepts string <mathjax>$w$</mathjax>.</p><p>Because we assume that first-order logic is decidable, there is a decider <mathjax>$D$</mathjax> which can decide whether or not any formula in first-order logic is provable. We then will create a TM <mathjax>$Z$</mathjax> which will decide whether or not a TM <mathjax>$M$</mathjax> accepts a string <mathjax>$w$</mathjax> by using <mathjax>$D$</mathjax> as a component. The most basic way (which might not always work, but usually work) is let <mathjax>$Z$</mathjax> be a TM with the following pseudocode:</p><pre class="tex2jax_process"><mathjax>$Z$</mathjax> = on input <mathjax>$\seq{M, w}$</mathjax>:
+  <mathjax>$f$</mathjax> = ...
+  run <mathjax>$D$</mathjax> on <mathjax>$f(\seq{M, w})$</mathjax>
+  if <mathjax>$D$</mathjax> accepts, accept
+  reject otherwise</pre><p>where <mathjax>$f$</mathjax> is a computable function transforming an instance of <mathjax>$A_{TM}$</mathjax> to instance of <mathjax>$\Delta$</mathjax>. That is, <mathjax>$f$</mathjax> tranforms <mathjax>$\seq{M, w}$</mathjax> into some formula <mathjax>$\phi$</mathjax> where:</p><ul><li>Whenever <mathjax>$M$</mathjax> accepts <mathjax>$w$</mathjax>, <mathjax>$\phi$</mathjax> is provable. That is, <mathjax>$D$</mathjax> accepts <mathjax>$\phi$</mathjax>.</li><li>Whenever <mathjax>$M$</mathjax> does not accept <mathjax>$w$</mathjax>, <mathjax>$\phi$</mathjax> is unprovable. That is, <mathjax>$D$</mathjax> rejects <mathjax>$\phi$</mathjax>.</li></ul><p>If we can construct this <mathjax>$f$</mathjax>, then it means we can create a decider <mathjax>$Z$</mathjax> to correctly decide an undecide problem, finishing the proof outlined above.</p><h3>Turing Machine</h3><p>We first examine the structure of a TM. A TM is defined by <mathjax>$(Q, \Sigma, \Gamma, \delta, q_0, q_a, q_r)$</mathjax> where:</p><ul><li><mathjax>$Q$</mathjax> is the set of states</li><li><mathjax>$\Sigma$</mathjax> is the set of input alphabets</li><li><mathjax>$\Gamma$</mathjax> is the set of tape alphabets</li><li><mathjax>$\delta$</mathjax> is the transition function</li><li><mathjax>$q_0$</mathjax> is the initial state</li><li><mathjax>$q_a$</mathjax> is the accepting state</li><li><mathjax>$q_r$</mathjax> is the rejecting state</li></ul><p>We want <mathjax>$\phi$</mathjax> to be provable when <mathjax>$M$</mathjax> accepts <mathjax>$w$</mathjax> and vice versa. That is when <mathjax>$M$</mathjax> reaches the state <mathjax>$q_a$</mathjax> on input <mathjax>$w$</mathjax>. Reasoning with "<mathjax>$M$</mathjax> reaches <mathjax>$q_a$</mathjax> on input <mathjax>$w$</mathjax>" is quite difficult, because it is an iterative process with many parameters changing in the process. To formalize this and make it easier to reason about, we define a configuration of a TM in a moment to be all parameters that could change: <mathjax>$(q, T, i)$</mathjax> where:</p><ul><li><mathjax>$q$</mathjax> is a state</li><li><mathjax>$T$</mathjax> is a tape content (which is a string)</li><li><mathjax>$i$</mathjax> is an index on the tape that the header is pointing to</li></ul><p>A computation history (abbrev. CH) <mathjax>$H$</mathjax> is how configurations of a TM change over time. That is, it is a sequence of configurations where:</p><ol><li>The first configuration <mathjax>$H_0$</mathjax> is <mathjax>$(q_0, w, 0)$</mathjax></li><li>For any adjacent configurations <mathjax>$H_j$</mathjax> and <mathjax>$H_{j+1}$</mathjax>, the configuration <mathjax>$H_{j + 1}$</mathjax> “follows” from <mathjax>$H_j$</mathjax>.</li></ol><p>Given any <mathjax>$M$</mathjax> and <mathjax>$w$</mathjax>, The CH is uniquely determined, as the machine is deterministic. The CH could be either infinite or finite. The former indicates that the TM is stuck in a loop, while the latter indicates that the TM terminates (either accepting or rejecting the input string).</p><p>Define an accepting CH to be a CH where the last configuration is at state <mathjax>$q_a$</mathjax>. To say that <mathjax>$M$</mathjax> accepts <mathjax>$w$</mathjax> is nothing more than to say the CH is accepting and vice versa. In a sense, the accepting CH is a <i>proof</i> that <mathjax>$M$</mathjax> accepts <mathjax>$w$</mathjax>, as it shows how <mathjax>$M$</mathjax> accepts <mathjax>$w$</mathjax>.</p><p>Therefore, one way to construct <mathjax>$f$</mathjax> is to transform <mathjax>$\seq{M, w}$</mathjax> to a formula <mathjax>$\phi$</mathjax> asserting that the CH on running <mathjax>$M$</mathjax> on <mathjax>$w$</mathjax> is accepting. If <mathjax>$M$</mathjax> accepts <mathjax>$w$</mathjax>, one can indeed construct the accepting CH, a proof of this formula. If not, then it is impossible to construct the accepting CH.</p><h3>First-Order Logic</h3><p>In first-order logic, a formula consists of:</p><ul><li><p>Logical symbols: have the same semantics universally</p><ul><li>Parentheses: <mathjax>$(, )$</mathjax></li><li>Logical connectives: <mathjax>$\not, \to, ...$</mathjax></li><li>Equality: <mathjax>$=$</mathjax>. Define <mathjax>$a \ne b$</mathjax> to be <mathjax>$\not (a = b)$</mathjax></li><li>Variables: <mathjax>$v_i$</mathjax> where <mathjax>$i$</mathjax> is a natural number. For the sake of readability, we allow other characters to be varaibles as well such as <mathjax>$x$</mathjax> or <mathjax>$y$</mathjax></li></ul></li><li><p>Parameters: have different semantics in different interpretations.</p><ul><li>Quantifier: <mathjax>$\forall$</mathjax>. Under interpretation <mathjax>$I$</mathjax>, it ranges over the non-empty domain <mathjax>$|I|$</mathjax>. Define <mathjax>$\exists v. \phi$</mathjax> to be <mathjax>$\not \forall v. \not \phi$</mathjax></li><li><p>Functions: such as <mathjax>$f, g, h$</mathjax>. Each function has a specific arity which is a natural number. Under interpretation <mathjax>$I$</mathjax>, function <mathjax>$f$</mathjax> of arity <mathjax>$k$</mathjax> is assigned <mathjax>$f^I: |I|^{k} \to |I|$</mathjax> and so on. Notice that when the function <mathjax>$f$</mathjax> has arity <mathjax>$0$</mathjax>, <mathjax>$f$</mathjax> degenerates to a constant.</p><p>For example, consider functions <mathjax>$\hat{+}$</mathjax>, <mathjax>$\hat{0}$</mathjax>, and <mathjax>$\hat{1}$</mathjax> of arity 2, 0, and 0 respectively. Under some interpretations where:</p><ul><li><mathjax>$|I| = \R$</mathjax></li><li><mathjax>$\hat{+}^I: a, b \mapsto a + b$</mathjax></li><li><mathjax>$\hat{0}^I = 1$</mathjax></li><li><mathjax>$\hat{1}^I = 2$</mathjax></li></ul><p>Both formula <mathjax>$\hat{+}(\hat{0}, \hat{1}) = \hat{+}(\hat{1}, \hat{0})$</mathjax> and <mathjax>$\hat{+}(\hat{0}, \hat{0}) = \hat{1}$</mathjax> are true.</p><li><p>Predicates: such as <mathjax>$P, Q, R$</mathjax>. Each predicate has a specific arity which is a natural numbers. Under interpretation <mathjax>$I$</mathjax>, predicate <mathjax>$P$</mathjax> of arity <mathjax>$k$</mathjax> is assigned <mathjax>$P^{I} \subseteq |I|^{k}$</mathjax> and so on.</p><p>For example, consider predicate <mathjax>$P$</mathjax> of arity 3 and functions <mathjax>$\hat{0}$</mathjax>, <mathjax>$\hat{1}$</mathjax>, and <mathjax>$\hat{2}$</mathjax> of arity 0. Under some interpretations where:</p><ul><li><mathjax>$|I| = \Q$</mathjax></li><li><mathjax>$P^I = \setof{(a, b, c)}{a &lt; b &lt; c}$</mathjax></li><li><mathjax>$\hat{0}^I = 0$</mathjax></li><li><mathjax>$\hat{1}^I = 1$</mathjax></li><li><mathjax>$\hat{2}^I = 2$</mathjax></li></ul><p>The formula <mathjax>$P(\hat{0}, \hat{1}, \hat{2})$</mathjax> is true, while <mathjax>$P(\hat{2}, \hat{1}, \hat{0})$</mathjax> is not.</p><p>Under another interpretations <mathjax>$I’$</mathjax> which is just like <mathjax>$I$</mathjax> except that <mathjax>$P^{I’} = \setof{(a, b, c)}{a &gt; b &gt; c}$</mathjax>, the formula <mathjax>$P(\hat{2}, \hat{1}, \hat{0})$</mathjax> is true, while <mathjax>$P(\hat{0}, \hat{1}, \hat{2})$</mathjax> is not.</p></li></li></ul><p>Parameters are need to be specified when defining a language. For example, a language of set theory has parameter <mathjax>$\forall$</mathjax> and <mathjax>$\in$</mathjax> with arity 2.</p></li></ul><p>From now on, we will use the infix notation when applicable for the sake of readability. This applies to both functions and predicates. For example, we will write <mathjax>$a + b$</mathjax> and <mathjax>$a \in b$</mathjax> instead of <mathjax>$+(a, b)$</mathjax> and <mathjax>$\in(a, b)$</mathjax></p><h3>Establishing a Correspondence</h3><p>As mentioned above, the function <mathjax>$f$</mathjax> that we will create will produce a formula <mathjax>$\phi$</mathjax> which asserts that the CH is accepting when running <mathjax>$M$</mathjax> on <mathjax>$w$</mathjax>. Therefore, consider an interpretation where the domain is the set of configurations. The formula will establish rules: how the initial configuration should be, how configurations will transition, and force that the last configuration must be in the accepting state.</p><p>The rules is all about configurations in the CH when running <mathjax>$M$</mathjax> on <mathjax>$w$</mathjax>, so we want to be able to precisely state this in the formula. That is, we need a predicate stating that an object is a configuration in the CH. But first of all, we need to decide first what should be the domain of the objects.</p><p>Because a configuration consists of <mathjax>$(q, T, i)$</mathjax>, one possible way is to have states, strings, and integers in the domain. However, this is going to be very complex. Notice that any TM has finite states, so we in fact can encode the facts about states using the formula instead. Now we only have strings and integers left to be in the domain. However, note that another way to specify the current cell in the tape is to say that the tape consists of two parts: left part and right part, where the current cell is exactly the first cell of the right part. The whole tape then is just the concatenation of two parts. With this way, there is no need to keep integers around; we only need strings to be in the domain.</p><h4>Strings in First-Order Logic</h4><p>Let’s say that we want to encode string over the set of alphabets <mathjax>$\Sigma$</mathjax> in first-order logic. For instance, let <mathjax>$\Sigma$</mathjax> be the set of 26 English alphabets. We at least want to be able to construct the object <code>hello</code>. How can we do it?</p><p>We notice that a string is just a list of characters which can be defined recursively: a list of length <mathjax>$n$</mathjax> is either an empty list or a list of length <mathjax>$n - 1$</mathjax> appended by one more element. Similarly, a string of length <mathjax>$n$</mathjax> is either an empty string or a string of length <mathjax>$n - 1$</mathjax> together with one more character at the back. Therefore, define a constant (a function with arity 0) <mathjax>$\epsilon$</mathjax> to represent empty string. Define functions <mathjax>$a_a, a_b, ..., a_z$</mathjax> with arity 1, where <mathjax>$a_\alpha(x)$</mathjax> is to put a character <mathjax>$\alpha$</mathjax> at the back of <mathjax>$x$</mathjax>. Then <code>hello</code> is just <mathjax>$a_o(a_l(a_l(a_e(a_h(\epsilon)))))$</mathjax>.</p><p>Note that in other interpretations, it could be the case that all <mathjax>$a_\alpha$</mathjax> are just identity functions, and <mathjax>$\epsilon$</mathjax> is 3. <mathjax>$\epsilon$</mathjax> being 3 is not that much of a problem, cause 3 might mean empty string. The problem is that in these interpretations all strings are the same. To encode strings properly, we need to have more conditions: <mathjax>$\forall x. a_\alpha(x) \ne a_\beta(x)$</mathjax> for all <mathjax>$\alpha, \beta \in \Sigma, \alpha \ne \beta$</mathjax></p><h4>Define Predicates</h4><p>Construct <mathjax>$|Q|$</mathjax> predicates where <mathjax>$R_q$</mathjax> is a predicate with arity 2 for each <mathjax>$q \in Q$</mathjax>. The interpretation of <mathjax>$R_q(l, r)$</mathjax> is, <mathjax>$(q, l \circ r, |l|)$</mathjax> is a configuration in the CH.</p><p>The rest becomes obvious: to say that the last configuration is in the accepting state is: <mathjax>$\exists l. \exists r. R_{q_a}(l, r)$</mathjax>. To set up the first configuration is: <mathjax>$R_{q_0}(\epsilon, w)$</mathjax>.</p><p>Wait, what is <mathjax>$\epsilon$</mathjax> and <mathjax>$w$</mathjax>? <mathjax>$\epsilon$</mathjax> would be just a constant (function with arity 0) in this language, intended to mean an empty string. <mathjax>$w$</mathjax> is the input. We could make it a constant, but under some interpretations, it’s unlikely that this constant to correspond to the actual <mathjax>$w$</mathjax> that we have. Instead, we will build</p></div><hr/>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_config = function () {
+    this.page.identifier = "blog/_2017-01-09-undecidability-of-first-order-logic.html"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//sorawee.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </section>
+</body>
+</html>

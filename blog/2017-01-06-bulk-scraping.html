@@ -1,0 +1,222 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Bulk Scraping — Sorawee's Website
+  </title>
+  <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles-github.css" />
+  <script type="text/javascript"
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+      TeX: {
+        Macros: {
+          seq: ["{\\langle #1 \\rangle}", 1],
+          set: ["{\\{ #1 \\}}", 1],
+          setof: ["{\\{ #1 \\ | \\ #2 \\}}", 2],
+          N: "{\\mathbb N}",
+          R: "{\\mathbb R}",
+          Z: "{\\mathbb Z}",
+          Q: "{\\mathbb Q}",
+          floor: ["{\\lfloor #1 \\rfloor}", 1],
+          ceil: ["{\\lceil #1 \\rceil}", 1],
+        }
+      }
+    });
+  </script>
+  <style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+</head>
+<body>
+  <nav><ul>
+    <li><a href="../blog/2017-02-01-on-induction.html">&larr; Previous</a></li>
+    <li><a href="../">&uarr; Home</a></li>
+    <li><a href="../blog/2017-01-03-colorful-parentheses.html">Next &rarr;</a></li>
+    <li>
+      <a href="2017-01-06-bulk-scraping.pdf">
+        <img src="../css/pdficon.png" width="15" height="15" alt="Download PDF" />
+        <span class="caps" style="font-style: normal">PDF</span>
+      </a>
+    </li>
+    <li style="width: auto;">
+      <a href="https://github.com/sorawee/my-website/blob/master/blog/2017-01-06-bulk-scraping.poly.pm" title="View the Pollen source for this file"
+         class="sourcelink code">&loz; Pollen Source
+      </a>
+    </li>
+  </ul></nav>
+  <section class="page-header">
+    <h1 class="project-name">
+      <a href="../">Sorawee's Website</a>
+    </h1>
+    <h2 class="project-tagline"></h2>
+    <a href="../" class="btn">Blog</a>
+    <a href="../books.html" class="btn">Books</a>
+    <a href="../feed.xml" class="btn">RSS</a>
+    <a href="../about.html" class="btn">About Me</a>
+  </section>
+  <section class="main-content" id="the-main">
+    <div id="real-content">
+      <h1>Bulk Scraping</h1><p class="tags">Tags: <a href="/tags/python">python</a>, <a href="/tags/scraping">scraping</a></p><p class="pubdate">Published on Friday, January 6th, 2017</p><div class="content"><p>One of my friends who is a non-CS concentrator would like to scrape emails of all faculties listed in <a href="http://engineering.vanderbilt.edu/eecs/faculty-staff/index.php">this website</a>. Unfortunately, the emails are not on the page itself, but are on subpages. It would take forever to scrape the data by hand, so I helped. To do this, I need to send multiple requests to scrape each subpage. Naively, we would send a request, wait for a response, then repeat until we go over all list of faculties. This however would take a lot of time. We can do better by sending requests asynchronously. This is feasible because there is no dependency in the data.</p><p><see-more></see-more></p><p>But first, let’s consider a naive implementation that doesn’t exploit asynchronicity:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="source"><pre><span></span><span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">html</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">page</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"http://engineering.vanderbilt.edu/eecs/faculty-staff/index.php"</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">"//h4/a/@href[starts-with(., &#39;/bio/&#39;)]"</span><span class="p">):</span>
+    <span class="n">page</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"http://engineering.vanderbilt.edu"</span> <span class="o">+</span> <span class="n">e</span><span class="p">)</span>
+    <span class="n">tree2</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">e2</span> <span class="ow">in</span> <span class="n">tree2</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">"//a/@href[starts-with(., &#39;mailto:&#39;)]"</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e2</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+</pre></div></td></tr></tbody></table></div><p>This takes about 2 minutes to run.</p><p>Now, we will use a drop-in replacement of <code>requests</code>: <code><a href="https://github.com/kennethreitz/grequests">grequests</a></code>, which supports asynchronicity. The library is not built-in and needed to be installed separately<label for="2cecac91-b624-4806-ae42-2e4ebfc93897" class="margin-toggle sidenote-number"></label><input type="checkbox" id="2cecac91-b624-4806-ae42-2e4ebfc93897" class="margin-toggle"/><span class="sidenote">via <code>pip</code>, so it’s actually very easy</span>, but it’s the easiest way to go without altering the code much.</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="source"><pre><span></span><span class="kn">from</span> <span class="nn">lxml</span> <span class="k">import</span> <span class="n">html</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="kn">import</span> <span class="nn">grequests</span>
+<span class="n">page</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"http://engineering.vanderbilt.edu/eecs/faculty-staff/index.php"</span><span class="p">)</span>
+<span class="n">tree</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+<span class="n">urls</span> <span class="o">=</span> <span class="p">[</span><span class="s2">"http://engineering.vanderbilt.edu"</span> <span class="o">+</span> <span class="n">e</span>
+        <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span> <span class="n">tree</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">"//h4/a/@href[starts-with(., &#39;/bio/&#39;)]"</span><span class="p">)]</span>
+<span class="k">for</span> <span class="n">page</span> <span class="ow">in</span> <span class="n">grequests</span><span class="o">.</span><span class="n">map</span><span class="p">(</span><span class="n">grequests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="n">url</span><span class="p">)</span> <span class="k">for</span> <span class="n">url</span> <span class="ow">in</span> <span class="n">urls</span><span class="p">):</span>
+    <span class="n">tree2</span> <span class="o">=</span> <span class="n">html</span><span class="o">.</span><span class="n">fromstring</span><span class="p">(</span><span class="n">page</span><span class="o">.</span><span class="n">content</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">e2</span> <span class="ow">in</span> <span class="n">tree2</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">"//@href[starts-with(., &#39;mailto:&#39;)]"</span><span class="p">):</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">e2</span><span class="p">[</span><span class="mi">7</span><span class="p">:])</span>
+</pre></div></td></tr></tbody></table></div><p>takes 20 seconds!</p><p><a href="http://jswrenn.com">Jack</a> writes a one liner<label for="ff3ea8ae-0f96-4fd2-b85a-eeaf083873d3" class="margin-toggle sidenote-number"></label><input type="checkbox" id="ff3ea8ae-0f96-4fd2-b85a-eeaf083873d3" class="margin-toggle"/><span class="sidenote">It’s not quite one liner here because I want to make it readable.</span> to solve this problem using shell script and a tool named <code><a href="http://www.videlibri.de/xidel.html">xidel</a></code>:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="source"><pre><span></span>xidel -s http://engineering.vanderbilt.edu/eecs/faculty-staff/index.php <span class="se">\</span>
+      --extract <span class="s2">"//h4/a/@href[starts-with(.,&#39;/bio/&#39;)]"</span> <span class="se">\</span>
+      <span class="p">|</span> xargs -n1 -P10 -I<span class="o">{}</span> xidel -s http://engineering.vanderbilt.edu/<span class="o">{}</span> <span class="se">\</span>
+      --extract <span class="s2">"substring(//@href[starts-with(.,&#39;mailto:&#39;)], 8)"</span>
+</pre></div></td></tr></tbody></table></div><p>also takes 20 seconds. The disadvantage of this approach is that it could produce output like:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="source"><pre><span></span>david.kerns@vanderbilt.edu
+daniel.loveless@vanderbilt.edugerry_lucovsky@ncsu.edu
+</pre></div></td></tr></tbody></table></div><p>I guess we can instead append to a file to tidy this up, but then it becomes more verbose. Plus, it <a href="http://stackoverflow.com/questions/2443786/is-it-safe-to-pipe-the-output-of-several-parallel-processes-to-one-file-using">doesn’t always</a> work.</p><p>Lastly, one can also use a sledgehammer to <strike>crack a nut</strike> scrape pages: <a href="https://scrapy.org">Scrapy</a>! There are four steps:</p><ol><li>Generate a project: <code>scrapy startproject basic-scraper</code></li><li>Create a structure to hold data: put <code>email = scrapy.Field()</code> in the class in <code>items.py</code></li><li><p>Write the scraper: </p><div class="filebox"><div class="filename" decode="exclude">spiders/basic_spider.py</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="source"><pre><span></span><span class="kn">import</span> <span class="nn">scrapy</span>
+
+<span class="k">class</span> <span class="nc">BasicSpider</span><span class="p">(</span><span class="n">scrapy</span><span class="o">.</span><span class="n">Spider</span><span class="p">):</span>
+    <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;basic&#39;</span>
+    <span class="n">start_urls</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;http://engineering.vanderbilt.edu/eecs/faculty-staff/index.php&#39;</span><span class="p">]</span>
+
+    <span class="k">def</span> <span class="nf">parse</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">data</span> <span class="ow">in</span> <span class="n">response</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">"//h4/a/@href[starts-with(., &#39;/bio/&#39;)]"</span><span class="p">):</span>
+            <span class="n">next_page</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">urljoin</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">extract</span><span class="p">())</span>
+            <span class="k">yield</span> <span class="n">scrapy</span><span class="o">.</span><span class="n">Request</span><span class="p">(</span><span class="n">next_page</span><span class="p">,</span> <span class="n">callback</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">subpage</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="nf">subpage</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">response</span><span class="p">):</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">response</span><span class="o">.</span><span class="n">xpath</span><span class="p">(</span><span class="s2">"//@href[starts-with(., &#39;mailto:&#39;)]"</span><span class="p">)</span><span class="o">.</span><span class="n">extract_first</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">data</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="p">{</span>
+                <span class="s1">&#39;email&#39;</span><span class="p">:</span> <span class="n">data</span><span class="p">[</span><span class="mi">7</span><span class="p">:]</span>
+            <span class="p">}</span>
+</pre></div></td></tr></tbody></table></div></div></li><li>Run it: <code>scrapy crawl basic -t csv -o items.csv; sed -i '1d' items.csv</code></li></ol><p>And yes, this takes 20 seconds (it’d better not be worse than the <code>grequests</code> method!).</p></div><hr/>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_config = function () {
+    this.page.identifier = "blog/2017-01-06-bulk-scraping.html"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//sorawee.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </section>
+</body>
+</html>

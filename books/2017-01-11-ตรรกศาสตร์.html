@@ -2,12 +2,12 @@
 <head>
   <meta charset="UTF-8">
   <title>
-    Tag: huginn — Sorawee's Website
+    ตรรกศาสตร์เบื้องต้น — Sorawee's Website
   </title>
   <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
-  <link rel="stylesheet" type="text/css" media="all" href="../../css/styles.css" />
-  <link rel="stylesheet" type="text/css" media="all" href="../../css/normalize.css" />
-  <link rel="stylesheet" type="text/css" media="all" href="../../css/styles-github.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles-github.css" />
   <script type="text/javascript"
     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
   </script>
@@ -19,6 +19,9 @@
           seq: ["{\\langle #1 \\rangle}", 1],
           set: ["{\\{ #1 \\}}", 1],
           setof: ["{\\{ #1 \\ | \\ #2 \\}}", 2],
+          not: "{\\lnot}",
+          and: "{\\land}",
+          or: "{\\lor}",
           N: "{\\mathbb N}",
           R: "{\\mathbb R}",
           Z: "{\\mathbb Z}",
@@ -96,19 +99,31 @@
 
   <section class="page-header">
     <h1 class="project-name">
-      <a href="../../">Sorawee's Website</a>
+      <a href="../">Sorawee's Website</a>
     </h1>
     <h2 class="project-tagline"></h2>
-    <a href="../../" class="btn">Blog</a>
-    <a href="../../books.html" class="btn">Books</a>
-    <a href="../../feed.xml" class="btn">RSS</a>
-    <a href="../../about.html" class="btn">About Me</a>
+    <a href="../" class="btn">Blog</a>
+    <a href="../books.html" class="btn">Books</a>
+    <a href="../feed.xml" class="btn">RSS</a>
+    <a href="../about.html" class="btn">About Me</a>
   </section>
   <section class="main-content" id="the-main">
     <div id="real-content">
-      <h1>Tag: huginn</h1><h2><a href="/blog/2016-12-26-huginn.html"><span class="smallcaps">Huginn</span></a></h2><p class="tags">Tags: <a href="/tags/huginn">huginn</a>, <a href="/tags/rss">rss</a>, <a href="/tags/scraping">scraping</a></p><p class="pubdate">Published on Monday, December 26th, 2016</p><div class="content"><p>Yahoo! <a href="http://lifehacker.com/yahoo-pipes-is-closing-down-1709067642">terminated</a> Yahoo! Pipes on June 4, 2015. It breaks my heart to see another good service dying. However, I recently found another project which has an ability just like Yahoo! Pipes: <a href="github.com/cantino/huginn">Huginn</a></p><p></p></div><div class="see-more-link"><a href="/blog/2016-12-26-huginn.html"><span class="smallcaps">[see more]</span></a></div><hr/>
+      <h1>ตรรกศาสตร์เบื้องต้น</h1><decoded-root><p><i>ตรรกศาสตร์</i> (ภาษาอังกฤษ: logic) เป็นการศึกษาเกี่ยวกับ<i>การให้เหตุผล</i> (ภาษาอังกฤษ: argument) โดยทั่วไป การสอนตรรกศาสตร์ก็จะเริ่มต้นด้วยการให้ความหมาย<label for="3d16e0bf-ec4d-4a53-8ac7-bed980132dfa" class="margin-toggle sidenote-number"></label><input type="checkbox" id="3d16e0bf-ec4d-4a53-8ac7-bed980132dfa" class="margin-toggle"/><span class="sidenote">ในทางคณิตศาสตร์อาจเรียกว่า <i>การนิยาม</i></span> ของการให้เหตุผลว่าเป็น</p><ol><li>รายการของประโยคบอกเล่า (อาจมีมากกว่าหนึ่ง หรือไม่มีเลยก็ได้) ที่เรียกว่า “เหตุ”</li><li>ประโยคบอกเล่าพิเศษที่เรียกว่า “ผล” หรือ “ข้อสรุป”</li></ol><p>ยกตัวอย่างเช่น:</p><div class="argument"><ol style="margin-bottom: 0;"><li>ถ้านายอภิสิทธิ์เป็นนายกรัฐมนตรีของประเทศไทย จะได้ว่านายอภิสิทธิ์เป็นคนไทย</li><li>นายอภิสิทธิ์เป็นนายกรัฐมนตรีของประเทศไทย</li></ol><ul class="no-bullet"><li><hr class="logic-separator"/></li><li class="logic-conclusion">นายอภิสิทธิ์เป็นคนไทย</li></ul></div><p>มี “ถ้านายอภิสิทธิ์เป็นนายกรัฐมนตรีของประเทศไทย จะได้ว่านายอภิสิทธิ์เป็นคนไทย” และ “นายอภิสิทธิ์เป็นนายกรัฐมนตรีของประเทศไทย” เป็นเหตุ และมี “นายอภิสิทธิ์เป็นคนไทย” เป็นผล</p><p>...</p><h3>ภาษาสำหรับตรรกศาสตร์</h3><p>แน่นอนว่าเราอาจจะใช้ภาษามนุษย์ในการให้เหตุผล</p></decoded-root>
     </div>
-
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_config = function () {
+    this.page.identifier = "books/2017-01-11-ตรรกศาสตร์.html"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//sorawee.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
   </section>
 </body>
 </html>

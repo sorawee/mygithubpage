@@ -216,6 +216,44 @@ body {
   counter-reset: sidenote-counter;
 }
 
+.outdated {
+  background-color: peachpuff;
+}
+
+.outdated > div:first-child {
+  padding-top: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.outdated > div:last-child {
+  padding: 1rem 2rem;
+}
+
+.no-bullet {
+  list-style: none;
+}
+
+.logic-conclusion {
+  text-indent: -1em;
+}
+
+.main-content hr.logic-separator {
+  background-color: darkgray;
+  margin-bottom: 1px;
+}
+
+.argument {
+  padding-right: 1rem;
+  padding-top: 1rem;
+  background-color: aliceblue;
+}
+
+.logic-conclusion:before {
+  content: "∴";
+  padding-right: 5px;
+}
+
 /* The paren stuff, copied from http://community.schemewiki.org/?wiki-css */
 
 /* Top level */

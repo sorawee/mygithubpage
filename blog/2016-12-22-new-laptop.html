@@ -12,7 +12,22 @@
     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
   </script>
   <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$']]}});
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+      TeX: {
+        Macros: {
+          seq: ["{\\langle #1 \\rangle}", 1],
+          set: ["{\\{ #1 \\}}", 1],
+          setof: ["{\\{ #1 \\ | \\ #2 \\}}", 2],
+          N: "{\\mathbb N}",
+          R: "{\\mathbb R}",
+          Z: "{\\mathbb Z}",
+          Q: "{\\mathbb Q}",
+          floor: ["{\\lfloor #1 \\rfloor}", 1],
+          ceil: ["{\\lceil #1 \\rceil}", 1],
+        }
+      }
+    });
   </script>
   <style type="text/css">.highlight .hll { background-color: #ffffcc }
 .highlight  { background: #f8f8f8; }
@@ -106,7 +121,7 @@
   </section>
   <section class="main-content" id="the-main">
     <div id="real-content">
-      <h1>My New Laptop &amp; Settings</h1><p class="tags">Tags: <a href="/tags/ubuntu">ubuntu</a>, <a href="/tags/thinkpad">thinkpad</a>, <a href="/tags/post">post</a></p><p class="pubdate">Published on Thursday, December 22nd, 2016</p><div class="content"><p>I switched from Ubuntu to Macbook Pro since 2013 and was very happy with it. About 5 months ago, the screen was broken, so I planned to buy a new one. Knowing that the new version will have a major change, I was very excited and decided to wait until it’s released in order to buy it. To my disappointment, <a href="http://www.theverge.com/2016/11/7/13548052/the-macbook-pro-lie">it incredibly sucks</a><label for="9b1dd98a-8351-4589-ae77-38df08f063c1" class="margin-toggle sidenote-number"></label><input type="checkbox" id="9b1dd98a-8351-4589-ae77-38df08f063c1" class="margin-toggle"/><span class="sidenote">I would have loved it if I were not a programmer–the missing <kbd>Esc</kbd> and traditional USB ports matter a lot to me</span>.</p><p>A lot of my friends suggested me to get a Thinkpad X1 Yoga which looks really cool. I waited until Thanksgiving to get a big discount. The laptop arrived in early December. The first thing I did is to install Ubuntu 16.10 because I hate Windows! <i class="em em-stuck_out_tongue"></i></p><p>Following are my settings. I write these particularly for myself in the future so that when I need to set things up again, I won’t have to spend a lot of time figuring out what to do!</p><p><see-more></see-more></p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+      <h1>My New Laptop &amp; Settings</h1><p class="tags">Tags: <a href="/tags/ubuntu">ubuntu</a>, <a href="/tags/thinkpad">thinkpad</a>, <a href="/tags/post">post</a></p><p class="pubdate">Published on Thursday, December 22nd, 2016</p><div class="content"><p>I switched from Ubuntu to Macbook Pro since 2013 and was very happy with it. About 5 months ago, the screen was broken, so I planned to buy a new one. Knowing that the new version will have a major change, I was very excited and decided to wait until it’s released in order to buy it. To my disappointment, <a href="http://www.theverge.com/2016/11/7/13548052/the-macbook-pro-lie">it incredibly sucks</a><label for="7f725ec6-06b9-4e86-875b-fee9814140cb" class="margin-toggle sidenote-number"></label><input type="checkbox" id="7f725ec6-06b9-4e86-875b-fee9814140cb" class="margin-toggle"/><span class="sidenote">I would have loved it if I were not a programmer–the missing <kbd>Esc</kbd> and traditional USB ports matter a lot to me</span>.</p><p>A lot of my friends suggested me to get a Thinkpad X1 Yoga which looks really cool. I waited until Thanksgiving to get a big discount. The laptop arrived in early December. The first thing I did is to install Ubuntu 16.10 because I hate Windows! <i class="em em-stuck_out_tongue"></i></p><p>Following are my settings. I write these particularly for myself in the future so that when I need to set things up again, I won’t have to spend a lot of time figuring out what to do!</p><p><see-more></see-more></p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -276,11 +291,12 @@ xdg-open <span class="nv">$@</span> <span class="p">&amp;</span>&gt; /dev/null
 79
 80
 81
-82</pre></div></td><td class="code"><div class="source"><pre><span></span>sudo apt-get install emacs24
+82
+83
+84</pre></div></td><td class="code"><div class="source"><pre><span></span>sudo apt-get install emacs24 <span class="c1"># or emacs25, 26, whatever you want</span>
 
 sudo apt-get install atom
 
-<span class="c1"># this really boosts my productivity</span>
 sudo apt-get install clipit
 
 sudo apt-get install liferea
@@ -298,10 +314,13 @@ sudo apt-get install gnome-settings-daemon gnome-control-center
 sudo apt-get install chromium-browser
 <span class="c1"># vivaldi is also great</span>
 
-sudo apt-get install gimp
+sudo apt-get install gimp <span class="c1"># current version is gimp2.8</span>
 wget https://github.com/jedireza/gimp-hidpi/archive/master.zip
 unzip master.zip -d ~/.gimp-2.8/themes
 <span class="c1"># need to add the theme in gimp&#39;s setting too</span>
+rm master.zip
+
+sudo apt-get install texlive-full
 
 sudo add-apt-repository ppa:jconti/recent-notifications
 sudo apt-get install indicator-notifications
@@ -358,7 +377,14 @@ sudo apt-get install xournal
 
 curl -sL https://deb.nodesource.com/setup_6.x <span class="p">|</span> sudo -E bash -
 sudo apt-get install -y nodejs
-</pre></div></td></tr></tbody></table></div><p>As a non-English speaker, I use dictionaries a lot. I also want it to be offline. The best program I could fine (which is also the same one I used 4 years ago) is <code>goldendict</code>. Here’s the setup:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+</pre></div></td></tr></tbody></table></div><p><a href="github.com/phw/peek">Peek</a> is a screen recorder program which produces GIF as the output. However, it needs an additional configuration to avoid freezing computer:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="source"><pre><span></span><span class="c1"># the current version is 0.8.0.</span>
+wget https://github.com/phw/peek/releases/download/v0.8.0/peek-0.8.0-Linux.deb
+sudo dpkg -i peek-0.8.0-Linux.deb
+rm peek-0.8.0-Linux.deb
+</pre></div></td></tr></tbody></table></div><p>Then edit <code>/usr/share/applications/com.uploadedlobster.peek.desktop</code>‘s Exec to <code>TMPDIR=/var/tmp MAGICK_TMPDIR=/var/tmp MAGICK_TEMPORARY_PATH=/var/tmp peek</code>.</p><p>As a non-English speaker, I use dictionaries a lot. I also want it to be offline. The best program I could fine (which is also the same one I used 4 years ago) is <code>goldendict</code>. Here’s the setup:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -376,8 +402,10 @@ sudo apt-get install -y nodejs
 16
 17
 18
-19</pre></div></td><td class="code"><div class="source"><pre><span></span>mkdir ~/dict
+19
+20</pre></div></td><td class="code"><div class="source"><pre><span></span>mkdir ~/dict
 <span class="nb">cd</span> ~/dict
+<span class="c1"># I suppose it will no longer be developed, so let&#39;s just hard code the version number</span>
 <span class="c1"># EN-&gt;TH dictionary</span>
 wget http://ftp.psu.ac.th/pub/stardict/stardict-lexitron-et-2.4.2.tar.bz2
 <span class="c1"># TH-&gt;EN dictionary</span>
@@ -467,7 +495,7 @@ rm -rf dictionary *.tar.bz2
   killall notify-osd
   notify-send <span class="s2">"Reading mode"</span>
 <span class="k">fi</span>
-</pre></div></td></tr></tbody></table></div></div><p>Then, in <b>Keyboard</b> &gt; <b>Shortcuts</b>, create a custom command which invokes <code>~/bin/switch-reading-mode</code> when pressing <kbd>CapsLock</kbd>. Indeed, when entering the reading mode, the Capslock would be on, but in the reading mode, you don’t type, so it’s fine! <i class="em em-smiley"></i> Note that the reason I choose Capslock is that it has the physical light indicator on the keyboard, meaning that I will know whether I am in the reading mode or not without having to try pressing <kbd>Home</kbd> or other keys.</p><p>Life of Thinkpad in Ubuntu also kinda sucks. Fingerprint reader <a href="https://forums.lenovo.com/t5/forums/v3_1/forumtopicpage/board-id/Special_Interest_Linux/thread-id/7920/page/1">doesn’t work</a>. Neither are Tablet mode auto-rotation. In fact, I couldn’t even connect the accelerometer although I’m sure there is one because it works in Windows. So I need to manually tell Ubuntu to rotate screen, which is kinda awkward. I make it easier by calling this script (which also does other things like disabling trackpad, etc.):</p><div class="filebox"><div class="filename" decode="exclude">/usr/local/bin/rotate-screen</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+</pre></div></td></tr></tbody></table></div></div><p>Then, in <b>Keyboard</b> &gt; <b>Shortcuts</b>, create a custom command which invokes <code>~/bin/switch-reading-mode</code> when pressing <kbd>CapsLock</kbd>. Indeed, when entering the reading mode, the Capslock would be on, but in the reading mode, you don’t type, so it’s fine! <i class="em em-smiley"></i> Note that the reason I choose Capslock is that it has the physical light indicator on the keyboard, meaning that I will know whether I am in the reading mode or not without having to try pressing <kbd>Home</kbd> or other keys.</p><p>Life of Thinkpad in Ubuntu also kinda sucks. Fingerprint reader <a href="https://forums.lenovo.com/t5/forums/v3_1/forumtopicpage/board-id/Special_Interest_Linux/thread-id/7920/page/1">doesn’t work</a>. <s>Neither is Tablet mode auto-rotation. In fact, I couldn’t even connect the accelerometer although I’m sure there is one because it works in Windows. So I need to manually tell Ubuntu to rotate screen, which is kinda awkward. I make it easier by calling this script (which also does other things like disabling trackpad, etc.):</s></p><div class="outdated"><div><u><b>Outdated:</b></u></div><div><div class="filebox"><div class="filename" decode="exclude">/usr/local/bin/rotate-screen</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -615,7 +643,37 @@ Icon=system-config-displayca
 Name=Laptop Mode
 Exec=/usr/local/bin/rotate-screen
 Categories=Utility;
-</pre></div></td></tr></tbody></table></div></div><p>And drag all of these to the Unity bar. Also drag <code>/usr/share/applications/onboard.desktop</code> to the Unity bar for on-screen keyboard for non-laptop mode.</p><p>FIN <i class="em em-smiley"></i></p></div><hr/>
+</pre></div></td></tr></tbody></table></div></div><p>And drag all of these to the Unity bar. Also drag <code>/usr/share/applications/onboard.desktop</code> to the Unity bar for on-screen keyboard for non-laptop mode.</p></div></div><p>I managed to get auto-rotation to work! First:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="source"><pre><span></span>sudo apt-get install iio-sensor-proxy
+systemctl start iio-sensor-proxy.service
+</pre></div></td></tr></tbody></table></div><p>Then, run <code>monitor-sensor</code>. It should look like:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="source"><pre><span></span>$ monitor-sensor
+    Waiting <span class="k">for</span> iio-sensor-proxy to appear
++++ iio-sensor-proxy <span class="nv">appeared</span>
+<span class="o">===</span> Has accelerometer <span class="o">(</span>orientation: normal<span class="o">)</span>
+<span class="o">===</span> Has ambient light sensor <span class="o">(</span>value: 0.908000, unit: lux<span class="o">)</span>
+Light changed: 1.557000 <span class="o">(</span>lux<span class="o">)</span>
+Light changed: 13.365001 <span class="o">(</span>lux<span class="o">)</span>
+...
+</pre></div></td></tr></tbody></table></div><p>If it doesn’t appear like this, there are two possibilties:</p><ol><li>The kernel you are using is <a href="https://github.com/hadess/iio-sensor-proxy/issues/71">buggy</a>!. Download and install <a href="http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.9.3/">kernel version 4.9.3</a> or later to fix this issue.</li><li>There’s a weird <a href="https://github.com/hadess/iio-sensor-proxy/issues/124">bug</a> that <code>monitor-sensor</code> won’t work unless you sleep your laptop and wake it up... So... do that.</li></ol><p>When <code>monitor-sensor</code> is working, install <code><a href="https://github.com/admiralakber/thinkpad-yoga-scripts">thinkpad-yoga-scripts</a></code> by the following instructions. Note that <code>thinkpad-yoga-scripts</code> has a lot of features that we do not need. For example, “Disabling of Touchscreen with proximity of Wacom digitizer” is working already for us. So we will not follow the instructions in the README. Instead:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="source"><pre><span></span>sudo -s
+git clone https://github.com/admiralakber/thinkpad-yoga-scripts /opt/thinkpad-yoga-scripts
+nano /opt/thinkpad-yoga-scripts/rotate/thinkpad-rotate.py
+</pre></div></td></tr></tbody></table></div><p>Set both <code>rotate_pens</code> and <code>disable_touchpads</code> to <code>True</code>. Then:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="source"><pre><span></span>cp /opt/thinkpad-yoga-scripts/systemd/yoga-rotate@.service /lib/systemd/system/
+<span class="c1"># somehow systemd stuff in /usr/lib/systemd/system/ or</span>
+<span class="c1"># /usr/lib/systemd/user/ doesn&#39;t work, so use this instead</span>
+systemctl start yoga-rotate@<span class="nv">$USER</span>.service
+</pre></div></td></tr></tbody></table></div><p>FIN <i class="em em-smiley"></i></p></div><hr/>
     </div>
     <div id="disqus_thread"></div>
     <script>

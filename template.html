@@ -7,7 +7,9 @@
 @(define pollen-source-listing
   (string-append "https://github.com/sorawee/my-website/blob/master/"
                  (path->string (get-markup-source here))))
-@(define type (or (select 'type metas) "post"))
+
+@(define type (or (select 'type metas)
+                  (car (regexp-match #rx"^[^/]*" (symbol->string here)))))
 @(define (get-navbar) @ids{
   <nav><ul>
     @when/splice[(and (previous here) (not (eq? (parent here) (previous here))))]{
@@ -65,13 +67,28 @@ s.setAttribute('data-timestamp', +new Date());
     src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
   </script>
   <script type="text/x-mathjax-config">
-    MathJax.Hub.Config({tex2jax: {inlineMath: [['$','$']]}});
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+      TeX: {
+        Macros: {
+          seq: ["{\\langle #1 \\rangle}", 1],
+          set: ["{\\{ #1 \\}}", 1],
+          setof: ["{\\{ #1 \\ | \\ #2 \\}}", 2],
+          N: "{\\mathbb N}",
+          R: "{\\mathbb R}",
+          Z: "{\\mathbb Z}",
+          Q: "{\\mathbb Q}",
+          floor: ["{\\lfloor #1 \\rfloor}", 1],
+          ceil: ["{\\lceil #1 \\rceil}", 1],
+        }
+      }
+    });
   </script>
   @(->html (make-highlight-css))
 </head>
 <body>
   @(case type
-    [("post") (get-navbar)]
+    [("blog") (get-navbar)]
     [else ""])
   <section class="page-header">
     <h1 class="project-name">
@@ -88,11 +105,12 @@ s.setAttribute('data-timestamp', +new Date());
       @(->html
         (case type
           [("index" "tag") (! (list `(h1 ,(hash-ref metas 'special-title)) (splice-top doc)))]
-          [("post") (! (list `(h1 ,(hash-ref metas 'title)) (make-post here #:header #f)))]
+          [("blog") (! (list `(h1 ,(hash-ref metas 'title)) (make-post here #:header #f)))]
+          [("books") (! (list `(h1 ,(hash-ref metas 'title)) (get-doc here)))]
           [else "Under Construction!"]))
     </div>
     @(case type
-      [("post") (get-comment (symbol->string here))]
+      [("blog" "books") (get-comment (symbol->string here))]
       [else ""])
   </section>
 </body>
