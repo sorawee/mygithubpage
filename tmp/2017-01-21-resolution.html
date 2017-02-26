@@ -1,0 +1,144 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Resolution — Sorawee's Website
+  </title>
+  <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles-github.css" />
+  <script type="text/javascript"
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+      TeX: {
+        Macros: {
+          seq: ["{\\langle #1 \\rangle}", 1],
+          set: ["{\\{ #1 \\}}", 1],
+          setof: ["{\\{ #1 \\ | \\ #2 \\}}", 2],
+          not: "{\\lnot}",
+          and: "{\\:\\land\\:}",
+          or: "{\\:\\lor\\:}",
+          N: "{\\mathbb N}",
+          R: "{\\mathbb R}",
+          Z: "{\\mathbb Z}",
+          Q: "{\\mathbb Q}",
+          floor: ["{\\lfloor #1 \\rfloor}", 1],
+          ceil: ["{\\lceil #1 \\rceil}", 1],
+        }
+      }
+    });
+  </script>
+  <style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+</head>
+<body>
+  <nav><ul>
+
+    <li><a href="../">&uarr; Home</a></li>
+    <li><a href="../blog/2017-01-06-bulk-scraping.html">Next &rarr;</a></li>
+    <li>
+      <a href="2017-01-21-resolution.pdf">
+        <img src="../css/pdficon.png" width="15" height="15" alt="Download PDF" />
+        <span class="caps" style="font-style: normal">PDF</span>
+      </a>
+    </li>
+    <li style="width: auto;">
+      <a href="https://github.com/sorawee/my-website/blob/master/blog/2017-01-21-resolution.poly.pm" title="View the Pollen source for this file"
+         class="sourcelink code">&loz; Pollen Source
+      </a>
+    </li>
+  </ul></nav>
+  <section class="page-header">
+    <h1 class="project-name">
+      <a href="../">Sorawee's Website</a>
+    </h1>
+    <h2 class="project-tagline"></h2>
+    <a href="../" class="btn">Blog</a>
+    <a href="../books.html" class="btn">Books</a>
+    <a href="../feed.xml" class="btn">RSS</a>
+    <a href="../about.html" class="btn">About Me</a>
+  </section>
+  <section class="main-content" id="the-main">
+    <div id="real-content">
+      <h1>Resolution</h1><p class="tags">Tags: <a href="/tags/resolution">resolution</a></p><p class="pubdate">Published on Saturday, January 21st, 2017</p><div class="content"><p>Your assignment for this week is to implement a SAT solver. In the SAT lab, we implemented a DPLL SAT solver which is good at finding an answer when the formula is satisfiable. For this assignment, we will implement another SAT solver which is good at finding an answer when the formula is unsatisfiable. Like SAT lab, you can implement it in any language.</p><p>We assume that you have basic knowledge about SAT solving. Please refer to the SAT lab for motivation, terminologies, and concepts.</p><h3>Contradiction</h3><p>In logic, contradiction is denoted by a symbol <mathjax>$\perp$</mathjax><label for="efe6e7a8-4ebd-49c3-957c-78eddb8cdc9b" class="margin-toggle sidenote-number"></label><input type="checkbox" id="efe6e7a8-4ebd-49c3-957c-78eddb8cdc9b" class="margin-toggle"/><span class="sidenote">this symbol is called <i>falsum</i></span>. We can view <mathjax>$\perp$</mathjax> as the same as <mathjax>$p \and \neg p$</mathjax> because the formula is a contradiction: it evaluates to false in all truth assignments.</p><p>Here are some facts that are useful:</p><ol><li>An empty clause (disjunction of empty set) is <mathjax>$\perp$</mathjax>. We have seen this already in the SAT lab.</li><li><mathjax>$\neg p$</mathjax> which states “it is not the case that <mathjax>$p$</mathjax>,” is logically equivalent to <mathjax>$p \to \perp$</mathjax>. The latter basically states “if you have <mathjax>$p$</mathjax>, then you have a contradiction.” This perfectly captures the meaning of “it is not the case that <mathjax>$p$</mathjax>" because if it is indeed that “it is not the case that <mathjax>$p$</mathjax>,” we should not be able to have <mathjax>$p$</mathjax>, so we will not have a contradiction.</li></ol><h3>Resolution Rule</h3><p>Given a CNF formula <mathjax>$\phi$</mathjax>, we would like to know if <mathjax>$\phi$</mathjax> is satisfiable or not. Asking if <mathjax>$\phi$</mathjax> is satisfiable is the same as asking if <mathjax>$\phi$</mathjax> is unsatisfiable and then negate the answer. If <mathjax>$\phi$</mathjax> is unsatisfiable, then <mathjax>$\neg \phi$</mathjax>, or equivalently <mathjax>$\phi \to \perp$</mathjax>, is a tautology. Therefore, with an expressive deduction system, <mathjax>$\phi \to \perp$</mathjax> should be provable. Equivalently, given <mathjax>$\phi$</mathjax>, we should be able to derive or prove <mathjax>$\perp$</mathjax>.</p><p>The deduction system that we are going to use has one inference rule called <i>resolution rule</i>. It states that, if we have:</p><ul><li><mathjax>$C \or X$</mathjax> and</li><li><mathjax>$\neg C \or Y$</mathjax></li></ul><p>Then we can derive <mathjax>$X \or Y$</mathjax>, where <mathjax>$C$</mathjax> is a variable and <mathjax>$X$</mathjax> and <mathjax>$Y$</mathjax> are any formulas. To see why this is sound<label for="b6c078fc-096b-4bb2-8838-a3d812699ad2" class="margin-toggle sidenote-number"></label><input type="checkbox" id="b6c078fc-096b-4bb2-8838-a3d812699ad2" class="margin-toggle"/><span class="sidenote">soundness means, things that we get from derivation is correct</span>, notice that <mathjax>$C \or \neg C$</mathjax> is a tautology which states: “it is the case that <mathjax>$C$</mathjax>, or it is the case that <mathjax>$\neg C$</mathjax>.”</p><ul><li>If it is the case that <mathjax>$C$</mathjax>: we have already known that it is the case that <mathjax>$\neg C \or Y$</mathjax>, but it is not the case that <mathjax>$\neg C$</mathjax>, so it is the case that <mathjax>$Y$</mathjax></li><li>If it is the case that <mathjax>$\neg C$</mathjax>: we have known that it is the case that <mathjax>$C \or X$</mathjax>, but it is not the case that <mathjax>$C$</mathjax>, so it is the case that <mathjax>$X$</mathjax></li></ul><p>So we are able to say that it is the case that <mathjax>$X \or Y$</mathjax>.</p><p>By the <a href="https://en.wikipedia.org/wiki/Completeness_(logic)">completness</a> of propositional logic, this is also the same as asking if it is possible to derive a contradition using deduction rules.</p><p>However, <mathjax>$\phi$</mathjax> is not in the form where we can perform deduction easily. Recall that it’s possible<label for="1160c85f-23e9-4684-8fdd-5ff3aebd446e" class="margin-toggle sidenote-number"></label><input type="checkbox" id="1160c85f-23e9-4684-8fdd-5ff3aebd446e" class="margin-toggle"/><span class="sidenote">See <a href="https://en.wikipedia.org/wiki/Tseytin_transformation">Tseytin transformation</a></span> to transform any formula <mathjax>$\phi$</mathjax> to a logically equivalent CNF formula <mathjax>$\varphi$</mathjax>, where the CNF formula is in the form:</p><p>and <mathjax>$A_{*,*}$</mathjax> is either a sentence symbol or its negation.</p><p>Because <mathjax>$\phi$</mathjax> is logically equivalent to <mathjax>$\varphi$</mathjax>, to ask if <mathjax>$\phi$</mathjax> is satisfiable is to if <mathjax>$\varphi$</mathjax> is satisfiable. Another closely related notion of satisfiability is logical consistency: a set is logically consistent if there is at least one truth assignment to make all formula in the set to evaluate to <mathjax>$T$</mathjax>. The set is logically inconsistent otherwise. Notice that our original goal is the same as asking if the set <mathjax>$S$</mathjax> below is logically consistent or not:</p><p><mathjax>$$S = \set{(A_{1,1} \or A_{1,2} \or ...), (A_{2,1} \or A_{2,2} \or ...), ..., (A_{m,1} \or A_{m,2} \or ...)}$$</mathjax></p><p>Because <mathjax>$S$</mathjax> is either logically consistent or logically inconsistent, what we will do is trying to deduce a <i>contradiction</i> from <mathjax>$S$</mathjax> which is a proof that <mathjax>$S$</mathjax> is logically inconsistent. If we could do so, then <mathjax>$S$</mathjax> is not logically consistent, so <mathjax>$\phi$</mathjax> is not satisfiable. On the other hand, if it is impossible to deduce a contradiction from <mathjax>$S$</mathjax>, then <mathjax>$S$</mathjax> is consistent, so <mathjax>$\phi$</mathjax> is satisfiable.</p><h4>Resolution Rule</h4><p>Suppose we have two clauses:</p><h3>Part 1</h3><p>Implement a solver as outlined above. ...</p><h3>Part 2</h3><p>Why does the algorithm always terminate?</p></div><hr/>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_config = function () {
+    this.page.identifier = "blog/2017-01-21-resolution.html"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//sorawee.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </section>
+</body>
+</html>

@@ -1,5 +1,6 @@
 @(define path-prefix
   (cond
+    [(string-contains (symbol->string here) "books/") "../../../"]
     [(string-contains (symbol->string here) "tags/") "../../"] ; TODO: find a better way
     [(string-contains (symbol->string here) "/") "../"]
     [else "/"]))

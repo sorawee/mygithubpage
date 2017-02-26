@@ -1,0 +1,132 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Separators for Trees — Sorawee's Website
+  </title>
+  <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="../../../css/styles.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../../../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../../../css/styles-github.css" />
+  <script type="text/javascript"
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+      TeX: {
+        Macros: {
+          seq: ["{\\langle #1 \\rangle}", 1],
+          set: ["{\\{ #1 \\}}", 1],
+          setof: ["{\\{ #1 \\ | \\ #2 \\}}", 2],
+          N: "{\\mathbb N}",
+          R: "{\\mathbb R}",
+          Z: "{\\mathbb Z}",
+          Q: "{\\mathbb Q}",
+          floor: ["{\\lfloor #1 \\rfloor}", 1],
+          ceil: ["{\\lceil #1 \\rceil}", 1],
+        }
+      }
+    });
+  </script>
+  <style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+</head>
+<body>
+
+  <section class="page-header">
+    <h1 class="project-name">
+      <a href="../../../">Sorawee's Website</a>
+    </h1>
+    <h2 class="project-tagline"></h2>
+    <a href="../../../" class="btn">Blog</a>
+    <a href="../../../books.html" class="btn">Books</a>
+    <a href="../../../feed.xml" class="btn">RSS</a>
+    <a href="../../../about.html" class="btn">About Me</a>
+  </section>
+  <section class="main-content" id="the-main">
+    <div id="real-content">
+      <h1>Separators for Trees</h1><decoded-root><p>A separator for a tree is a vertex or edge in a tree whose deletion results in smaller trees. Usually, the separator will be picked so that each smaller tree is guaranteed to have weight<label for="27281331-7692-43c5-8598-0b664a44454a" class="margin-toggle sidenote-number"></label><input type="checkbox" id="27281331-7692-43c5-8598-0b664a44454a" class="margin-toggle"/><span class="sidenote">Might be weight of vertices, or edges, or both</span> at most some factor times that of the original tree.</p><p>Formally, let <mathjax>$\hat{w}(v)$</mathjax> be the total weight of a subtree with root at vertex <mathjax>$v$</mathjax>. A separator on a tree <mathjax>$T$</mathjax> is <mathjax>$\alpha$</mathjax>-balanced if it is guaranteed that, after the deletion, each smaller tree $t_i$ has weight <mathjax>$\hat{w}(t_i) \le \alpha \hat{w}(T)$</mathjax>, for <mathjax>$0 &lt; \alpha &lt; 1$</mathjax>. If possible, we would want <mathjax>$\alpha$</mathjax> to be close to 0.5, as that means the largest subtree is guaranteed to be small. This is very useful for divide and conquer algorithms, as it allows one to write an algorithm with running time like <mathjax>$T(n) = T(\alpha n) + T((1 - \alpha) n) + O(n)$</mathjax>, for example.</p><p>There are several kind of separators for trees. An edge separator would split the tree to exactly two subtrees, while there is no limit for a vertex separator.</p><p><center><img src="/books/planarity-for-dummies/tree-separator-1.png" style="width:40%"/><br/>Figure 1: A <mathjax>$\frac{1}{2}$</mathjax>-balanced vertex separator</center></p><p>Before talking about a specific separator, we need a general algorithm to find a “heavy vertex” on a <i>rooted</i> tree <mathjax>$T$</mathjax> with weight on only vertices (and not edges) which is a greedy way to find an <mathjax>$\alpha$</mathjax>-balanced point quickly. This will be the core of the algorithm for finding separators:</p><div class="lemma"><p><b>Lemma </b>(Leafmost Heavy Vertex) The linear time algorithm below finds a vertex <mathjax>$z$</mathjax> such that <mathjax>$\hat{w}(z) &gt; \alpha \hat{w}(T)$</mathjax> and for each child <mathjax>$t_i$</mathjax> of <mathjax>$z$</mathjax>, <mathjax>$\hat{w}(t_i) \le \alpha \hat{w}(T)$</mathjax></p><pre class="tex2jax_process">def heavy-vertex(<mathjax>$T$</mathjax>, <mathjax>$\alpha$</mathjax>):
+  def f(<mathjax>$v$</mathjax>):
+    if there is a child <mathjax>$u$</mathjax> of <mathjax>$v$</mathjax> where <mathjax>$\hat{w}(u) &gt; \alpha \hat{w}(T)$</mathjax>:
+      return f(<mathjax>$u$</mathjax>)
+    else:
+      return <mathjax>$v$</mathjax>
+  return f(root(<mathjax>$T$</mathjax>))</pre><div class="proof"><span class="subproof"><i>Proof. </i>Let <mathjax>$z$</mathjax> be the vertex that the algorithm returns. Let <mathjax>$t_1, t_2, ..., t_k$</mathjax> be all children of <mathjax>$z$</mathjax>. we know that <mathjax>$\hat{w}(t_i) \le \alpha \hat{w}(T)$</mathjax> as otherwise, the algorithm would continue recurring and not return <mathjax>$z$</mathjax>. Also, <mathjax>$\hat{w}(z) &gt; \alpha \hat{w}(T)$</mathjax> because <mathjax>$f(z)$</mathjax> is called only when <mathjax>$\hat{w}(z) &gt; \alpha \hat{w}(T)$</mathjax>. This concludes the lemma as desired.</span></div></div><p>The figure below illustrates the algorithm. When <mathjax>$f$</mathjax> is called on ancestors of <mathjax>$z$</mathjax>, it finds that a subtree (which contains <mathjax>$z$</mathjax>) has weight greater than <mathjax>$\alpha \hat{w}(T)$</mathjax>, so it continues recursion. When <mathjax>$f$</mathjax> is called on <mathjax>$z$</mathjax>,  <mathjax>$\hat{w}(z) &gt; \alpha \hat{w}(T)$</mathjax> but <mathjax>$\hat{w}(t_i) \le \alpha \hat{w}(T)$</mathjax>, so the algorithm returns <mathjax>$z$</mathjax>.</p><p><center><img src="/books/planarity-for-dummies/tree-separator-2.png" style="width:30%"/><br/>Figure 2: Heavy vertex <mathjax>$z$</mathjax> is a <mathjax>$\frac{1}{2}$</mathjax>-balanced vertex separator</center></p><h3>Vertex Separator of Vertex Weight</h3><div class="lemma"><p><b>Lemma </b>(Tree Vertex Separator of Vertex Weight) If a tree <mathjax>$T$</mathjax> has weight on only vertices and not edges, there is a linear time algorithm to find a <mathjax>$\frac{1}{2}$</mathjax>-balanced vertex separator.</p><div class="proof"><span class="subproof"><i>Proof. </i>Transform <mathjax>$T$</mathjax> into a rooted tree by picking an arbitrary vertex as the root. Now, run heavy-vertex(<mathjax>$T$</mathjax>, <mathjax>$\frac{1}{2}$</mathjax>). Let <mathjax>$z$</mathjax> be the returned vertex. The Leafmost Heavy Vertex Lemma states that the blue subtree with root <mathjax>$z$</mathjax> in Figure 2 has weight <mathjax>$\hat{w}(z) &gt; \frac{1}{2} \hat{w}(T)$</mathjax>. For each child <mathjax>$t_i$</mathjax> of <mathjax>$z$</mathjax>, <mathjax>$\hat{w}(t_i) \le \frac{1}{2} \hat{w}(T)$</mathjax>. Now, the red subtree <mathjax>$t_0$</mathjax> rooted at the parent of <mathjax>$z$</mathjax> after its deletion, which is <mathjax>$y$</mathjax>, would contain the weight of the whole tree excluding the weight of the blue subtree rooted at <mathjax>$z$</mathjax>. In other words, the weight is <mathjax>$\hat{w}(T) - \hat{w}(z)$</mathjax>. However, because <mathjax>$\hat{w}(z) &gt; \frac{1}{2} \hat{w}(T)$</mathjax>, it follows that <mathjax>$\hat{w}(T) - \hat{w}(z) &lt; \frac{1}{2} \hat{w}(T)$</mathjax>. This shows that every subtree <mathjax>$t_0, t_1, t_2, ..., t_k$</mathjax> has weight at most <mathjax>$\frac{1}{2} \hat{w}(T)$</mathjax>, meaning that the separator <mathjax>$z$</mathjax> is <mathjax>$\frac{1}{2}$</mathjax>-balanced.</span></div></div></decoded-root>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_config = function () {
+    this.page.identifier = "books/planarity-for-dummies/separators-for-trees.html"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//sorawee.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </section>
+</body>
+</html>

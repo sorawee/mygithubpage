@@ -254,6 +254,21 @@ body {
   padding-right: 5px;
 }
 
+.lemma {
+  padding: 1rem;
+  margin: 1rem 0;
+  border-style: solid;
+}
+
+.proof:after {
+    content: "\25FC";
+    float:right;
+}
+
+.subproof {
+    padding-right: 1rem;
+}
+
 /* The paren stuff, copied from http://community.schemewiki.org/?wiki-css */
 
 /* Top level */
