@@ -60,6 +60,7 @@ s.setAttribute('data-timestamp', +new Date());
          super-title
          (string-append (or (select 'title metas) (select 'special-title metas)) " — " super-title))
   </title>
+  <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
   <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
   <link rel="stylesheet" type="text/css" media="all" href="@|path-prefix|css/styles.css" />
   <link rel="stylesheet" type="text/css" media="all" href="@|path-prefix|css/normalize.css" />
