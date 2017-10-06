@@ -1,0 +1,372 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Deriving Y combinator — Sorawee's Website
+  </title>
+  <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
+  <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles-github.css" />
+  <script type="text/javascript"
+    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+      TeX: {
+        Macros: {
+          seq: ["{\\langle #1 \\rangle}", 1],
+          set: ["{\\{ #1 \\}}", 1],
+          setof: ["{\\{ #1 \\ | \\ #2 \\}}", 2],
+          N: "{\\mathbb N}",
+          R: "{\\mathbb R}",
+          Z: "{\\mathbb Z}",
+          Q: "{\\mathbb Q}",
+          floor: ["{\\lfloor #1 \\rfloor}", 1],
+          ceil: ["{\\lceil #1 \\rceil}", 1],
+        }
+      }
+    });
+  </script>
+  <style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+</head>
+<body>
+  <nav><ul>
+
+    <li><a href="../">&uarr; Home</a></li>
+    <li><a href="../blog/2017-02-25-counting-possible-passwords.html">Next &rarr;</a></li>
+    <li>
+      <a href="2017-10-05-deriving-Y.pdf">
+        <img src="../css/pdficon.png" width="15" height="15" alt="Download PDF" />
+        <span class="caps" style="font-style: normal">PDF</span>
+      </a>
+    </li>
+    <li style="width: auto;">
+      <a href="https://github.com/sorawee/my-website/blob/master/blog/2017-10-05-deriving-Y.poly.pm" title="View the Pollen source for this file"
+         class="sourcelink code">&loz; Pollen Source
+      </a>
+    </li>
+  </ul></nav>
+  <section class="page-header">
+    <h1 class="project-name">
+      <a href="../">Sorawee's Website</a>
+    </h1>
+    <h2 class="project-tagline"></h2>
+    <a href="../" class="btn">Blog</a>
+    <a href="../books.html" class="btn">Books</a>
+    <a href="../feed.xml" class="btn">RSS</a>
+    <a href="../about.html" class="btn">About Me</a>
+  </section>
+  <section class="main-content" id="the-main">
+    <div id="real-content">
+      <h1>Deriving Y combinator</h1><p class="tags">Tags: <a href="/tags/programming-languages">programming-languages</a>, <a href="/tags/math">math</a></p><p class="pubdate">Published on Thursday, October 5th, 2017</p><div class="content"><p>Y combinator seems to be something mysterious. <a href="https://cs.stackexchange.com/questions/9604/clear-intuitive-derivation-of-the-fixed-point-combinator-y-combinator">Several</a> people have been trying to understand the intuition why it works. I have seen "<a href="https://xivilization.net/~marek/binaries/Y.pdf">A Lecture on the Why of Y</a>" by Matthias Felleisen before, and while it does give me some insight, I still feel confused in some degree. That doesn’t prevent me from recommending this lecture to other people I talked to because it’s the best one I have seen so far.</p><p>Recently I thought about the fixed point combinator again and finally gained some good insight. I think it’s worth sharing here.</p><p><see-more></see-more></p><p>In lambda calculus, also known as the language of functions, an expression <code>e</code> is either:</p><ul><li><code>x</code>; identifier</li><li><code>(lambda (x) e)</code>; abstraction</li><li><code>(e e)</code>; application</li></ul><p>Church and Turing proved that lambda calculus is Turing complete. That means we should at least be able to write a factorial function in this language. Consider the factorial function in Racket:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">define</span> <span class="n">fact</span>
+  <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span>
+    <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+        <span class="mi">1</span>
+        <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+<span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="mi">10</span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>We seem to need numbers, basic arithmetics, booleans, number comparison, conditionals, and <i>a way to perform recursion</i><label for="aed05105-a22a-4d27-a0ac-07e8d86a2b41" class="margin-toggle">&#8853;</label><input type="checkbox" id="aed05105-a22a-4d27-a0ac-07e8d86a2b41" class="margin-toggle"/><span class="marginnote"><code>define</code> does not simply define a function. It also makes recursion possible</span> in order to write the factorial function.</p><p><a href="https://en.wikipedia.org/wiki/Church_encoding">Church encoding</a> provides a way to write numbers, booleans, and all that, in the language, <i>except</i> a way to perform recursion. For the sake of readability, we will use primitive numbers, booleans, etc. as we know a way to convert them to lambda terms if we want to. Similarly, <code>(let [[x v]] e)</code> is simply a syntactic sugar for <code>((lambda (x) e) v)</code> which is a lambda term, so if using <code>let</code> will make the code clearer, we will.<label for="31b6e5f1-39df-459e-9fe2-5cf58203e7fe" class="margin-toggle">&#8853;</label><input type="checkbox" id="31b6e5f1-39df-459e-9fe2-5cf58203e7fe" class="margin-toggle"/><span class="marginnote">I use double bracket on <code>let</code> just to let us distinguish it with other parenthesis easier–actually the preferable style is to write it as <code>(let ([x v]) e)</code>.</span></p><p>Now, the goal is to write the factorial function without using <code>define</code> which gives a power to define a recursive function. Here’s the first straightforward attempt:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span>
+       <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+                       <span class="mi">1</span>
+                       <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+     <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>But this doesn’t work because with static scope, <code>fact</code> is unbound inside the lambda function that is going to be <code>fact</code> itself.</p><p>The key idea is that, while <code>fact</code> is unbound inside the lambda function, it is bound in the body of <code>let</code>, so why don’t we give <code>fact</code> explicitly to the function?<label for="cab33f3d-f630-4709-bb02-2f6ab0230afc" class="margin-toggle">&#8853;</label><input type="checkbox" id="cab33f3d-f630-4709-bb02-2f6ab0230afc" class="margin-toggle"/><span class="marginnote">A code from a student in a class that I am TA’ing gave me this idea. I’m kinda embarassed that I did not consider this before</span></p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span>
+       <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+                        <span class="mi">1</span>
+                        <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+  <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p><label for="56ea4f62-6a12-4d3e-ace5-66295d9bb0b9" class="margin-toggle">&#8853;</label><input type="checkbox" id="56ea4f62-6a12-4d3e-ace5-66295d9bb0b9" class="margin-toggle"/><span class="marginnote">Lambda calculus actually doesn’t support multi arity lambda functions, but we can use <a href="https://en.wikipedia.org/wiki/Currying">currying</a> to circumvent the problem, so again, we will continue using multi arity functions for now, for the sake of readability.</span></p><p>Oh, we forgot to pass <code>fact</code> in the recursive call to match the new formal parameters! Let’s fix that:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span>
+       <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+                        <span class="mi">1</span>
+                        <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+  <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>And, ta-dah! It works!</p><p>With this trick, we can write any recursive function in lambda calculus by the following method:</p><ol><li>Initially write the recursive function with <code>define</code>.</li><li>Change it to the <code>let</code> form.</li><li>Prepend both formal and actual parameters of the function with the a new parameter which uses the name of the function.</li></ol><p>This transformation is simply a syntax transformation which could be done programmatically,</p><p>Let’s digress a little bit here. What will happen if I do this to the stupid infinite loop function?</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">define</span> <span class="paren"><span class="p">(</span><span class="n">diverge</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">diverge</span><span class="p">)</span></span><span class="p">)</span></span>
+<span class="paren"><span class="p">(</span><span class="n">diverge</span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>is transformed to:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">diverge</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">diverge</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">diverge</span> <span class="n">diverge</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span> <span class="paren"><span class="p">(</span><span class="n">diverge</span> <span class="n">diverge</span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>Now we desugar <code>let</code> back to <code>lambda</code> and application to obtain:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">diverge</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">diverge</span> <span class="n">diverge</span><span class="p">)</span></span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">diverge</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">diverge</span> <span class="n">diverge</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>which is the other mysterious, well-known <mathjax>$\Omega$</mathjax> combinator!</p><p>Now, back to the main topic, the question that we should ask next is, are we satisfied with this way to write an arbitrary recursive function in lambda calculus? As it turned out, some people are dissatisfied because the transformed function doesn’t look like the original function that we would write in the <code>define</code> version. In fact, their goal is to try to make the transformed function look close enough to the original function, and <i>abstract</i> the part that looks like the original factorial function out. The result is a function that enables other functions to be recursive while meintaining their original form.</p><p>As a first step, we can transform:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span>
+       <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+                        <span class="mi">1</span>
+                        <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+  <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>to</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span>
+       <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">n</span><span class="p">)</span></span>
+         <span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+           <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+               <span class="mi">1</span>
+               <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+  <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>which shadows <code>fact</code> that consumes two arguments with <code>fact</code> that consumes one argument while maintaining the semantics.</p><p>The body of the function is in fact now very similar to the original function that uses <code>define</code>. What can we do next? We see that <code>fact</code> and <code>n</code> are in the formal parameters in the transformed code, while only <code>n</code> is in the original one. Currying which is mentioned in the margin note above could separate two of them. Of course, we need to change how we call the function too.</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span>
+       <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span>
+         <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span>
+           <span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+             <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+                 <span class="mi">1</span>
+                 <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+  <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>The <code>(let [[fact ...]])</code> inside the lambda does not depend on the parameter <code>n</code> of the outter lambda function, so we can lift it up without changing the semantics:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span>
+       <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span>
+         <span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+           <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span>
+             <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+                 <span class="mi">1</span>
+                 <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+  <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>And we see the original code for the <code>fact</code> function in the above code now!</p><p>Are we done? Well, not quite, because even though this resembles the original factorial function, we can’t abstract:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span>
+  <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+      <span class="mi">1</span>
+      <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>out as <code>fact</code> would then be unbound. But if we were to abstract the whole:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span>
+  <span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+    <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span>
+      <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+          <span class="mi">1</span>
+          <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>That would be too ugly.</p><p>What can we do? We see a <code>let</code>, so let’s desugar it again:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span>
+       <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span>
+         <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span>
+           <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span>
+             <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+                 <span class="mi">1</span>
+                 <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+          <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+  <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>!!!!! Now we obtain:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span>
+  <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span>
+    <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+        <span class="mi">1</span>
+        <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>which is the smallest part that can be abstracted out! Let’s call it <code>F</code>. Next, we have:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">F</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span>
+           <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span>
+             <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+                 <span class="mi">1</span>
+                 <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+  <span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span>
+         <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span>
+           <span class="paren"><span class="p">(</span><span class="n">F</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+    <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>Now, substitute <code>fact</code> into the body of <code>let</code>:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">F</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span>
+           <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span>
+             <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+                 <span class="mi">1</span>
+                 <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+  <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">F</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+    <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">F</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>If we want to truly abstract <code>F</code> out, we will not want it to be free in the body of <code>let</code>, so:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">F</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span>
+           <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span>
+             <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+                 <span class="mi">1</span>
+                 <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+  <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">F</span><span class="p">)</span></span>
+      <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">F</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+       <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">F</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span> <span class="n">F</span><span class="p">)</span></span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>The fragment:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">F</span><span class="p">)</span></span>
+  <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">F</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+    <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">F</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="n">fact</span><span class="p">)</span></span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>or, after renaming while maintaining alpha equivalence:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">f</span><span class="p">)</span></span>
+  <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">x</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">f</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">v</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">x</span> <span class="n">x</span><span class="p">)</span></span> <span class="n">v</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+   <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">x</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">f</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">v</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">x</span> <span class="n">x</span><span class="p">)</span></span> <span class="n">v</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>is known as Y combinator. Let’s now use the name <code>Y</code> instead:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8
+9</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">F</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span>
+           <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span>
+             <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+                 <span class="mi">1</span>
+                 <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span>
+      <span class="paren"><span class="p">[</span><span class="n">Y</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">f</span><span class="p">)</span></span>
+           <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">x</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">f</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">v</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">x</span> <span class="n">x</span><span class="p">)</span></span> <span class="n">v</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+            <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">x</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">f</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">v</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">x</span> <span class="n">x</span><span class="p">)</span></span> <span class="n">v</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+  <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">Y</span> <span class="n">F</span><span class="p">)</span></span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>And just to clean things up to match Matthias’s lecture:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="source"><pre class="racket"><span></span><span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact-maker</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">fact</span><span class="p">)</span></span>
+                    <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">n</span><span class="p">)</span></span>
+                      <span class="paren"><span class="p">(</span><span class="k">if</span> <span class="paren"><span class="p">(</span><span class="nb">zero?</span> <span class="n">n</span><span class="p">)</span></span>
+                          <span class="mi">1</span>
+                          <span class="paren"><span class="p">(</span><span class="nb">*</span> <span class="n">n</span> <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="nb">sub1</span> <span class="n">n</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span>
+      <span class="paren"><span class="p">[</span><span class="n">Y</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">f</span><span class="p">)</span></span>
+           <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">x</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">f</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">v</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">x</span> <span class="n">x</span><span class="p">)</span></span> <span class="n">v</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+            <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">x</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="n">f</span> <span class="paren"><span class="p">(</span><span class="k">lambda</span> <span class="paren"><span class="p">(</span><span class="n">v</span><span class="p">)</span></span> <span class="paren"><span class="p">(</span><span class="paren"><span class="p">(</span><span class="n">x</span> <span class="n">x</span><span class="p">)</span></span> <span class="n">v</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+  <span class="paren"><span class="p">(</span><span class="k">let</span> <span class="paren"><span class="p">[</span><span class="paren"><span class="p">[</span><span class="n">fact</span> <span class="paren"><span class="p">(</span><span class="n">Y</span> <span class="n">fact-maker</span><span class="p">)</span></span><span class="p">]</span></span><span class="p">]</span></span>
+    <span class="paren"><span class="p">(</span><span class="n">fact</span> <span class="mi">10</span><span class="p">)</span></span><span class="p">)</span></span><span class="p">)</span></span>
+</pre></div></td></tr></tbody></table></div><p>The process, if you notice, does not really depend on the fact that we use the factorial function, so in fact, <code>Y</code> enables recursive functions on every maker.</p><p>My presentation is similar to Matthias’s lecture a lot, but Matthias’s seems to insist on using <code>lambda</code> everywhere which might be a little bit confusing. I find that using <code>let</code> make things clearer a lot. Matthias’s also seems to have weird tower of makers and <i>hukairs</i> which I don’t really understand.</p></div><hr/>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_config = function () {
+    this.page.identifier = "blog/2017-10-05-deriving-Y.html"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//sorawee.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </section>
+</body>
+</html>

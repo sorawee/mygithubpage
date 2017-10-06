@@ -122,7 +122,7 @@
   </section>
   <section class="main-content" id="the-main">
     <div id="real-content">
-      <h1>My New Laptop &amp; Settings</h1><p class="tags">Tags: <a href="/tags/ubuntu">ubuntu</a>, <a href="/tags/thinkpad">thinkpad</a>, <a href="/tags/post">post</a></p><p class="pubdate">Published on Thursday, December 22nd, 2016</p><div class="content"><p>I switched from Ubuntu to Macbook Pro since 2013 and was very happy with it. About 5 months ago, the screen was broken, so I planned to buy a new one. Knowing that the new version will have a major change, I was very excited and decided to wait until it’s released in order to buy it. To my disappointment, <a href="http://www.theverge.com/2016/11/7/13548052/the-macbook-pro-lie">it incredibly sucks</a><label for="a22edce6-dc2a-43f6-b2e1-94c96fafea9f" class="margin-toggle sidenote-number"></label><input type="checkbox" id="a22edce6-dc2a-43f6-b2e1-94c96fafea9f" class="margin-toggle"/><span class="sidenote">I would have loved it if I were not a programmer–the missing <kbd>Esc</kbd> and traditional USB ports matter a lot to me</span>.</p><p>A lot of my friends suggested me to get a Thinkpad X1 Yoga which looks really cool. I waited until Thanksgiving to get a big discount. The laptop arrived in early December. The first thing I did is to install Ubuntu 16.10 because I hate Windows! <i class="em em-stuck_out_tongue"></i></p><p>Following are my settings. I write these particularly for myself in the future so that when I need to set things up again, I won’t have to spend a lot of time figuring out what to do!</p><p><see-more></see-more></p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+      <h1>My New Laptop &amp; Settings</h1><p class="tags">Tags: <a href="/tags/ubuntu">ubuntu</a>, <a href="/tags/thinkpad">thinkpad</a>, <a href="/tags/post">post</a></p><p class="pubdate">Published on Thursday, December 22nd, 2016</p><div class="content"><p>I switched from Ubuntu to Macbook Pro since 2013 and was very happy with it. About 5 months ago, the screen was broken, so I planned to buy a new one. Knowing that the new version will have a major change, I was very excited and decided to wait until it’s released in order to buy it. To my disappointment, <a href="http://www.theverge.com/2016/11/7/13548052/the-macbook-pro-lie">it incredibly sucks</a><label for="63aa19b2-132d-4628-932e-e53cb4f3350a" class="margin-toggle sidenote-number"></label><input type="checkbox" id="63aa19b2-132d-4628-932e-e53cb4f3350a" class="margin-toggle"/><span class="sidenote">I would have loved it if I were not a programmer–the missing <kbd>Esc</kbd> and traditional USB ports matter a lot to me</span>.</p><p>A lot of my friends suggested me to get a Thinkpad X1 Yoga which looks really cool. I waited until Thanksgiving to get a big discount. The laptop arrived in early December. The first thing I did is to install Ubuntu 16.10 because I hate Windows! <i class="em em-stuck_out_tongue"></i></p><p>Following are my settings. I write these particularly for myself in the future so that when I need to set things up again, I won’t have to spend a lot of time figuring out what to do!</p><p></see-more><//see-more></p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -136,13 +136,17 @@
 12
 13
 14
-15</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span><span class="c1"># get terminator to make split vertically/horizontally possible</span>
-<span class="c1"># I am sad that terminator doesn&#39;t have "search highlight" though.</span>
-sudo apt-get install terminator
-gsettings <span class="nb">set</span> org.gnome.desktop.default-applications.terminal <span class="nb">exec</span> <span class="s1">&#39;terminator&#39;</span>
+15
+16
+17</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span><span class="c1">## run `sudo apt update` as appropriate</span>
+
+<span class="c1"># get a good terminal</span>
+sudo add-apt-repository ppa:webupd8team/terminix
+sudo apt install tilix
+gsettings <span class="nb">set</span> org.gnome.desktop.default-applications.terminal <span class="nb">exec</span> <span class="s1">&#39;tilix&#39;</span>
 
 <span class="c1"># get zsh for history substring search and other cool stuff</span>
-sudo apt-get install zsh
+sudo apt install zsh
 zsh
 git clone --recursive https://github.com/sorin-ionescu/prezto.git <span class="s2">"</span><span class="si">${</span><span class="nv">ZDOTDIR</span><span class="k">:-</span><span class="nv">$HOME</span><span class="si">}</span><span class="s2">/.zprezto"</span>
 setopt EXTENDED_GLOB
@@ -154,7 +158,7 @@ chsh -s /bin/zsh
 </pre></div></td></tr></tbody></table></div><p>The configuration of <code>.zpreztorc</code> is straightforward. The only major thing I did is to add the history substring search plugin. Note that <code>'prompt'</code> must be the last one.</p><div class="filebox"><div class="filename" decode="exclude">~/.zpreztorc</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span>...
+4</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>...
 <span class="s1">&#39;completion&#39;</span> <span class="se">\</span>
 <span class="s1">&#39;history-substring-search&#39;</span> <span class="se">\</span>
 <span class="s1">&#39;prompt&#39;</span>
@@ -177,7 +181,7 @@ chsh -s /bin/zsh
 17
 18
 19
-20</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span><span class="gu">@@ -39,7 +39,8 @@ function prompt_sorin_pwd {</span>
+20</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span><span class="gu">@@ -39,7 +39,8 @@ function prompt_sorin_pwd {</span>
      _prompt_sorin_pwd="$MATCH"
      unset MATCH
    else
@@ -201,14 +205,18 @@ chsh -s /bin/zsh
 2
 3
 4
-5</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span><span class="c1"># use terminal emacs as default</span>
+5
+6
+7</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span><span class="c1"># use terminal emacs as default</span>
 <span class="nb">alias</span> <span class="nv">emacs</span><span class="o">=</span><span class="s1">&#39;emacs -nw&#39;</span>
 <span class="c1"># use it like this: run_long_command; alert</span>
 <span class="nb">alias</span> <span class="nv">alert</span><span class="o">=</span><span class="s1">&#39;notify-send --urgency=low -i "$([ $? = 0 ] &amp;&amp; echo terminal || echo error)" \</span>
 <span class="s1">"$(history|tail -n1|sed -e &#39;</span><span class="se">\&#39;</span><span class="s1">&#39;s/^\s*[0-9]\+\s*//;s/[;&amp;|]\s*alert$//&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;)"&#39;</span>
+<span class="c1"># reset the network</span>
+<span class="nb">alias</span> <span class="nv">rnet</span><span class="o">=</span><span class="s1">&#39;sudo systemctl restart NetworkManager.service&#39;</span>
 </pre></div></td></tr></tbody></table></div></div><p>I like OS X’s <code>open</code> a lot. Here we have <code>xdg-open</code>, but it vomits a lot of text while running in background. Thus, I created:</p><div class="filebox"><div class="filename" decode="exclude">~/bin/open</div><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span><span class="ch">#!/usr/bin/zsh</span>
+3</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span><span class="ch">#!/usr/bin/zsh</span>
 
 xdg-open <span class="nv">$@</span> <span class="p">&amp;</span>&gt; /dev/null
 </pre></div></td></tr></tbody></table></div></div><p>There are a bunch of other programs I want to install</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
@@ -294,49 +302,67 @@ xdg-open <span class="nv">$@</span> <span class="p">&amp;</span>&gt; /dev/null
 81
 82
 83
-84</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span>sudo apt-get install emacs24 <span class="c1"># or emacs25, 26, whatever you want</span>
+84
+85
+86
+87
+88
+89
+90
+91
+92
+93</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>sudo apt install emacs24 <span class="c1"># or emacs25, 26, whatever you want</span>
 
-sudo apt-get install atom
+sudo add-apt-repository ppa:webupd8team/atom
+sudo apt install atom
 
-sudo apt-get install clipit
+sudo add-apt-repository ppa:webupd8team/mtpaint
+sudo apt install mtpaint
 
-sudo apt-get install liferea
+sudo apt-add-repository ppa:achadwick/mypaint-testing
+sudo apt install mypaint mypaint-data-extras
 
-sudo apt-get install powertop tlp tp-smapi-dkms acpi-call-dkms
+sudo apt install clipit
+
+sudo apt install liferea
+
+sudo apt install powertop tlp tp-smapi-dkms acpi-call-dkms
 sudo tlp start
 
-sudo apt-get install unity-tweak-tool
+sudo apt install unity-tweak-tool
 sudo add-apt-repository ppa:numix/ppa
-sudo apt-get install numix-icon-theme-square numix-gtk-theme
+sudo apt install numix-icon-theme-square numix-gtk-theme
 <span class="c1"># and then set the theme and icon, and get 2x2 workspace</span>
 
-sudo apt-get install gnome-settings-daemon gnome-control-center
+sudo apt install gnome-settings-daemon gnome-control-center
 
-sudo apt-get install chromium-browser
+sudo apt install chromium-browser
 <span class="c1"># vivaldi is also great</span>
 
-sudo apt-get install gimp <span class="c1"># current version is gimp2.8</span>
+sudo apt install gimp <span class="c1"># current version is gimp2.8</span>
 wget https://github.com/jedireza/gimp-hidpi/archive/master.zip
 unzip master.zip -d ~/.gimp-2.8/themes
 <span class="c1"># need to add the theme in gimp&#39;s setting too</span>
 rm master.zip
 
-sudo apt-get install texlive-full
+sudo apt install texlive-full texstudio
+
+sudo apt install caffeine
 
 sudo add-apt-repository ppa:jconti/recent-notifications
-sudo apt-get install indicator-notifications
+sudo apt install indicator-notifications
 
-sudo apt-get install rustc
+sudo apt install rustc
 
 sudo add-apt-repository <span class="s2">"deb https://cli-assets.heroku.com/branches/stable/apt ./"</span>
 curl -L https://cli-assets.heroku.com/apt/release.key <span class="p">|</span> sudo apt-key add -
-sudo apt-get install heroku
+sudo apt install heroku
 gem install bundler
-sudo apt-get install ruby-dev
-sudo apt-get install libmysqlclient-dev
+sudo apt install ruby-dev
+sudo apt install libmysqlclient-dev
 
 sudo add-apt-repository ppa:nilarimogard/webupd8
-sudo apt-get install gloobus-preview gloobus-sushi
+sudo apt install gloobus-preview gloobus-sushi
 
 sudo apt install libavcodec-extra
 
@@ -356,36 +382,32 @@ sudo rm ttf-mscorefonts-installer
 sudo apt install adobe-flashplugin
 
 <span class="c1"># after setting up gpg</span>
-sudo apt-get install pass
+sudo apt install pass
 pass init GPG_KEY
 pass git init
 
-sudo apt-get install psensor
+sudo apt install psensor
 
-sudo apt-get install redshift redshift-gtk
+sudo apt install redshift redshift-gtk
 
 sudo add-apt-repository ppa:webupd8team/java
-sudo apt-get install oracle-java8-installer
+sudo apt install oracle-java8-installer
 
 sudo add-apt-repository ppa:plt/racket
-sudo apt-get install racket
+sudo apt install racket
 raco pkg install pollen
-sudo apt-get install python-setuptools
+sudo apt install python-setuptools
 sudo easy_install --upgrade Pygments
 
-sudo apt-get install dropbox
-sudo apt-get install xournal
+sudo apt install dropbox
+sudo apt install xournal
 
 curl -sL https://deb.nodesource.com/setup_6.x <span class="p">|</span> sudo -E bash -
-sudo apt-get install -y nodejs
-</pre></div></td></tr></tbody></table></div><p><a href="github.com/phw/peek">Peek</a> is a screen recorder program which produces GIF as the output. However, it needs an additional configuration to avoid freezing computer:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span><span class="c1"># the current version is 0.8.0.</span>
-wget https://github.com/phw/peek/releases/download/v0.8.0/peek-0.8.0-Linux.deb
-sudo dpkg -i peek-0.8.0-Linux.deb
-rm peek-0.8.0-Linux.deb
-</pre></div></td></tr></tbody></table></div><p>Then edit <code>/usr/share/applications/com.uploadedlobster.peek.desktop</code>‘s Exec to <code>TMPDIR=/var/tmp MAGICK_TMPDIR=/var/tmp MAGICK_TEMPORARY_PATH=/var/tmp peek</code>.</p><p>As a non-English speaker, I use dictionaries a lot. I also want it to be offline. The best program I could fine (which is also the same one I used 4 years ago) is <code>goldendict</code>. Here’s the setup:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+sudo apt install -y nodejs
+</pre></div></td></tr></tbody></table></div><p><a href="github.com/phw/peek">Peek</a> is a screen recorder program which produces GIF as the output.</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>sudo add-apt-repository ppa:peek-developers/stable
+sudo apt install peek
+</pre></div></td></tr></tbody></table></div><p>As a non-English speaker, I use dictionaries a lot. I also want it to be offline. The best program I could fine (which is also the same one I used 4 years ago) is <code>goldendict</code>. Here’s the setup:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -404,7 +426,7 @@ rm peek-0.8.0-Linux.deb
 17
 18
 19
-20</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span>mkdir ~/dict
+20</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>mkdir ~/dict
 <span class="nb">cd</span> ~/dict
 <span class="c1"># I suppose it will no longer be developed, so let&#39;s just hard code the version number</span>
 <span class="c1"># EN-&gt;TH dictionary</span>
@@ -439,7 +461,7 @@ rm -rf dictionary *.tar.bz2
 13
 14
 15
-16</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span><span class="gu">@@ -74,11 +74,11 @@ xkb_symbols "editing" {</span>
+16</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span><span class="gu">@@ -74,11 +74,11 @@ xkb_symbols "editing" {</span>
         symbols[Group1]= [ Pause, Break ]
      };
      key  &lt;INS&gt; {	[  Insert		]	};
@@ -475,7 +497,7 @@ rm -rf dictionary *.tar.bz2
 18
 19
 20
-21</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span><span class="ch">#!/usr/bin/zsh</span>
+21</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span><span class="ch">#!/usr/bin/zsh</span>
 
 <span class="k">if</span> <span class="o">[[</span> -f ~/.switch-reading-mode <span class="o">]]</span><span class="p">;</span> <span class="k">then</span>
   xmodmap -e <span class="s2">"keycode 110 = Prior NoSymbol Prior"</span>
@@ -550,7 +572,7 @@ rm -rf dictionary *.tar.bz2
 52
 53
 54
-55</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span><span class="ch">#!/usr/bin/zsh</span>
+55</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span><span class="ch">#!/usr/bin/zsh</span>
 <span class="c1"># adapted from Ruben Barkow: https://gist.github.com/rubo77/daa262e0229f6e398766</span>
 
 <span class="c1">#### configuration</span>
@@ -611,7 +633,7 @@ rm -rf dictionary *.tar.bz2
 4
 5
 6
-7</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span>[Desktop Entry]
+7</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>[Desktop Entry]
 Type=Application
 Terminal=false
 Icon=un-reboot
@@ -624,7 +646,7 @@ Categories=Utility;
 4
 5
 6
-7</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span>[Desktop Entry]
+7</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>[Desktop Entry]
 Type=Application
 Terminal=false
 Icon=wireframing
@@ -637,7 +659,7 @@ Categories=Utility;
 4
 5
 6
-7</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span>[Desktop Entry]
+7</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>[Desktop Entry]
 Type=Application
 Terminal=false
 Icon=system-config-displayca
@@ -645,7 +667,7 @@ Name=Laptop Mode
 Exec=/usr/local/bin/rotate-screen
 Categories=Utility;
 </pre></div></td></tr></tbody></table></div></div><p>And drag all of these to the Unity bar. Also drag <code>/usr/share/applications/onboard.desktop</code> to the Unity bar for on-screen keyboard for non-laptop mode.</p></div></div><p>I managed to get auto-rotation to work! First:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span>sudo apt-get install iio-sensor-proxy
+2</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>sudo apt install iio-sensor-proxy
 systemctl start iio-sensor-proxy.service
 </pre></div></td></tr></tbody></table></div><p>Then, run <code>monitor-sensor</code>. It should look like:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
@@ -654,7 +676,7 @@ systemctl start iio-sensor-proxy.service
 5
 6
 7
-8</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span>$ monitor-sensor
+8</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>$ monitor-sensor
     Waiting <span class="k">for</span> iio-sensor-proxy to appear
 +++ iio-sensor-proxy <span class="nv">appeared</span>
 <span class="o">===</span> Has accelerometer <span class="o">(</span>orientation: normal<span class="o">)</span>
@@ -664,13 +686,13 @@ Light changed: 13.365001 <span class="o">(</span>lux<span class="o">)</span>
 ...
 </pre></div></td></tr></tbody></table></div><p>If it doesn’t appear like this, there are two possibilties:</p><ol><li>The kernel you are using is <a href="https://github.com/hadess/iio-sensor-proxy/issues/71">buggy</a>!. Download and install <a href="http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.9.3/">kernel version 4.9.3</a> or later to fix this issue.</li><li>There’s a weird <a href="https://github.com/hadess/iio-sensor-proxy/issues/124">bug</a> that <code>monitor-sensor</code> won’t work unless you sleep your laptop and wake it up... So... do that.</li></ol><p>When <code>monitor-sensor</code> is working, install <code><a href="https://github.com/admiralakber/thinkpad-yoga-scripts">thinkpad-yoga-scripts</a></code> by the following instructions. Note that <code>thinkpad-yoga-scripts</code> has a lot of features that we do not need. For example, “Disabling of Touchscreen with proximity of Wacom digitizer” is working already for us. So we will not follow the instructions in the README. Instead:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
-3</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span>sudo -s
+3</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>sudo -s
 git clone https://github.com/admiralakber/thinkpad-yoga-scripts /opt/thinkpad-yoga-scripts
 nano /opt/thinkpad-yoga-scripts/rotate/thinkpad-rotate.py
 </pre></div></td></tr></tbody></table></div><p>Set both <code>rotate_pens</code> and <code>disable_touchpads</code> to <code>True</code>. Then:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="source"><pre class="other tex2jax_process"><span></span>cp /opt/thinkpad-yoga-scripts/systemd/yoga-rotate@.service /lib/systemd/system/
+4</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>cp /opt/thinkpad-yoga-scripts/systemd/yoga-rotate@.service /lib/systemd/system/
 <span class="c1"># somehow systemd stuff in /usr/lib/systemd/system/ or</span>
 <span class="c1"># /usr/lib/systemd/user/ doesn&#39;t work, so use this instead</span>
 systemctl start yoga-rotate@<span class="nv">$USER</span>.service
