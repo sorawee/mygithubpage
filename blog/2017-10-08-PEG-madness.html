@@ -1,0 +1,833 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>
+    PEG Madness — Sorawee's Website
+  </title>
+  <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
+  <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles-github.css" />
+  <script type="text/javascript"
+    src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+      TeX: {
+        Macros: {
+          seq: ["{\\langle #1 \\rangle}", 1],
+          set: ["{\\{ #1 \\}}", 1],
+          setof: ["{\\{ #1 \\ | \\ #2 \\}}", 2],
+          N: "{\\mathbb N}",
+          R: "{\\mathbb R}",
+          Z: "{\\mathbb Z}",
+          Q: "{\\mathbb Q}",
+          floor: ["{\\lfloor #1 \\rfloor}", 1],
+          ceil: ["{\\lceil #1 \\rceil}", 1],
+        }
+      }
+    });
+  </script>
+  <style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+</head>
+<body>
+  <nav><ul>
+
+    <li><a href="../">&uarr; Home</a></li>
+    <li><a href="../blog/2017-10-05-deriving-Y.html">Next &rarr;</a></li>
+    <li>
+      <a href="2017-10-08-PEG-madness.pdf">
+        <img src="../css/pdficon.png" width="15" height="15" alt="Download PDF" />
+        <span class="caps" style="font-style: normal">PDF</span>
+      </a>
+    </li>
+    <li style="width: auto;">
+      <a href="https://github.com/sorawee/my-website/blob/master/blog/2017-10-08-PEG-madness.poly.pm" title="View the Pollen source for this file"
+         class="sourcelink code">&loz; Pollen Source
+      </a>
+    </li>
+  </ul></nav>
+  <section class="page-header">
+    <h1 class="project-name">
+      <a href="../">Sorawee's Website</a>
+    </h1>
+    <h2 class="project-tagline"></h2>
+    <a href="../" class="btn">Blog</a>
+    <a href="../books.html" class="btn">Books</a>
+    <a href="../feed.xml" class="btn">RSS</a>
+    <a href="../about.html" class="btn">About Me</a>
+  </section>
+  <section class="main-content" id="the-main">
+    <div id="real-content">
+      <h1>PEG Madness</h1><p class="tags">Tags: <a href="/tags/programming-languages">programming-languages</a>, <a href="/tags/parser">parser</a>, <a href="/tags/pyret">pyret</a></p><p class="pubdate">Published on Sunday, October 8th, 2017</p><div class="content"><p>A part of my senior project is to create a framework to allow users to use their own grammar in <a href="https://www.pyret.org/">Pyret</a>. A good framework would need to prohibit ambiguous grammar that users might write.</p><p>One way to do this would be to require users to write a grammar that is accepted by LALR parser generator, since LALR parser generator will result in a conflict when the grammar is ambiguous. Note that the converse is not true: there could be conflict while the grammar is <i>not</i> ambiguous. This is exactly the situation that we are in because Pyret is currently using GLR parser generator which accept all context-free grammars. And Pyret does have some grammar that require unbounded and non-local lookahead, so LALR is not directly applicable.</p><p>There are two solutions that I am considering:</p><ul><li>Rewrite Pyret grammar so that it can be accepted by LALR parser generator. This doesn’t seem applicable since Pyret is widely use by a lot of people</li><li>Use PEG</li></ul><p>PEG at first glance seems really nice: linear time parsing, unambiguous by construction, and pretty expressive. However, I found that it could be very deceptive as well.</p><p><see-more></see-more></p><p>Consider a grammar<label for="274a57b5-b828-463b-b7b8-a9349d517a0e" class="margin-toggle sidenote-number"></label><input type="checkbox" id="274a57b5-b828-463b-b7b8-a9349d517a0e" class="margin-toggle"/><span class="sidenote">Taken from <a href="http://www.romanredz.se/papers/FI2008.pdf">Some Aspects of Parsing Expression Grammar</a>, pg. 4</span>:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>A <span class="o">::=</span> B "x"
+
+B <span class="o">::=</span> "x"
+    | "xx"
+</pre></div></td></tr></tbody></table></div><p>which generates <mathjax>$\set{xx, xxx}$</mathjax></p><p>In PEG, there’s no choice operator. Instead, we have a <i>prioritized</i> choice operator <code>/</code>, where, if the first branch is successful, the second branch will not be considered.</p><p>Because of this, <code>xxx</code> can’t be derived by</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>A &lt;- B "x"
+B &lt;- "x" / "xx"
+</pre></div></td></tr></tbody></table></div><p>On the other hand, <code>xx</code> can’t be derived by</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>A &lt;- B "x"
+B &lt;- "xx" / "x"
+</pre></div></td></tr></tbody></table></div><p>Some people really think that this is bad, which could be true, but it’s still not too complicated. I can still understand easily why it would not derive some strings.</p><p>However, this prioritized choice operator has a lot of consequences. It could cause some unexpected parsing error message as follows:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>A &lt;- "foo" / "foobar"
+</pre></div></td></tr></tbody></table></div><p>If the input is empty string, the parser will say <code>Line 1, column 1: Expected "foo" or "foobar" but end of input found.</code>. However, when we enter <code>foobar</code>, it says <code>Line 1, column 4: Expected end of input but "b" found.</code>.</p><p>But alright, perhaps <code>A &lt;- "foo" / "foobar"</code> should be considered a bad grammar and I shouldn’t write it in the first place.</p><p>However, there is a much bigger problem. Consider:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>A <span class="o">::=</span> "x" A "x"
+    | "xx"
+</pre></div></td></tr></tbody></table></div><p>which generates a set of non-empty string of even length with character <code>x</code>, or, formally <mathjax>$\set{x^{2n}: n &gt;= 1}$</mathjax></p><p>If we were to write:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>A &lt;- "x" A "x" / "xx"
+</pre></div></td></tr></tbody></table></div><p>This generates <mathjax>$\set{x^{2^n}: n &gt;= 1}$</mathjax>!!!!</p><p>This is madness! How could the result be so different!</p><p>In particular, the grammar cannot derive <code>xxxxxx</code> (6 <code>x</code>). Here, I will show what happens when the parser is trying to parse the string.</p><div style="display: none"><script src="https://code.jquery.com/jquery-3.2.1.min.js"></script><br/><script src="/js/viz.js"></script><br/><script>    function draw(step, graphDef) {
+      const element = document.getElementById("parser-viz-" + step);
+      const newGraphDef = `
+digraph {
+  graph [label="Step ${step}", labelloc=t];
+  ${graphDef}
+}`
+      const image = Viz(newGraphDef, {format: "png-image-element"});
+      element.appendChild(image);
+    }</script></div><table><tr><td><div><div id="parser-viz-1"></div><p><script>draw("1", `A1[color=blue];
+A1`)</script></p></div></td><td><div><div id="parser-viz-2"></div><p><script>draw("2", `A1[color=blue];
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+`)</script></p></div></td><td><div><div id="parser-viz-3"></div><p><script>draw("3", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2[color=blue];x1_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-4"></div><p><script>draw("4", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2[color=blue];x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+`)</script></p></div></td><td><div><div id="parser-viz-5"></div><p><script>draw("5", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3[color=blue];x2_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+`)</script></p></div></td><td><div><div id="parser-viz-6"></div><p><script>draw("6", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3[color=blue];x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-7"></div><p><script>draw("7", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4[color=blue];x3_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+`)</script></p></div></td><td><div><div id="parser-viz-8"></div><p><script>draw("8", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4[color=blue];x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5;x4_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+`)</script></p></div></td><td><div><div id="parser-viz-9"></div><p><script>draw("9", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5[color=blue];x4_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-10"></div><p><script>draw("10", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5[color=blue];x4_2[label="x"];
+x5_1[label="x", style="filled", fillcolor=yellow];
+A6;x5_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> A6
+A5 -> x5_2
+`)</script></p></div></td><td><div><div id="parser-viz-11"></div><p><script>draw("11", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5;x4_2[label="x"];
+x5_1[label="x", style="filled", fillcolor=yellow];
+A6[color=blue];x5_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> A6
+A5 -> x5_2
+`)</script></p></div></td><td><div><div id="parser-viz-12"></div><p><script>draw("12", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5;x4_2[label="x"];
+x5_1[label="x", style="filled", fillcolor=yellow];
+A6[color=blue];x5_2[label="x"];
+x6_1[label="x", style="filled", fillcolor=yellow];
+A7;x6_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> A6
+A5 -> x5_2
+
+A6 -> x6_1
+A6 -> A7
+A6 -> x6_2
+`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-13"></div><p><script>draw("13", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5;x4_2[label="x"];
+x5_1[label="x", style="filled", fillcolor=yellow];
+A6;x5_2[label="x"];
+x6_1[label="x", style="filled", fillcolor=yellow];
+A7[color=blue];x6_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> A6
+A5 -> x5_2
+
+A6 -> x6_1
+A6 -> A7
+A6 -> x6_2
+`)</script></p></div></td><td><div><div id="parser-viz-14"></div><p><script>draw("14", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5;x4_2[label="x"];
+x5_1[label="x", style="filled", fillcolor=yellow];
+A6;x5_2[label="x"];
+x6_1[label="x", style="filled", fillcolor=yellow];
+A7[color=blue];x6_2[label="x"];
+x7_1[label="x", style="filled", fillcolor=orange];
+A8;x7_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> A6
+A5 -> x5_2
+
+A6 -> x6_1
+A6 -> A7
+A6 -> x6_2
+
+A7 -> x7_1
+A7 -> A8
+A7 -> x7_2
+`)</script></p></div></td><td><div><div id="parser-viz-15"></div><p><script>draw("15", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5;x4_2[label="x"];
+x5_1[label="x", style="filled", fillcolor=yellow];
+A6;x5_2[label="x"];
+x6_1[label="x", style="filled", fillcolor=yellow];
+A7[color=blue];x6_2[label="x"];
+x7_1[label="x", style="filled", fillcolor=orange];
+x7_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> A6
+A5 -> x5_2
+
+A6 -> x6_1
+A6 -> A7
+A6 -> x6_2
+
+A7 -> x7_1
+A7 -> x7_2
+`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-16"></div><p><script>draw("16", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5;x4_2[label="x"];
+x5_1[label="x", style="filled", fillcolor=yellow];
+A6;x5_2[label="x"];
+x6_1[label="x", style="filled", fillcolor=yellow];
+A7[style="filled", fillcolor=orange, color=blue];x6_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> A6
+A5 -> x5_2
+
+A6 -> x6_1
+A6 -> A7
+A6 -> x6_2
+`)</script></p></div></td><td><div><div id="parser-viz-17"></div><p><script>draw("17", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5;x4_2[label="x"];
+x5_1[label="x", style="filled", fillcolor=yellow];
+A6[color=blue];x5_2[label="x"];
+x6_1[label="x", style="filled", fillcolor=yellow];
+A7[style="filled", fillcolor=orange];x6_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> A6
+A5 -> x5_2
+
+A6 -> x6_1
+A6 -> A7
+A6 -> x6_2
+`)</script></p></div></td><td><div><div id="parser-viz-18"></div><p><script>draw("18", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5;x4_2[label="x"];
+x5_1[label="x", style="filled", fillcolor=yellow];
+A6[color=blue];x5_2[label="x"];
+x6_1[label="x", style="filled", fillcolor=yellow];
+x6_2[label="x", style="filled", fillcolor=orange];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> A6
+A5 -> x5_2
+
+A6 -> x6_1
+A6 -> x6_2
+`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-19"></div><p><script>draw("19", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5;x4_2[label="x"];
+x5_1[label="x", style="filled", fillcolor=yellow];
+A6[style="filled", fillcolor=orange, color=blue];x5_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> A6
+A5 -> x5_2
+`)</script></p></div></td><td><div><div id="parser-viz-20"></div><p><script>draw("20", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5[color=blue];x4_2[label="x"];
+x5_1[label="x", style="filled", fillcolor=yellow];
+A6[style="filled", fillcolor=orange];x5_2[label="x"];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> A6
+A5 -> x5_2
+`)</script></p></div></td><td><div><div id="parser-viz-21"></div><p><script>draw("21", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4;x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5[color=blue];x4_2[label="x"];
+x5_1[label="x", style="filled", fillcolor=yellow];
+x5_2[label="x", style="filled", fillcolor=yellow];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> x5_2
+`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-22"></div><p><script>draw("22", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4[color=blue];x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+A5[style="filled", fillcolor=yellow];x4_2[label="x", style="filled", fillcolor=orange];
+x5_1[label="x", style="filled", fillcolor=yellow];
+x5_2[label="x", style="filled", fillcolor=yellow];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> A5
+A4 -> x4_2
+
+A5 -> x5_1
+A5 -> x5_2
+`)</script></p></div></td><td><div><div id="parser-viz-23"></div><p><script>draw("23", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3;x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4[color=blue];x3_2[label="x"];
+x4_1[label="x", style="filled", fillcolor=yellow];
+x4_2[label="x", style="filled", fillcolor=yellow];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> x4_2
+`)</script></p></div></td><td><div><div id="parser-viz-24"></div><p><script>draw("24", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2;x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3[color=blue];x2_2[label="x"];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4[style="filled", fillcolor=yellow];x3_2[label="x", style="filled", fillcolor=yellow];
+x4_1[label="x", style="filled", fillcolor=yellow];
+x4_2[label="x", style="filled", fillcolor=yellow];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> x4_2
+`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-25"></div><p><script>draw("25", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2[color=blue];x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+A3[style="filled", fillcolor=yellow];x2_2[label="x", style="filled", fillcolor=orange];
+x3_1[label="x", style="filled", fillcolor=yellow];
+A4[style="filled", fillcolor=yellow];x3_2[label="x", style="filled", fillcolor=yellow];
+x4_1[label="x", style="filled", fillcolor=yellow];
+x4_2[label="x", style="filled", fillcolor=yellow];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> A3
+A2 -> x2_2
+
+A3 -> x3_1
+A3 -> A4
+A3 -> x3_2
+
+A4 -> x4_1
+A4 -> x4_2
+`)</script></p></div></td><td><div><div id="parser-viz-26"></div><p><script>draw("26", `A1;
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2[color=blue];x1_2[label="x"];
+x2_1[label="x", style="filled", fillcolor=yellow];
+x2_2[label="x", style="filled", fillcolor=yellow];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> x2_2
+`)</script></p></div></td><td><div><div id="parser-viz-27"></div><p><script>draw("27", `A1[color=blue];
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2[style="filled", fillcolor=yellow];x1_2[label="x", style="filled", fillcolor=yellow];
+x2_1[label="x", style="filled", fillcolor=yellow];
+x2_2[label="x", style="filled", fillcolor=yellow];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> x2_2
+`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-28"></div><p><script>draw("28", `A1[color=blue, style="filled", fillcolor=yellow];
+x1_1[label="x", style="filled", fillcolor=yellow];
+A2[style="filled", fillcolor=yellow];x1_2[label="x", style="filled", fillcolor=yellow];
+x2_1[label="x", style="filled", fillcolor=yellow];
+x2_2[label="x", style="filled", fillcolor=yellow];
+A1 -> x1_1
+A1 -> A2
+A1 -> x1_2
+
+A2 -> x2_1
+A2 -> x2_2
+`)</script></p></div></td></tr></table><p>However, there are 6 <code>x</code> in the input string. This only matches 4, so it didn’t successfully parse.</p><p>The problem, in particular, is that at step 24, <code>A3</code> should be able to change to rule 2 which would then match the whole string. However, it did not because rule 1 is successful, so we backtrack to <code>A2</code>, completely ignore the possibility.</p><p>Note, however, that it’s still possible to generate <mathjax>$\set{x^{2n}: n &gt;= 1}$</mathjax>.</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>A &lt;- "xx" A / "xx"
+</pre></div></td></tr></tbody></table></div><p>will do the job.</p></div><hr/>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_config = function () {
+    this.page.identifier = "blog/2017-10-08-PEG-madness.html"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//sorawee.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </section>
+</body>
+</html>

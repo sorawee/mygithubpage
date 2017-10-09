@@ -66,7 +66,7 @@ s.setAttribute('data-timestamp', +new Date());
   <link rel="stylesheet" type="text/css" media="all" href="@|path-prefix|css/normalize.css" />
   <link rel="stylesheet" type="text/css" media="all" href="@|path-prefix|css/styles-github.css" />
   <script type="text/javascript"
-    src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS_CHTML">
+    src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
   </script>
   <script type="text/x-mathjax-config">
     MathJax.Hub.Config({
