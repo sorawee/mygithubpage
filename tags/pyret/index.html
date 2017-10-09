@@ -1,0 +1,115 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Tag: pyret — Sorawee's Website
+  </title>
+  <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
+  <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="../../css/styles.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../../css/styles-github.css" />
+  <script type="text/javascript"
+    src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+      TeX: {
+        Macros: {
+          seq: ["{\\langle #1 \\rangle}", 1],
+          set: ["{\\{ #1 \\}}", 1],
+          setof: ["{\\{ #1 \\ | \\ #2 \\}}", 2],
+          N: "{\\mathbb N}",
+          R: "{\\mathbb R}",
+          Z: "{\\mathbb Z}",
+          Q: "{\\mathbb Q}",
+          floor: ["{\\lfloor #1 \\rfloor}", 1],
+          ceil: ["{\\lceil #1 \\rceil}", 1],
+        }
+      }
+    });
+  </script>
+  <style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+</head>
+<body>
+
+  <section class="page-header">
+    <h1 class="project-name">
+      <a href="../../">Sorawee's Website</a>
+    </h1>
+    <h2 class="project-tagline"></h2>
+    <a href="../../" class="btn">Blog</a>
+    <a href="../../books.html" class="btn">Books</a>
+    <a href="../../feed.xml" class="btn">RSS</a>
+    <a href="../../about.html" class="btn">About Me</a>
+  </section>
+  <section class="main-content" id="the-main">
+    <div id="real-content">
+      <h1>Tag: pyret</h1><h2><a href="/blog/2017-10-08-PEG-madness.html"><span class="smallcaps">PEG Madness</span></a></h2><p class="tags">Tags: <a href="/tags/programming-languages">programming-languages</a>, <a href="/tags/parser">parser</a>, <a href="/tags/pyret">pyret</a></p><p class="pubdate">Published on Sunday, October 8th, 2017</p><div class="content"><p>A part of my senior project is to create a framework to allow users to use their own grammar in <a href="https://www.pyret.org/">Pyret</a>. A good framework would need to prohibit ambiguous grammar that users might write.</p><p>One way to do this would be to require users to write a grammar that is accepted by LALR parser generator, since LALR parser generator will result in a conflict when the grammar is ambiguous. Note that the converse is not true: there could be conflict while the grammar is <i>not</i> ambiguous. This is exactly the situation that we are in because Pyret is currently using GLR parser generator which accept all context-free grammars. And Pyret does have some grammar that require unbounded and non-local lookahead, so LALR is not directly applicable.</p><p>There are two solutions that I am considering:</p><ul><li>Rewrite Pyret grammar so that it can be accepted by LALR parser generator. This doesn’t seem applicable since Pyret is widely use by a lot of people</li><li>Use PEG</li></ul><p>PEG at first glance seems really nice: linear time parsing, unambiguous by construction, and pretty expressive. However, I found that it could be very deceptive as well.</p><p></p></div><div class="see-more-link"><a href="/blog/2017-10-08-PEG-madness.html"><span class="smallcaps">[see more]</span></a></div><hr/>
+    </div>
+
+  </section>
+</body>
+</html>
