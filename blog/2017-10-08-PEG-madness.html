@@ -122,7 +122,7 @@
   </section>
   <section class="main-content" id="the-main">
     <div id="real-content">
-      <h1>PEG Madness</h1><p class="tags">Tags: <a href="/tags/programming-languages">programming-languages</a>, <a href="/tags/parser">parser</a>, <a href="/tags/pyret">pyret</a></p><p class="pubdate">Published on Sunday, October 8th, 2017</p><div class="content"><p>A part of my senior project is to create a framework to allow users to use their own grammar in <a href="https://www.pyret.org/">Pyret</a>. A good framework would need to prohibit ambiguous grammar that users might write.</p><p>One way to do this would be to require users to write a grammar that is accepted by LALR parser generator, since LALR parser generator will result in a conflict when the grammar is ambiguous. Note that the converse is not true: there could be conflict while the grammar is <i>not</i> ambiguous. This is exactly the situation that we are in because Pyret is currently using GLR parser generator which accept all context-free grammars. And Pyret does have some grammar that require unbounded and non-local lookahead, so LALR is not directly applicable.</p><p>There are two solutions that I am considering:</p><ul><li>Rewrite Pyret grammar so that it can be accepted by LALR parser generator. This doesn’t seem applicable since Pyret is widely use by a lot of people</li><li>Use PEG</li></ul><p>PEG at first glance seems really nice: linear time parsing, unambiguous by construction, and pretty expressive. However, I found that it could be very deceptive as well.</p><p><see-more></see-more></p><p>Consider a grammar<label for="dd356b77-3464-4db3-b57e-f51efd6392cf" class="margin-toggle sidenote-number"></label><input type="checkbox" id="dd356b77-3464-4db3-b57e-f51efd6392cf" class="margin-toggle"/><span class="sidenote">Taken from <a href="http://www.romanredz.se/papers/FI2008.pdf">Some Aspects of Parsing Expression Grammar</a>, pg. 4</span>:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+      <h1>PEG Madness</h1><p class="tags">Tags: <a href="/tags/programming-languages">programming-languages</a>, <a href="/tags/parser">parser</a>, <a href="/tags/pyret">pyret</a></p><p class="pubdate">Published on Sunday, October 8th, 2017</p><div class="content"><p>A part of my senior project is to create a framework to allow users to use their own grammar in <a href="https://www.pyret.org/">Pyret</a>. A good framework would need to prohibit ambiguous grammar that users might write.</p><p>One way to do this would be to require users to write a grammar that is accepted by LALR parser generator, since LALR parser generator will result in a conflict when the grammar is ambiguous. Note that the converse is not true: there could be conflict while the grammar is <i>not</i> ambiguous. This is exactly the situation that we are in because Pyret is currently using GLR parser generator which accept all context-free grammars. And Pyret does have some grammar that require unbounded and non-local lookahead, so LALR is not directly applicable.</p><p>There are two solutions that I am considering:</p><ul><li>Rewrite Pyret grammar so that it can be accepted by LALR parser generator. This doesn’t seem applicable since Pyret is widely use by a lot of people</li><li>Use PEG</li></ul><p>PEG at first glance seems really nice: linear time parsing, unambiguous by construction, and pretty expressive. However, I found that it could be very deceptive as well.</p><p><see-more></see-more></p><p>Consider a grammar<label for="84077989-e8b3-40e8-8a99-baaa7608e0f5" class="margin-toggle sidenote-number"></label><input type="checkbox" id="84077989-e8b3-40e8-8a99-baaa7608e0f5" class="margin-toggle"/><span class="sidenote">Taken from <a href="http://www.romanredz.se/papers/FI2008.pdf">Some Aspects of Parsing Expression Grammar</a>, pg. 4</span>:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>A <span class="o">::=</span> B "x"
@@ -140,33 +140,43 @@ B &lt;- "xx" / "x"
 2</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>A <span class="o">::=</span> "x" A "x"
     | "xx"
 </pre></div></td></tr></tbody></table></div><p>which generates a set of non-empty string of even length with character <code>x</code>, or, formally <mathjax>$\set{x^{2n}: n \ge 1}$</mathjax></p><p>If we were to write:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>A &lt;- "x" A "x" / "xx"
-</pre></div></td></tr></tbody></table></div><p>This generates <mathjax>$\set{x^{2^n}: n \ge 1}$</mathjax>!!!!</p><p>This is madness! How could the result be so different!</p><p>In particular, the grammar cannot derive <code>xxxxxx</code> (6 <code>x</code>). Here, I will show what happens when the parser is trying to parse the string.</p><div style="display: none"><script src="https://code.jquery.com/jquery-3.2.1.min.js"></script><br/><script src="/js/viz.js"></script><br/><script>    function draw(step, graphDef) {
-      const element = document.getElementById("parser-viz-" + step);
+</pre></div></td></tr></tbody></table></div><p>This generates <mathjax>$\set{x^{2^n}: n \ge 1}$</mathjax>!!!!</p><p>This is madness! How could the result be so different!</p><p>In particular, the grammar cannot derive <code>xxxxxx</code> (6 <code>x</code>). Here, I will show what happens when the parser is trying to parse the string.</p><div style="display: none"><script src="https://code.jquery.com/jquery-3.2.1.min.js"></script><br/><script src="/js/viz.js"></script><br/><script>    function draw(uniqueId, graphDef) {
       const newGraphDef = `
 digraph {
-  graph [label="Step ${step}", labelloc=t];
   ${graphDef}
 }`
       const image = Viz(newGraphDef, {format: "png-image-element"});
-      element.appendChild(image);
-    }</script></div><table><tr><td><div><div id="parser-viz-1"></div><p><script>draw("1", `A1[color=blue];
-A1`)</script></p></div></td><td><div><div id="parser-viz-2"></div><p><script>draw("2", `A1[color=blue];
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
+      document.getElementById(uniqueId).appendChild(image);
+    }</script></div><table><tr><td valign="top"><div>Step 1</div><div align="center"><div><div id="parser-viz2201"></div><p><script>draw("parser-viz2201", `A1[color=blue, style="bold"];
+
+A1`)</script></p></div></div></td><td valign="top"><div>Step 2</div><div align="center"><div><div id="parser-viz2202"></div><p><script>draw("parser-viz2202", `A1[color=blue, style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
-`)</script></p></div></td><td><div><div id="parser-viz-3"></div><p><script>draw("3", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2[color=blue];x1_2[label="x"];
+`)</script></p></div></div></td><td valign="top"><div>Step 3</div><div align="center"><div><div id="parser-viz2203"></div><p><script>draw("parser-viz2203", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[color=blue, style="bold"];
+x1_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
-`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-4"></div><p><script>draw("4", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2[color=blue];x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
+`)</script></p></div></div></td></tr><tr><td valign="top"><div>Step 4</div><div align="center"><div><div id="parser-viz2204"></div><p><script>draw("parser-viz2204", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[color=blue, style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -174,11 +184,16 @@ A1 -> x1_2
 A2 -> x2_1
 A2 -> A3
 A2 -> x2_2
-`)</script></p></div></td><td><div><div id="parser-viz-5"></div><p><script>draw("5", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3[color=blue];x2_2[label="x"];
+`)</script></p></div></div></td><td valign="top"><div>Step 5</div><div align="center"><div><div id="parser-viz2205"></div><p><script>draw("parser-viz2205", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[color=blue, style="bold"];
+x2_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -186,13 +201,20 @@ A1 -> x1_2
 A2 -> x2_1
 A2 -> A3
 A2 -> x2_2
-`)</script></p></div></td><td><div><div id="parser-viz-6"></div><p><script>draw("6", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3[color=blue];x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
+`)</script></p></div></div></td><td valign="top"><div>Step 6</div><div align="center"><div><div id="parser-viz2206"></div><p><script>draw("parser-viz2206", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[color=blue, style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -204,13 +226,20 @@ A2 -> x2_2
 A3 -> x3_1
 A3 -> A4
 A3 -> x3_2
-`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-7"></div><p><script>draw("7", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4[color=blue];x3_2[label="x"];
+`)</script></p></div></div></td></tr><tr><td valign="top"><div>Step 7</div><div align="center"><div><div id="parser-viz2207"></div><p><script>draw("parser-viz2207", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[color=blue, style="bold"];
+x3_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -222,15 +251,24 @@ A2 -> x2_2
 A3 -> x3_1
 A3 -> A4
 A3 -> x3_2
-`)</script></p></div></td><td><div><div id="parser-viz-8"></div><p><script>draw("8", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4[color=blue];x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5;x4_2[label="x"];
+`)</script></p></div></div></td><td valign="top"><div>Step 8</div><div align="center"><div><div id="parser-viz2208"></div><p><script>draw("parser-viz2208", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[color=blue, style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[style="bold"];
+x4_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -246,15 +284,24 @@ A3 -> x3_2
 A4 -> x4_1
 A4 -> A5
 A4 -> x4_2
-`)</script></p></div></td><td><div><div id="parser-viz-9"></div><p><script>draw("9", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5[color=blue];x4_2[label="x"];
+`)</script></p></div></div></td><td valign="top"><div>Step 9</div><div align="center"><div><div id="parser-viz2209"></div><p><script>draw("parser-viz2209", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[color=blue, style="bold"];
+x4_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -270,17 +317,28 @@ A3 -> x3_2
 A4 -> x4_1
 A4 -> A5
 A4 -> x4_2
-`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-10"></div><p><script>draw("10", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5[color=blue];x4_2[label="x"];
-x5_1[label="x", style="filled", fillcolor=yellow];
-A6;x5_2[label="x"];
+`)</script></p></div></div></td></tr><tr><td valign="top"><div>Step 10</div><div align="center"><div><div id="parser-viz2210"></div><p><script>draw("parser-viz2210", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[color=blue, style="bold"];
+x4_2[label="x", style="bold"];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+A6[style="bold"];
+x5_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -300,17 +358,28 @@ A4 -> x4_2
 A5 -> x5_1
 A5 -> A6
 A5 -> x5_2
-`)</script></p></div></td><td><div><div id="parser-viz-11"></div><p><script>draw("11", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5;x4_2[label="x"];
-x5_1[label="x", style="filled", fillcolor=yellow];
-A6[color=blue];x5_2[label="x"];
+`)</script></p></div></div></td><td valign="top"><div>Step 11</div><div align="center"><div><div id="parser-viz2211"></div><p><script>draw("parser-viz2211", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[style="bold"];
+x4_2[label="x", style="bold"];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+A6[color=blue, style="bold"];
+x5_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -330,19 +399,32 @@ A4 -> x4_2
 A5 -> x5_1
 A5 -> A6
 A5 -> x5_2
-`)</script></p></div></td><td><div><div id="parser-viz-12"></div><p><script>draw("12", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5;x4_2[label="x"];
-x5_1[label="x", style="filled", fillcolor=yellow];
-A6[color=blue];x5_2[label="x"];
-x6_1[label="x", style="filled", fillcolor=yellow];
-A7;x6_2[label="x"];
+`)</script></p></div></div></td><td valign="top"><div>Step 12</div><div align="center"><div><div id="parser-viz2212"></div><p><script>draw("parser-viz2212", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[style="bold"];
+x4_2[label="x", style="bold"];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+A6[color=blue, style="bold"];
+x5_2[label="x", style="bold"];
+
+x6_1[label="x", style="filled,bold", fillcolor=yellow];
+A7[style="bold"];
+x6_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -366,19 +448,32 @@ A5 -> x5_2
 A6 -> x6_1
 A6 -> A7
 A6 -> x6_2
-`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-13"></div><p><script>draw("13", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5;x4_2[label="x"];
-x5_1[label="x", style="filled", fillcolor=yellow];
-A6;x5_2[label="x"];
-x6_1[label="x", style="filled", fillcolor=yellow];
-A7[color=blue];x6_2[label="x"];
+`)</script></p></div></div></td></tr><tr><td valign="top"><div>Step 13</div><div align="center"><div><div id="parser-viz2213"></div><p><script>draw("parser-viz2213", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[style="bold"];
+x4_2[label="x", style="bold"];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+A6[style="bold"];
+x5_2[label="x", style="bold"];
+
+x6_1[label="x", style="filled,bold", fillcolor=yellow];
+A7[color=blue, style="bold"];
+x6_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -402,21 +497,36 @@ A5 -> x5_2
 A6 -> x6_1
 A6 -> A7
 A6 -> x6_2
-`)</script></p></div></td><td><div><div id="parser-viz-14"></div><p><script>draw("14", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5;x4_2[label="x"];
-x5_1[label="x", style="filled", fillcolor=yellow];
-A6;x5_2[label="x"];
-x6_1[label="x", style="filled", fillcolor=yellow];
-A7[color=blue];x6_2[label="x"];
-x7_1[label="x", style="filled", fillcolor=orange];
-A8;x7_2[label="x"];
+`)</script></p></div></div></td><td valign="top"><div>Step 14</div><div align="center"><div><div id="parser-viz2214"></div><p><script>draw("parser-viz2214", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[style="bold"];
+x4_2[label="x", style="bold"];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+A6[style="bold"];
+x5_2[label="x", style="bold"];
+
+x6_1[label="x", style="filled,bold", fillcolor=yellow];
+A7[color=blue, style="bold"];
+x6_2[label="x", style="bold"];
+
+x7_1[label="x", style="filled,bold", fillcolor=orange];
+A8[style="bold"];
+x7_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -444,21 +554,35 @@ A6 -> x6_2
 A7 -> x7_1
 A7 -> A8
 A7 -> x7_2
-`)</script></p></div></td><td><div><div id="parser-viz-15"></div><p><script>draw("15", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5;x4_2[label="x"];
-x5_1[label="x", style="filled", fillcolor=yellow];
-A6;x5_2[label="x"];
-x6_1[label="x", style="filled", fillcolor=yellow];
-A7[color=blue];x6_2[label="x"];
-x7_1[label="x", style="filled", fillcolor=orange];
-x7_2[label="x"];
+`)</script></p></div></div></td><td valign="top"><div>Step 15</div><div align="center"><div><div id="parser-viz2215"></div><p><script>draw("parser-viz2215", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[style="bold"];
+x4_2[label="x", style="bold"];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+A6[style="bold"];
+x5_2[label="x", style="bold"];
+
+x6_1[label="x", style="filled,bold", fillcolor=yellow];
+A7[color=blue, style="bold"];
+x6_2[label="x", style="bold"];
+
+x7_1[label="x", style="filled,bold", fillcolor=orange];
+x7_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -485,19 +609,32 @@ A6 -> x6_2
 
 A7 -> x7_1
 A7 -> x7_2
-`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-16"></div><p><script>draw("16", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5;x4_2[label="x"];
-x5_1[label="x", style="filled", fillcolor=yellow];
-A6;x5_2[label="x"];
-x6_1[label="x", style="filled", fillcolor=yellow];
-A7[style="filled", fillcolor=orange, color=blue];x6_2[label="x"];
+`)</script></p></div></div></td></tr><tr><td valign="top"><div>Step 16</div><div align="center"><div><div id="parser-viz2216"></div><p><script>draw("parser-viz2216", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[style="bold"];
+x4_2[label="x", style="bold"];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+A6[style="bold"];
+x5_2[label="x", style="bold"];
+
+x6_1[label="x", style="filled,bold", fillcolor=yellow];
+A7[color=blue, style="filled,bold", fillcolor=orange];
+x6_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -521,19 +658,32 @@ A5 -> x5_2
 A6 -> x6_1
 A6 -> A7
 A6 -> x6_2
-`)</script></p></div></td><td><div><div id="parser-viz-17"></div><p><script>draw("17", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5;x4_2[label="x"];
-x5_1[label="x", style="filled", fillcolor=yellow];
-A6[color=blue];x5_2[label="x"];
-x6_1[label="x", style="filled", fillcolor=yellow];
-A7[style="filled", fillcolor=orange];x6_2[label="x"];
+`)</script></p></div></div></td><td valign="top"><div>Step 17</div><div align="center"><div><div id="parser-viz2217"></div><p><script>draw("parser-viz2217", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[style="bold"];
+x4_2[label="x", style="bold"];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+A6[color=blue, style="bold"];
+x5_2[label="x", style="bold"];
+
+x6_1[label="x", style="filled,bold", fillcolor=yellow];
+A7[style="filled,bold", fillcolor=orange];
+x6_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -557,19 +707,31 @@ A5 -> x5_2
 A6 -> x6_1
 A6 -> A7
 A6 -> x6_2
-`)</script></p></div></td><td><div><div id="parser-viz-18"></div><p><script>draw("18", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5;x4_2[label="x"];
-x5_1[label="x", style="filled", fillcolor=yellow];
-A6[color=blue];x5_2[label="x"];
-x6_1[label="x", style="filled", fillcolor=yellow];
-x6_2[label="x", style="filled", fillcolor=orange];
+`)</script></p></div></div></td><td valign="top"><div>Step 18</div><div align="center"><div><div id="parser-viz2218"></div><p><script>draw("parser-viz2218", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[style="bold"];
+x4_2[label="x", style="bold"];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+A6[color=blue, style="bold"];
+x5_2[label="x", style="bold"];
+
+x6_1[label="x", style="filled,bold", fillcolor=yellow];
+x6_2[label="x", style="filled,bold", fillcolor=orange];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -592,17 +754,28 @@ A5 -> x5_2
 
 A6 -> x6_1
 A6 -> x6_2
-`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-19"></div><p><script>draw("19", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5;x4_2[label="x"];
-x5_1[label="x", style="filled", fillcolor=yellow];
-A6[style="filled", fillcolor=orange, color=blue];x5_2[label="x"];
+`)</script></p></div></div></td></tr><tr><td valign="top"><div>Step 19</div><div align="center"><div><div id="parser-viz2219"></div><p><script>draw("parser-viz2219", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[style="bold"];
+x4_2[label="x", style="bold"];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+A6[color=blue, style="filled,bold", fillcolor=orange];
+x5_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -622,17 +795,28 @@ A4 -> x4_2
 A5 -> x5_1
 A5 -> A6
 A5 -> x5_2
-`)</script></p></div></td><td><div><div id="parser-viz-20"></div><p><script>draw("20", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5[color=blue];x4_2[label="x"];
-x5_1[label="x", style="filled", fillcolor=yellow];
-A6[style="filled", fillcolor=orange];x5_2[label="x"];
+`)</script></p></div></div></td><td valign="top"><div>Step 20</div><div align="center"><div><div id="parser-viz2220"></div><p><script>draw("parser-viz2220", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[color=blue, style="bold"];
+x4_2[label="x", style="bold"];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+A6[style="filled,bold", fillcolor=orange];
+x5_2[label="x", style="bold"];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -652,17 +836,27 @@ A4 -> x4_2
 A5 -> x5_1
 A5 -> A6
 A5 -> x5_2
-`)</script></p></div></td><td><div><div id="parser-viz-21"></div><p><script>draw("21", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4;x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5[color=blue];x4_2[label="x"];
-x5_1[label="x", style="filled", fillcolor=yellow];
-x5_2[label="x", style="filled", fillcolor=yellow];
+`)</script></p></div></div></td><td valign="top"><div>Step 21</div><div align="center"><div><div id="parser-viz2221"></div><p><script>draw("parser-viz2221", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[color=blue, style="bold"];
+x4_2[label="x", style="bold"];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+x5_2[label="x", style="filled,bold", fillcolor=yellow];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -681,17 +875,27 @@ A4 -> x4_2
 
 A5 -> x5_1
 A5 -> x5_2
-`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-22"></div><p><script>draw("22", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4[color=blue];x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-A5[style="filled", fillcolor=yellow];x4_2[label="x", style="filled", fillcolor=orange];
-x5_1[label="x", style="filled", fillcolor=yellow];
-x5_2[label="x", style="filled", fillcolor=yellow];
+`)</script></p></div></div></td></tr><tr><td valign="top"><div>Step 22</div><div align="center"><div><div id="parser-viz2222"></div><p><script>draw("parser-viz2222", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[color=blue, style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+A5[style="filled,bold", fillcolor=yellow];
+x4_2[label="x", style="filled,bold", fillcolor=orange];
+
+x5_1[label="x", style="filled,bold", fillcolor=yellow];
+x5_2[label="x", style="filled,bold", fillcolor=yellow];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -710,15 +914,23 @@ A4 -> x4_2
 
 A5 -> x5_1
 A5 -> x5_2
-`)</script></p></div></td><td><div><div id="parser-viz-23"></div><p><script>draw("23", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3;x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4[color=blue];x3_2[label="x"];
-x4_1[label="x", style="filled", fillcolor=yellow];
-x4_2[label="x", style="filled", fillcolor=yellow];
+`)</script></p></div></div></td><td valign="top"><div>Step 23</div><div align="center"><div><div id="parser-viz2223"></div><p><script>draw("parser-viz2223", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[color=blue, style="bold"];
+x3_2[label="x", style="bold"];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+x4_2[label="x", style="filled,bold", fillcolor=yellow];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -733,15 +945,23 @@ A3 -> x3_2
 
 A4 -> x4_1
 A4 -> x4_2
-`)</script></p></div></td><td><div><div id="parser-viz-24"></div><p><script>draw("24", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2;x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3[color=blue];x2_2[label="x"];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4[style="filled", fillcolor=yellow];x3_2[label="x", style="filled", fillcolor=yellow];
-x4_1[label="x", style="filled", fillcolor=yellow];
-x4_2[label="x", style="filled", fillcolor=yellow];
+`)</script></p></div></div></td><td valign="top"><div>Step 24</div><div align="center"><div><div id="parser-viz2224"></div><p><script>draw("parser-viz2224", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[color=blue, style="bold"];
+x2_2[label="x", style="bold"];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="filled,bold", fillcolor=yellow];
+x3_2[label="x", style="filled,bold", fillcolor=yellow];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+x4_2[label="x", style="filled,bold", fillcolor=yellow];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -756,15 +976,23 @@ A3 -> x3_2
 
 A4 -> x4_1
 A4 -> x4_2
-`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-25"></div><p><script>draw("25", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2[color=blue];x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-A3[style="filled", fillcolor=yellow];x2_2[label="x", style="filled", fillcolor=orange];
-x3_1[label="x", style="filled", fillcolor=yellow];
-A4[style="filled", fillcolor=yellow];x3_2[label="x", style="filled", fillcolor=yellow];
-x4_1[label="x", style="filled", fillcolor=yellow];
-x4_2[label="x", style="filled", fillcolor=yellow];
+`)</script></p></div></div></td></tr><tr><td valign="top"><div>Step 25</div><div align="center"><div><div id="parser-viz2225"></div><p><script>draw("parser-viz2225", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[color=blue, style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+A3[style="filled,bold", fillcolor=yellow];
+x2_2[label="x", style="filled,bold", fillcolor=orange];
+
+x3_1[label="x", style="filled,bold", fillcolor=yellow];
+A4[style="filled,bold", fillcolor=yellow];
+x3_2[label="x", style="filled,bold", fillcolor=yellow];
+
+x4_1[label="x", style="filled,bold", fillcolor=yellow];
+x4_2[label="x", style="filled,bold", fillcolor=yellow];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
@@ -779,40 +1007,52 @@ A3 -> x3_2
 
 A4 -> x4_1
 A4 -> x4_2
-`)</script></p></div></td><td><div><div id="parser-viz-26"></div><p><script>draw("26", `A1;
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2[color=blue];x1_2[label="x"];
-x2_1[label="x", style="filled", fillcolor=yellow];
-x2_2[label="x", style="filled", fillcolor=yellow];
+`)</script></p></div></div></td><td valign="top"><div>Step 26</div><div align="center"><div><div id="parser-viz2226"></div><p><script>draw("parser-viz2226", `A1[style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[color=blue, style="bold"];
+x1_2[label="x", style="bold"];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+x2_2[label="x", style="filled,bold", fillcolor=yellow];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
 
 A2 -> x2_1
 A2 -> x2_2
-`)</script></p></div></td><td><div><div id="parser-viz-27"></div><p><script>draw("27", `A1[color=blue];
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2[style="filled", fillcolor=yellow];x1_2[label="x", style="filled", fillcolor=yellow];
-x2_1[label="x", style="filled", fillcolor=yellow];
-x2_2[label="x", style="filled", fillcolor=yellow];
+`)</script></p></div></div></td><td valign="top"><div>Step 27</div><div align="center"><div><div id="parser-viz2227"></div><p><script>draw("parser-viz2227", `A1[color=blue, style="bold"];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="filled,bold", fillcolor=yellow];
+x1_2[label="x", style="filled,bold", fillcolor=yellow];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+x2_2[label="x", style="filled,bold", fillcolor=yellow];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
 
 A2 -> x2_1
 A2 -> x2_2
-`)</script></p></div></td></tr><tr><td><div><div id="parser-viz-28"></div><p><script>draw("28", `A1[color=blue, style="filled", fillcolor=yellow];
-x1_1[label="x", style="filled", fillcolor=yellow];
-A2[style="filled", fillcolor=yellow];x1_2[label="x", style="filled", fillcolor=yellow];
-x2_1[label="x", style="filled", fillcolor=yellow];
-x2_2[label="x", style="filled", fillcolor=yellow];
+`)</script></p></div></div></td></tr><tr><td valign="top"><div>Step 28</div><div align="center"><div><div id="parser-viz2228"></div><p><script>draw("parser-viz2228", `A1[color=blue, style="filled,bold", fillcolor=yellow];
+
+x1_1[label="x", style="filled,bold", fillcolor=yellow];
+A2[style="filled,bold", fillcolor=yellow];
+x1_2[label="x", style="filled,bold", fillcolor=yellow];
+
+x2_1[label="x", style="filled,bold", fillcolor=yellow];
+x2_2[label="x", style="filled,bold", fillcolor=yellow];
+
 A1 -> x1_1
 A1 -> A2
 A1 -> x1_2
 
 A2 -> x2_1
 A2 -> x2_2
-`)</script></p></div></td></tr></table><p>However, there are 6 <code>x</code> in the input string. This only matches 4, so it didn’t successfully parse.</p><p>The problem, in particular, is that at step 24, <code>A3</code> should be able to change to rule 2 which would then match the whole string. However, it did not because rule 1 is successful, so we backtrack to <code>A2</code>, completely ignore the possibility.</p><p>Note, however, that it’s still possible to generate <mathjax>$\set{x^{2n}: n \ge 1}$</mathjax>.</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>A &lt;- "xx" A / "xx"
+`)</script></p></div></div></td></tr></table><p>However, there are 6 <code>x</code> in the input string. This only matches 4, so it didn’t successfully parse.</p><p>The problem, in particular, is that at step 24, <code>A3</code> should be able to change to rule 2 which would then match the whole string. However, it did not because rule 1 is successful, so we backtrack to <code>A2</code>, completely ignore the possibility.</p><p>Note, however, that it’s still possible to generate <mathjax>$\set{x^{2n}: n \ge 1}$</mathjax>.</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>A &lt;- "xx" A / "xx"
 </pre></div></td></tr></tbody></table></div><p>will do the job.</p></div><hr/>
     </div>
     <div id="disqus_thread"></div>
