@@ -1,0 +1,307 @@
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>
+    Spacemacs, i3, and Manjaro — Sorawee's Website
+  </title>
+  <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
+  <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/normalize.css" />
+  <link rel="stylesheet" type="text/css" media="all" href="../css/styles-github.css" />
+  <script type="text/javascript"
+    src="https://cdn.rawgit.com/mathjax/MathJax/2.7.1/MathJax.js?config=TeX-AMS_CHTML">
+  </script>
+  <script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+      tex2jax: {inlineMath: [['$','$']]},
+      TeX: {
+        Macros: {
+          seq: ["{\\langle #1 \\rangle}", 1],
+          set: ["{\\{ #1 \\}}", 1],
+          setof: ["{\\{ #1 \\ | \\ #2 \\}}", 2],
+          N: "{\\mathbb N}",
+          R: "{\\mathbb R}",
+          Z: "{\\mathbb Z}",
+          Q: "{\\mathbb Q}",
+          floor: ["{\\lfloor #1 \\rfloor}", 1],
+          ceil: ["{\\lceil #1 \\rceil}", 1],
+        }
+      }
+    });
+  </script>
+  <style type="text/css">.highlight .hll { background-color: #ffffcc }
+.highlight  { background: #f8f8f8; }
+.highlight .c { color: #408080; font-style: italic } /* Comment */
+.highlight .err { border: 1px solid #FF0000 } /* Error */
+.highlight .k { color: #008000; font-weight: bold } /* Keyword */
+.highlight .o { color: #666666 } /* Operator */
+.highlight .cm { color: #408080; font-style: italic } /* Comment.Multiline */
+.highlight .cp { color: #BC7A00 } /* Comment.Preproc */
+.highlight .c1 { color: #408080; font-style: italic } /* Comment.Single */
+.highlight .cs { color: #408080; font-style: italic } /* Comment.Special */
+.highlight .gd { color: #A00000 } /* Generic.Deleted */
+.highlight .ge { font-style: italic } /* Generic.Emph */
+.highlight .gr { color: #FF0000 } /* Generic.Error */
+.highlight .gh { color: #000080; font-weight: bold } /* Generic.Heading */
+.highlight .gi { color: #00A000 } /* Generic.Inserted */
+.highlight .go { color: #888888 } /* Generic.Output */
+.highlight .gp { color: #000080; font-weight: bold } /* Generic.Prompt */
+.highlight .gs { font-weight: bold } /* Generic.Strong */
+.highlight .gu { color: #800080; font-weight: bold } /* Generic.Subheading */
+.highlight .gt { color: #0044DD } /* Generic.Traceback */
+.highlight .kc { color: #008000; font-weight: bold } /* Keyword.Constant */
+.highlight .kd { color: #008000; font-weight: bold } /* Keyword.Declaration */
+.highlight .kn { color: #008000; font-weight: bold } /* Keyword.Namespace */
+.highlight .kp { color: #008000 } /* Keyword.Pseudo */
+.highlight .kr { color: #008000; font-weight: bold } /* Keyword.Reserved */
+.highlight .kt { color: #B00040 } /* Keyword.Type */
+.highlight .m { color: #666666 } /* Literal.Number */
+.highlight .s { color: #BA2121 } /* Literal.String */
+.highlight .na { color: #7D9029 } /* Name.Attribute */
+.highlight .nb { color: #008000 } /* Name.Builtin */
+.highlight .nc { color: #0000FF; font-weight: bold } /* Name.Class */
+.highlight .no { color: #880000 } /* Name.Constant */
+.highlight .nd { color: #AA22FF } /* Name.Decorator */
+.highlight .ni { color: #999999; font-weight: bold } /* Name.Entity */
+.highlight .ne { color: #D2413A; font-weight: bold } /* Name.Exception */
+.highlight .nf { color: #0000FF } /* Name.Function */
+.highlight .nl { color: #A0A000 } /* Name.Label */
+.highlight .nn { color: #0000FF; font-weight: bold } /* Name.Namespace */
+.highlight .nt { color: #008000; font-weight: bold } /* Name.Tag */
+.highlight .nv { color: #19177C } /* Name.Variable */
+.highlight .ow { color: #AA22FF; font-weight: bold } /* Operator.Word */
+.highlight .w { color: #bbbbbb } /* Text.Whitespace */
+.highlight .mf { color: #666666 } /* Literal.Number.Float */
+.highlight .mh { color: #666666 } /* Literal.Number.Hex */
+.highlight .mi { color: #666666 } /* Literal.Number.Integer */
+.highlight .mo { color: #666666 } /* Literal.Number.Oct */
+.highlight .sb { color: #BA2121 } /* Literal.String.Backtick */
+.highlight .sc { color: #BA2121 } /* Literal.String.Char */
+.highlight .sd { color: #BA2121; font-style: italic } /* Literal.String.Doc */
+.highlight .s2 { color: #BA2121 } /* Literal.String.Double */
+.highlight .se { color: #BB6622; font-weight: bold } /* Literal.String.Escape */
+.highlight .sh { color: #BA2121 } /* Literal.String.Heredoc */
+.highlight .si { color: #BB6688; font-weight: bold } /* Literal.String.Interpol */
+.highlight .sx { color: #008000 } /* Literal.String.Other */
+.highlight .sr { color: #BB6688 } /* Literal.String.Regex */
+.highlight .s1 { color: #BA2121 } /* Literal.String.Single */
+.highlight .ss { color: #19177C } /* Literal.String.Symbol */
+.highlight .bp { color: #008000 } /* Name.Builtin.Pseudo */
+.highlight .vc { color: #19177C } /* Name.Variable.Class */
+.highlight .vg { color: #19177C } /* Name.Variable.Global */
+.highlight .vi { color: #19177C } /* Name.Variable.Instance */
+.highlight .il { color: #666666 } /* Literal.Number.Integer.Long */</style>
+</head>
+<body>
+  <nav><ul>
+
+    <li><a href="../">&uarr; Home</a></li>
+    <li><a href="../blog/2017-10-08-PEG-madness.html">Next &rarr;</a></li>
+    <li>
+      <a href="2018-05-20-manjaro-i3.pdf">
+        <img src="../css/pdficon.png" width="15" height="15" alt="Download PDF" />
+        <span class="caps" style="font-style: normal">PDF</span>
+      </a>
+    </li>
+    <li style="width: auto;">
+      <a href="https://github.com/sorawee/my-website/blob/master/blog/2018-05-20-manjaro-i3.poly.pm" title="View the Pollen source for this file"
+         class="sourcelink code">&loz; Pollen Source
+      </a>
+    </li>
+  </ul></nav>
+  <section class="page-header">
+    <h1 class="project-name">
+      <a href="../">Sorawee's Website</a>
+    </h1>
+    <h2 class="project-tagline"></h2>
+    <a href="../" class="btn">Blog</a>
+    <a href="../books.html" class="btn">Books</a>
+    <a href="../feed.xml" class="btn">RSS</a>
+    <a href="../about.html" class="btn">About Me</a>
+  </section>
+  <section class="main-content" id="the-main">
+    <div id="real-content">
+      <h1>Spacemacs, i3, and Manjaro</h1><p class="tags">Tags: <a href="/tags/spacemacs">spacemacs</a>, <a href="/tags/manjaro">manjaro</a>, <a href="/tags/i3">i3</a>, <a href="/tags/thinkpad">thinkpad</a>, <a href="/tags/post">post</a></p><p class="pubdate">Published on Sunday, May 20th, 2018</p><div class="content"><p>After I upgraded my computer to Ubuntu 18.04, I was fed up with how laggy things are, especially for <a href="https://atom.io/">Atom</a> and <a href="https://wiki.gnome.org/Projects/GnomeShell">Gnome Shell</a>. Since all of my finals are over, I decided to try out new things.</p><p><see-more></see-more></p><h2>Spacemacs</h2><p>I started by learning <a href="https://www.vim.org/">Vim</a>, as it loads much faster than Atom. Although I am still not used to the modal editing, I find it very appealing and think it might make my life more productive, so I decided to give it a try<label for="6c4284c5-8cf4-40d9-bb58-90420cdf3b35" class="margin-toggle sidenote-number"></label><input type="checkbox" id="6c4284c5-8cf4-40d9-bb58-90420cdf3b35" class="margin-toggle"/><span class="sidenote">Although I find the key <kbd>j</kbd> and <kbd>k</kbd> very unintuitive. They should be swapped!</span>.</p><p>However, Vim is not really extensible, so I tried to find an alternative. <a href="https://www.gnu.org/software/emacs/">Emacs</a>, which I have been using for a while, is an obvious choice, but it is not a modal editor... Except that Emacs is extensible enough to have the <a href="https://www.emacswiki.org/emacs/Evil">evil mode</a> which makes Emacs become a modal editor. I in fact used <a href="http://spacemacs.org/">Spacemacs</a> which has a bunch of packages preinstalled, including the evil mode.</p><p>There’s a problem, however. Spacemacs makes Emacs <i>very</i> slow. Fortunately, I found an <a href="https://medium.com/@bobbypriambodo/blazingly-fast-spacemacs-with-persistent-server-92260f2118b7">article</a> that tells me that I have been using Emacs wrong for my whole life: I should set up an emacs server, so that emacs doesn’t need to reload things again when I open a client.</p><h2>i3 and Manjaro</h2><p>As mentioned above, I would like to switch from Gnome Shell to something else. As all people in the programming language lab uses a tiling window manager (Jack and Justin use <a href="http://xmonad.org/">XMonad</a> and Preston uses <a href="http://swaywm.org/">Sway</a>), I feel compelled to do the same. I decided to use <a href="https://i3wm.org/">i3</a> because I feel it doesn’t need to be configured as much as XMonad, and Sway, which uses Wayland, seems to be relatively unstable compared to i3.</p><p>Jack has been trying to convince me to install <a href="https://www.archlinux.org/">Arch Linux</a>. While I find rolling release great, I really don’t want to set everything up by myself, so <a href="https://manjaro.org/">Manjaro Linux</a>, which is advertised as “a user-friendly Linux distribution based on ... Arch”, is thus a natural candidate to look at. I find its i3 edition really great because unlike fresh installation of i3, where nothing works (sound keys, brightness keys, etc.), Manjaro i3 edition has everything working out of the box.</p><h2>Setup</h2><p>First things first, let’s use the fastest mirror site:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>sudo pacman-mirrors -g
+pmsyyu
+</pre></div></td></tr></tbody></table></div><p>Then, install a sensible terminal. I don’t like <a href="http://software.schmorp.de/pkg/rxvt-unicode.html">urxvt</a> as it doesn’t support things out of the box. I am currently using <a href="https://github.com/thestinger/termite">termite</a> instead.</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>pms termite
+</pre></div></td></tr></tbody></table></div><p>Next, set up the directory that contains all git projects and install dotfiles.</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>mkdir ~/git
+<span class="nb">cd</span> git
+git clone git@github.com:sorawee/dotfiles.git
+pms racket <span class="c1"># need Racket for the dotfiles installer</span>
+pms racket-docs <span class="c1"># Racket documentation needs to be installed separately</span>
+<span class="nb">cd</span> dotfiles
+racket setup.rkt
+</pre></div></td></tr></tbody></table></div><p>As mentioned above, I use Spacemacs as my main editor. Here’s how I set it up:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>pms emacs
+git clone -b develop https://github.com/syl20bnr/spacemacs ~/.emacs.d
+mkdir ~/emacs
+wget http://www.neilvandyke.org/scribble-emacs/scribble.el -O ~/emacs/scribble.el <span class="c1"># Scribble mode</span>
+emacs <span class="c1"># call emacs explicitly to install packages. Don&#39;t forget to rebuild epdfview when a dialog appears</span>
+</pre></div></td></tr></tbody></table></div><p>I also want to use <code>zsh</code> as my default shell.</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>zsh
+git clone --recursive https://github.com/sorin-ionescu/prezto.git <span class="s2">"</span><span class="si">${</span><span class="nv">ZDOTDIR</span><span class="k">:-</span><span class="nv">$HOME</span><span class="si">}</span><span class="s2">/.zprezto"</span>
+setopt EXTENDED_GLOB
+<span class="k">for</span> rcfile in <span class="s2">"</span><span class="si">${</span><span class="nv">ZDOTDIR</span><span class="k">:-</span><span class="nv">$HOME</span><span class="si">}</span><span class="s2">"</span>/.zprezto/runcoms/^<span class="o">(</span>README.md<span class="p">|</span>zshrc<span class="p">|</span>zprestorc<span class="o">)(</span>.N<span class="o">)</span><span class="p">;</span> <span class="k">do</span>
+  ln -s <span class="s2">"</span><span class="nv">$rcfile</span><span class="s2">"</span> <span class="s2">"</span><span class="si">${</span><span class="nv">ZDOTDIR</span><span class="k">:-</span><span class="nv">$HOME</span><span class="si">}</span><span class="s2">/.</span><span class="si">${</span><span class="nv">rcfile</span><span class="p">:</span><span class="nv">t</span><span class="si">}</span><span class="s2">"</span>
+<span class="k">done</span>
+chsh -s /bin/zsh
+</pre></div></td></tr></tbody></table></div><p>We need to restart the computer to make it take effect. Next, install a bunch of programs:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>pms firefox <span class="c1"># firefox, cause I don&#39;t like pale moon</span>
+pms yay     <span class="c1"># yay</span>
+pms glipper <span class="c1"># clipboard manager</span>
+pms polybar <span class="c1"># alternative top bar</span>
+pms mpd     <span class="c1"># needed by polybar to work correctly</span>
+pms djview  <span class="c1"># djvu viewer -- TODO: consider using something else</span>
+pms xf86-input-wacom <span class="c1"># so that wacom works</span>
+pms adobe-source-code-pro-fonts <span class="c1"># the font for Spacemacs and polybar</span>
+pms ttf-font-awesome <span class="c1"># the font for polybar</span>
+yay -S nerd-fonts-complete
+pms rofi    <span class="c1"># use rofi instead of dmenu</span>
+pms evince  <span class="c1"># for a PDF viewer that has "print to file"</span>
+pms aspell-en <span class="c1"># fix Spacemacs&#39; error</span>
+pms npm <span class="c1"># Pyret stuff</span>
+sudo npm install -g tern <span class="c1"># fix Spacemacs&#39; error</span>
+pms xournal <span class="c1"># xournal</span>
+pms gimp    <span class="c1"># gimp</span>
+pms liferea <span class="c1"># feed reader</span>
+pms spotify <span class="c1"># Spotify</span>
+pms playerctl <span class="c1"># so that we can play/pause and next/previous</span>
+pms jdk10-openjdk <span class="c1"># for Alloy development</span>
+pms eclipse-java <span class="c1"># for Alloy development</span>
+yay -S slack-desktop <span class="c1"># Slack</span>
+pms gnome-common <span class="c1"># dependency for iio-sensor-proxy</span>
+yay -S iio-sensor-proxy <span class="c1"># for accelerometer</span>
+pms texlive-most <span class="c1"># TeX</span>
+pms pass <span class="c1"># Password Manager</span>
+pms xorg-xwininfo <span class="c1"># for ~/bin/i3-get-window-criteria</span>
+yay -S peek <span class="c1"># GIF recorder</span>
+yay -S ttf-th-sarabun-new <span class="c1"># Thai font</span>
+yay -S skypeforlinux-stable-bin <span class="c1"># Skype</span>
+
+<span class="c1"># my blog</span>
+raco pkg install pollen
+raco pkg install libuuid
+
+<span class="c1"># fingerprint reader</span>
+yay -S libfprint-vfs0090-git
+pms fprintd
+
+sudo apt install adobe-flashplugin
+sudo apt install redshift redshift-gtk
+sudo apt install dropbox
+</pre></div></td></tr></tbody></table></div><p>I want to install <code>goldendict</code> along with the dictionaries as usual:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>pms goldendict
+mkdir ~/dict
+<span class="nb">cd</span> ~/dict
+wget http://ftp.psu.ac.th/pub/stardict/stardict-lexitron-et-2.4.2.tar.bz2
+wget http://ftp.psu.ac.th/pub/stardict/stardict-lexitron-te-2.4.2.tar.bz2
+tar -xf stardict-lexitron-et-2.4.2.tar.bz2
+tar -xf stardict-lexitron-te-2.4.2.tar.bz2
+<span class="c1"># thanks to http://jsomers.net/blog/dictionary and</span>
+<span class="c1"># eduardosanchez.me/2015/09/07/installing-websters-revised-unabridged-dictionary-on-ubuntu-gnulinux/</span>
+wget https://s3.amazonaws.com/jsomers/dictionary.zip
+unzip dictionary.zip
+<span class="nb">cd</span> dictionary
+tar -xf stardict-dictd-web1913-2.4.2.tar.bz2
+mv stardict-dictd-web1913-2.4.2 ~/dict
+<span class="nb">cd</span> ~/dict
+rm -rf dictionary *.tar.bz2
+<span class="c1"># also need to add ~/dict as a directory to search for dictionaries</span>
+<span class="c1"># *recursively* in goldendict</span>
+</pre></div></td></tr></tbody></table></div><p>Slack and Skype work very well without any additional configuration.</p><p>Last but not least, Thinkpad tweaking!</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>yay -S thinkpad-yoga-scripts-git
+e -n /opt/thinkpad-yoga-scripts/rotate/thinkpad-rotate.py
+</pre></div></td></tr></tbody></table></div><p>Set both <code>disable_touchpads</code> and <code>rotate_pens</code> to <code>True</code>. Then:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="source"><pre class="other"><span></span>systemctl <span class="nb">enable</span> yoga-rotate@<span class="nv">$USER</span>.service --now
+systemctl <span class="nb">enable</span> yoga-backlight.service --now
+</pre></div></td></tr></tbody></table></div><p>FIN <i class="em em-smiley"></i></p></div><hr/>
+    </div>
+    <div id="disqus_thread"></div>
+    <script>
+    var disqus_config = function () {
+    this.page.identifier = "blog/2018-05-20-manjaro-i3.html"; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    (function() { // DON'T EDIT BELOW THIS LINE
+    var d = document, s = d.createElement('script');
+    s.src = '//sorawee.disqus.com/embed.js';
+    s.setAttribute('data-timestamp', +new Date());
+    (d.head || d.body).appendChild(s);
+    })();
+    </script>
+    <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+  </section>
+</body>
+</html>

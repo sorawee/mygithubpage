@@ -109,6 +109,7 @@ s.setAttribute('data-timestamp', +new Date());
           [("index" "tag") (! (list `(h1 ,(hash-ref metas 'special-title)) (splice-top doc)))]
           [("blog") (! (list `(h1 ,(hash-ref metas 'title)) (make-post here #:header #f)))]
           [("books") (! (list `(h1 ,(hash-ref metas 'title)) (get-doc here)))]
+          [("page") (! (list `(h1 ,(hash-ref metas 'special-title)) (get-doc here)))]
           [else "Under Construction!"]))
     </div>
     @(case type

@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css">
+        <link rel="stylesheet" href="style.css">
+    </head>
+    <body>
+        <div class="custom-container container">
+            <div class="row mb-2">
+                <div class="col-sm-12">
+                    <h1>Harkness.js</h1>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-9">
+                    <div class="mb-3">
+                        <input type="text" id="command" placeholder="Type ':add-user johny' or '+johny'" class="form-control">
+                    </div>
+                    <div>
+                        <ul class="nav nav-tabs" id="myTab" role="tablist">
+                            <li class="nav-item">
+                                <a class="nav-link active" id="log-tab" data-toggle="tab" href="#log" role="tab" aria-controls="log" aria-selected="true">Log</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" id="console-tab" data-toggle="tab" href="#console" role="tab" aria-controls="console" aria-selected="false">Console</a>
+                            </li>
+                        </ul>
+                        <div class="tab-content" id="myTabContent">
+                            <div class="tab-pane fade show active" id="log" role="tabpanel" aria-labelledby="log-tab">
+                                <div class="scrollable fix" id="app-container"><table class="table-striped table">
+                                    <thead>
+                                        <th>#</th>
+                                        <th>User</th>
+                                        <th>Duration</th>
+                                        <th>Note</th>
+                                    </thead>
+                                    <tbody id="app-table-body"></tbody>
+                                </table></div>
+                            </div>
+                            <div class="tab-pane fade" id="console" role="tabpanel" aria-labelledby="console-tab">
+                                <div class="fix"><textarea id="message" readonly>
+  ___ ___               __                                         __
+ /   |   \_____ _______|  | __ ____   ____   ______ ______        |__| ______
+/    ~    \__  \\_  __ \  |/ //    \_/ __ \ /  ___//  ___/        |  |/  ___/
+\    Y    // __ \|  | \/    <|   |  \  ___/ \___ \ \___ \         |  |\___ \
+ \___|_  /(____  /__|  |__|_ \___|  /\___  >____  >____  > /\ /\__|  /____  >
+       \/      \/           \/    \/     \/     \/     \/  \/ \______|    \/
+                                </textarea></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-3 right-pane">
+                    <div class="row">
+				                <div class="col-sm-4">
+					                  <input type="file" id="file-load" class="inputfile" accept=".csv" />
+					                  <label for="file-load"><span>Load</span></label>
+				                </div>
+                        <div class="col-sm-4">
+                            <a id="file-save">Save</a>
+                        </div>
+                        <div class="col-sm-4">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h4>User List</h4>
+                            <div class="scrollable fix mt-3"><table class="table-hover table"><tbody id="userList"></tbody></table></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.5.0/papaparse.min.js"></script>
+        <script src="parser.js"></script>
+        <script src="script.js"></script>
+    </body>
+</html>

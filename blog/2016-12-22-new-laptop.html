@@ -122,7 +122,7 @@
   </section>
   <section class="main-content" id="the-main">
     <div id="real-content">
-      <h1>My New Laptop &amp; Settings</h1><p class="tags">Tags: <a href="/tags/ubuntu">ubuntu</a>, <a href="/tags/thinkpad">thinkpad</a>, <a href="/tags/post">post</a></p><p class="pubdate">Published on Thursday, December 22nd, 2016</p><div class="content"><p>I switched from Ubuntu to Macbook Pro since 2013 and was very happy with it. About 5 months ago, the screen was broken, so I planned to buy a new one. Knowing that the new version will have a major change, I was very excited and decided to wait until it’s released in order to buy it. To my disappointment, <a href="http://www.theverge.com/2016/11/7/13548052/the-macbook-pro-lie">it incredibly sucks</a><label for="10017456-1da1-4b49-a67c-3c041c1f9046" class="margin-toggle sidenote-number"></label><input type="checkbox" id="10017456-1da1-4b49-a67c-3c041c1f9046" class="margin-toggle"/><span class="sidenote">I would have loved it if I were not a programmer–the missing <kbd>Esc</kbd> and traditional USB ports matter a lot to me</span>.</p><p>A lot of my friends suggested me to get a Thinkpad X1 Yoga which looks really cool. I waited until Thanksgiving to get a big discount. The laptop arrived in early December. The first thing I did is to install Ubuntu 16.10 because I hate Windows! <i class="em em-stuck_out_tongue"></i></p><p>Following are my settings. I write these particularly for myself in the future so that when I need to set things up again, I won’t have to spend a lot of time figuring out what to do!</p><p><see-more></see-more></p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
+      <h1>My New Laptop &amp; Settings</h1><p class="tags">Tags: <a href="/tags/ubuntu">ubuntu</a>, <a href="/tags/thinkpad">thinkpad</a>, <a href="/tags/post">post</a></p><p class="pubdate">Published on Thursday, December 22nd, 2016</p><div class="content"><p>I switched from Ubuntu to Macbook Pro since 2013 and was very happy with it. About 5 months ago, the screen was broken, so I planned to buy a new one. Knowing that the new version will have a major change, I was very excited and decided to wait until it’s released in order to buy it. To my disappointment, <a href="http://www.theverge.com/2016/11/7/13548052/the-macbook-pro-lie">it incredibly sucks</a><label for="b2cd5725-253f-4eab-9c95-7dff2b178705" class="margin-toggle sidenote-number"></label><input type="checkbox" id="b2cd5725-253f-4eab-9c95-7dff2b178705" class="margin-toggle"/><span class="sidenote">I would have loved it if I were not a programmer–the missing <kbd>Esc</kbd> and traditional USB ports matter a lot to me</span>.</p><p>A lot of my friends suggested me to get a Thinkpad X1 Yoga which looks really cool. I waited until Thanksgiving to get a big discount. The laptop arrived in early December. The first thing I did is to install Ubuntu 16.10 because I hate Windows! <i class="em em-stuck_out_tongue"></i></p><p>Following are my settings. I write these particularly for myself in the future so that when I need to set things up again, I won’t have to spend a lot of time figuring out what to do!</p><p><see-more></see-more></p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
  4
@@ -505,7 +505,7 @@ rm -rf dictionary *.tar.bz2
   xmodmap -e <span class="s2">"keycode 112 = Home NoSymbol Home"</span>
   xmodmap -e <span class="s2">"keycode 117 = End NoSymbol End"</span>
   rm ~/.switch-reading-mode
-  sleep 0.2
+  sleep <span class="m">0</span>.2
   killall notify-osd
   notify-send <span class="s2">"Normal mode"</span>
 <span class="k">else</span>
@@ -514,7 +514,7 @@ rm -rf dictionary *.tar.bz2
   xmodmap -e <span class="s2">"keycode 112 = Prior NoSymbol Prior"</span>
   xmodmap -e <span class="s2">"keycode 117 = Next NoSymbol Next"</span>
   touch ~/.switch-reading-mode
-  sleep 0.2
+  sleep <span class="m">0</span>.2
   killall notify-osd
   notify-send <span class="s2">"Reading mode"</span>
 <span class="k">fi</span>
@@ -680,9 +680,9 @@ systemctl start iio-sensor-proxy.service
     Waiting <span class="k">for</span> iio-sensor-proxy to appear
 +++ iio-sensor-proxy <span class="nv">appeared</span>
 <span class="o">===</span> Has accelerometer <span class="o">(</span>orientation: normal<span class="o">)</span>
-<span class="o">===</span> Has ambient light sensor <span class="o">(</span>value: 0.908000, unit: lux<span class="o">)</span>
-Light changed: 1.557000 <span class="o">(</span>lux<span class="o">)</span>
-Light changed: 13.365001 <span class="o">(</span>lux<span class="o">)</span>
+<span class="o">===</span> Has ambient light sensor <span class="o">(</span>value: <span class="m">0</span>.908000, unit: lux<span class="o">)</span>
+Light changed: <span class="m">1</span>.557000 <span class="o">(</span>lux<span class="o">)</span>
+Light changed: <span class="m">13</span>.365001 <span class="o">(</span>lux<span class="o">)</span>
 ...
 </pre></div></td></tr></tbody></table></div><p>If it doesn’t appear like this, there are two possibilties:</p><ol><li>The kernel you are using is <a href="https://github.com/hadess/iio-sensor-proxy/issues/71">buggy</a>!. Download and install <a href="http://kernel.ubuntu.com/~kernel-ppa/mainline/v4.9.3/">kernel version 4.9.3</a> or later to fix this issue.</li><li>There’s a weird <a href="https://github.com/hadess/iio-sensor-proxy/issues/124">bug</a> that <code>monitor-sensor</code> won’t work unless you sleep your laptop and wake it up... So... do that.</li></ol><p>When <code>monitor-sensor</code> is working, install <code><a href="https://github.com/admiralakber/thinkpad-yoga-scripts">thinkpad-yoga-scripts</a></code> by the following instructions. Note that <code>thinkpad-yoga-scripts</code> has a lot of features that we do not need. For example, “Disabling of Touchscreen with proximity of Wacom digitizer” is working already for us. So we will not follow the instructions in the README. Instead:</p><div class="highlight"><table class="sourcetable"><tbody><tr><td class="linenos"><div class="linenodiv"><pre>1
 2

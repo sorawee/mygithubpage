@@ -1,0 +1,69 @@
+textarea {
+    resize: none !important;
+}
+
+.scrollable {
+    overflow: auto;
+}
+
+.fix {
+    height: 400px;
+}
+
+.container.custom-container {
+    margin-top: 15px;
+}
+
+#message {
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 10px;
+    font-family: monospace;
+    font-size: 10pt;
+}
+
+.inputfile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.inputfile + label, #file-save {
+    font-size: 1rem;
+    /* 20px */
+    font-weight: 700;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    cursor: pointer;
+    display: inline-block;
+    overflow: hidden;
+    padding: 0.40rem 1rem;
+    /* 10px 20px */
+
+    color: #f1e5e6;
+    background-color: #d3394c;
+}
+
+td {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    cursor: pointer;
+}
+
+.inputfile:focus + label,
+.inputfile.has-focus + label,
+.inputfile + label:hover,
+#file-save:hover {
+    background-color: #722040;
+}
+
+.right-pane {
+    background-color: #ddd;
+    margin-top: -20px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+}
