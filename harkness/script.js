@@ -1,123 +1,98 @@
-$(function () {
+(function () {
     /**
-     * @typedef Row
-     * @type {Object}
+     * @typedef Record
+     * @type {object}
      * @property {number} id
      * @property {string} user
      * @property {number} duration
      * @property {string} note
      */
 
+    /**
+     * @typedef Current
+     * @type {?object}
+     * @property {string} user
+     * @property {number} duration
+     * @property {string} note
+     * @property {number} latestStartTime
+     */
+
+
+    /* Constants */
+
+    const userColumns = 2;
+
+    const commands = [
+        'start-log',
+        'pause-log',
+        'edit-log',
+        'remove-log',
+        'add-users',
+        'delete-users',
+        'note',
+    ];
+
+    /* Variables */
+
     let users = [];
+
+    /** @type {Current} */
     let current = null;
+
     let database = [];
+
     let currentId = 1;
+
+    /*
+      All rows in the table come from both `database` and `current`. `current` should always be non-`null` unless
+      there's absolutely no rows. As such, `current == null` implies `database.length == 0`
+    */
 
     /**
      * @param {number} id
      * @param {string} user
      * @param {number} duration
      * @param {string} note
-     * @returns {Row}
+     * @returns {Record}
      */
-    function makeRow(id, user, duration, note) {
+    function makeRecord(id, user, duration, note) {
         return {
             id: id,
             user: user,
             duration: duration,
-            note: note
+            note: note,
         };
     }
 
-    function refreshUsers() {
-        const ul = $('#userList');
-        ul.empty();
-        users.forEach(user => {
-            const td = $('<td/>')
-                  .text(user)
-                  .click(e => {
-                      update(`:start-log ${user}`);
-                  });
-            ul.append($(`<tr/>`).append(td));
-        });
+    function getLabels() {
+        return database.map(row => row.id).concat(current == null ? [] : [current.id]);
     }
 
-    function refreshLogs() {
-        clearTr();
-        database.forEach(row => {
-            appendTr(rowToTr(row, false));
-        });
-        if (current != null) {
-            appendTr(rowToTr(currentRow(), true));
-        }
-    }
-
-
-    /**
-     * @param {Row} row
-     * @returns {JQuery}
-     */
-    function rowToTr(row, lastRow) {
-        const rowLabel = lastRow ? '*' : row.id;
-        function clickEventTd(field, val) {
-            return e => {
-                $('#command').typeahead('val', `:edit-log ${rowLabel} ${field} "${val}"`);
-                $('#command').focus();
-            };
-        }
-        return $('<tr/>')
-            .append($('<td/>').text(rowLabel))
-            .append($('<td/>').text(row.user).click(clickEventTd('user', row.user)))
-            .append($('<td/>').text(durationToString(row.duration)).click(clickEventTd('duration', row.duration)))
-            .append($('<td/>').text(row.note).click(clickEventTd('note', row.note)));
-    }
-
-    function scrollLog() {
-        const elem = document.getElementById('app-container');
-        elem.scrollTop = elem.scrollHeight;
-    }
-
-    const commands = [
-        "pause-time",
-        "resume-time",
-        "add-user",
-        "remove-user",
-        "stop-log",
-        "edit-log",
-        "remove-log",
-        "start-log",
-        "note"
-    ];
-
-    function getRowLabels() {
-        return database.map(row => row.id).concat(current == null ? [] : ['*']);
-    }
-
-    function substringMatcher(q, cb) {
+    function prefixMatcher(q, cb) {
         const autocomplete = [
             {
-                pattern: ':remove-user ',
+                pattern: ':delete-users ',
                 target: () => users
             },
             {
                 pattern: ':start-log ',
-                target: () => users
+                target: () => [''].concat(users)
             },
             {
                 pattern: ':remove-log ',
-                target: getRowLabels
+                target: getLabels
             },
             {
-                pattern: ':edit-log (\\d+|\\*) user ',
+                pattern: ':edit-log \\d+ user ',
                 target: () => users
             },
             {
-                pattern: ':edit-log (\\d+|\\*) ',
+                pattern: ':edit-log \\d+ ',
                 target: () => ['user', 'duration', 'note']
             },
             {
                 pattern: ':edit-log ',
-                target: getRowLabels
+                target: getLabels
             },
             {
                 pattern: ':',
@@ -125,7 +100,7 @@ $(function () {
             },
             {
                 pattern: '\\+',
-                target: () => users
+                target: () => [''].concat(users)
             }
         ];
 
@@ -144,22 +119,114 @@ $(function () {
         });
     }
 
-
     function getCurrentSec() {
         return Math.floor(Date.now() / 1000);
     }
 
+    function setCurrent(id, user, duration, latestStartTime, note) {
+        current = {
+            id: id,
+            user: user,
+            duration: duration,
+            latestStartTime: latestStartTime,
+            note: note
+        };
+    }
+
+    /**
+     * @param {number} n
+     */
+    function durationToString(n) {
+        const seconds = n % 60;
+        const mins = Math.floor(n / 60);
+        return `${mins} m ${seconds} s`;
+    }
+
+    function getFreshDatabase() {
+        return database.concat((current != null) ? [getCurrentRecordUnsafe()] : []);
+    }
+
+    function popRecordAndRow() {
+        if (current == null) return;
+        if (database.length > 0) {
+            const lastRow = database.pop();
+            setCurrent(lastRow.id, lastRow.user, lastRow.duration, null, lastRow.note);
+            currentId = lastRow.id;
+        } else {
+            current = null;
+        }
+        removeLastRowUnsafe();
+    }
+
+    function isUserActive(user) {
+        return current != null && current.user == user && current.latestStartTime != null;
+    }
+
     /* Precondition: current != null */
-    function getCurrentDuration() {
+    function getCurrentRecordUnsafe() {
+        return makeRecord(current.id, current.user, getCurrentDurationUnsafe(), current.note);
+    }
+
+    /* Precondition: current != null */
+    function getCurrentDurationUnsafe() {
         return current.duration +
             ((current.latestStartTime == null) ?
              0 : getCurrentSec() - current.latestStartTime);
     }
 
-    function durationToString(n) {
-        const seconds = n % 60;
-        const mins = Math.floor(n / 60);
-        return `${mins} m ${seconds} s`;
+    function refreshUsers() {
+        const tds = users.map(user => {
+            const td = $('<td/>')
+                  .text(user)
+                  .click(e => update(isUserActive(user) ?
+                                     ':pause-log' :
+                                     `:start-log ${user}`));
+            if (isUserActive(user)) td.addClass('active');
+            return td;
+        }).reverse();
+
+        const ul = $('#userList tbody');
+        ul.empty();
+
+        while (tds.length > 0) {
+            const tr = $('<tr/>');
+            for (let i = 0; i < userColumns && tds.length > 0; i++) {
+                tr.append(tds.pop());
+            }
+            ul.append(tr);
+        }
+    }
+
+    function refreshLogs() {
+        clearLogTable();
+        getFreshDatabase().forEach(row => appendTableRow(recordToRow(row)));
+    }
+
+    /**
+     * @param {Record} record
+     * @returns {JQuery}
+     */
+    function recordToRow(record) {
+        function clickEvent(field, val) {
+            return e => {
+                $('#command').typeahead('val', `:edit-log ${record.id} ${field} ${JSON.stringify(val)}`);
+                $('#command').focus();
+            };
+        }
+        const tr = $('<tr/>')
+              .append($('<td/>').text(record.id))
+              .append($('<td/>').text(record.user).click(clickEvent('user', record.user)))
+              .append($('<td/>').text(durationToString(record.duration)).click(clickEvent('duration', record.duration)))
+              .append($('<td/>').text(record.note).click(clickEvent('note', record.note)));
+        if (current != null && record.id == currentId && current.latestStartTime != null) {
+            tr.addClass('active');
+        }
+        return tr;
+    }
+
+    function scrollLog() {
+        const elem = document.getElementById('app-container');
+        elem.scrollTop = elem.scrollHeight;
     }
 
     function log(msg) {
@@ -172,42 +239,22 @@ $(function () {
         }
         const now = new Date();
         msg = `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}` + ' ' + msg;
-        $('#message').val($('#message').val() + "\r\n" + msg);
+        $('#message').val($('#message').val() + '\r\n' + msg);
 
         const textarea = document.getElementById('message');
         textarea.scrollTop = textarea.scrollHeight;
     }
 
-    /* Precondition: current != null */
-    function flushCurrent() {
-        const duration = getCurrentDuration();
-        const row = currentRow();
-        database.push(row);
-        currentId++;
-        removeLastTr();
-        appendTr(rowToTr(row, false));
-        log(`User ${current.user} finishes with duration = ${duration}`);
-        current = null;
-    }
-
-    function getFreshDatabase() {
-        return database.concat((current != null) ? [currentRow()] : []);
-    }
-
-    /* Precondition: current != null */
-    function currentRow() {
-        return makeRow(current.id, current.user, getCurrentDuration(), current.note);
-    }
-
-    function appendTr(tr) {
+    function appendTableRow(tr) {
         $('#app-table-body').append(tr);
     }
 
-    function removeLastTr() {
+    /* Precondition: current != null */
+    function removeLastRowUnsafe() {
         $('#app-table-body tr:last').remove();
     }
 
-    function clearTr() {
+    function clearLogTable() {
         $('#app-table-body').empty();
     }
 
@@ -223,16 +270,17 @@ $(function () {
         return null;
     }
 
-    function getRowIndex(target) {
+    /**
+     * @param {string} target
+     */
+    function getRecordIndex(target) {
         const id = Number(target);
         if (Number.isNaN(id)) {
             log(`${target} is not a log id. Aborted.`);
             return null;
         }
-        const index = database.findIndex(row => row.id == id);
-        if (index == -1) {
-            log(`Log id ${id} is not found. Aborted.`);
-        }
+        const index = database.findIndex(record => record.id == id);
+        if (index == -1) log(`Log id ${id} is not found. Aborted.`);
         return index;
     }
 
@@ -253,9 +301,9 @@ $(function () {
             args = [cmd];
         }
 
-        function badArity(expectedLength) {
-            if (args.length != expectedLength) {
-                log(`Wrong number of arguments: expect ${expectedLength}, got ${args.length}`);
+        function badArity(comb) {
+            if (!comb.pred(args.length)) {
+                log(`Wrong number of arguments: expect ${comb.error}, got ${args.length}`);
                 return true;
             }
             return false;
@@ -263,7 +311,16 @@ $(function () {
 
         switch (mode) {
         case 'start-log': {
-            if (badArity(1)) return;
+            if (badArity(arity.LE(1))) return;
+
+            if (args.length == 0) {
+                if (current == null) {
+                    log(`Can't start. Aborted.`);
+                    return;
+                }
+                args.push(current.user);
+            }
+
             const user = args[0];
 
             if (! users.includes(user)) {
@@ -272,106 +329,68 @@ $(function () {
             }
 
             if (current != null && user == current.user) {
-                log(`User ${current.user} has already started. Aborted.`);
-                return;
+                if (current.latestStartTime != null) {
+                    log(`User ${current.user} has already started. Aborted.`);
+                    return;
+                }
+                current.latestStartTime = getCurrentSec();
+            } else {
+                if (current != null) {
+                    const record = getCurrentRecordUnsafe();
+                    database.push(record);
+                    currentId++;
+                    removeLastRowUnsafe();
+                    appendTableRow(recordToRow(record));
+                    log(`User ${current.user} finishes after ${durationToString(record.duration)}`);
+                }
+                setCurrent(currentId, user, 0, getCurrentSec(), '');
+                appendTableRow(recordToRow(getCurrentRecordUnsafe()));
             }
-            if (current != null) flushCurrent();
-            current = {
-                user: user,
-                latestStartTime: getCurrentSec(),
-                duration: 0,
-                id: currentId,
-                note: '',
-            };
-            appendTr(rowToTr(currentRow(), true));
             scrollLog();
+            refreshUsers(); // could be more efficient, but we don't care here
 
-            log(`User ${user} starts`);
+            log(`User ${user} starts.`);
 
         } break;
 
-        case 'pause-time': {
-            if (badArity(0)) return;
+        case 'remove-log': {
+            if (badArity(arity.EQ(1))) return;
+            const target = args[0];
+            if (target != current.id) {
+                const rowIndex = getRecordIndex(target);
+                if (rowIndex == -1) return;
+                database.splice(rowIndex, 1);
+                refreshLogs();
+            } else {
+                popRecordAndRow();
+                refreshUsers(); // could be more efficient, but we don't care here
+            }
+
+            log(`Remove log ${target}`);
+        } break;
+
+        case 'pause-log': {
+            if (badArity(arity.EQ(0))) return;
             if (current == null) {
                 log("Can't pause. Aborted");
                 return;
             }
-            current.duration = getCurrentDuration();
+            current.duration = getCurrentDurationUnsafe();
             current.latestStartTime = null;
+
             scrollLog();
+            refreshUsers(); // could be more efficient, but we don't care here
 
             log('Paused.');
 
         } break;
 
-        case 'resume-time': {
-            if (badArity(0)) return;
-            if (current == null || current.latestStartTime != null) {
-                log("Can't continue. Aborted");
-                return;
-            }
-            current.latestStartTime = getCurrentSec();
-            scrollLog();
-
-            log('Continued.');
-
-        } break;
-
-        case 'stop-log': {
-            if (badArity(0)) return;
-            if (current == null) {
-                log("Can't stop. Aborted.");
-                return;
-            }
-            flushCurrent();
-            current = null;
-            scrollLog();
-
-            log('Stopped.');
-        } break;
-
-        case 'note': {
-            if (current == null) {
-                log(`Can't note. Aborted.`);
-                return;
-            }
-            current.note += args[0] + '\n';
-            scrollLog();
-
-            log("Note added.");
-        } break;
-
-        case 'add-user': {
-            args.forEach(user => {
-                if (users.includes(user)) {
-                    log(`User ${user} already exists. Skipped.`);
-                    return;
-                }
-                users.push(user);
-
-                log(`User ${user} is added.`);
-            });
-
-            refreshUsers(); // could be more efficient, but we don't care here
-        } break;
-
-        case 'remove-user': {
-            if (badArity(1)) return;
-            const user = args[0];
-            const idx = users.indexOf(user);
-            if (idx == -1) {
-                log(`${user} is not a user. Aborted.`);
-                return;
-            }
-            users.splice(idx, 1);
-            refreshUsers(); // could be more efficient, but we don't care here
-
-            log(`User ${user} is removed.`);
-
-        } break;
-
         case 'edit-log': {
-            if (badArity(3)) return;
+            if (badArity(arity.EQ(3))) return;
+            if (current == null) {
+                log("Can't edit.");
+                return;
+            }
 
             const target = args[0];
             const field = args[1];
@@ -379,10 +398,10 @@ $(function () {
 
             let rowObj;
 
-            if (target == '*') {
-                rowObj = currentRow();
+            if (target == current.id) {
+                rowObj = getCurrentRecordUnsafe();
             } else {
-                const rowIndex = getRowIndex(target);
+                const rowIndex = getRecordIndex(target);
                 if (rowIndex == -1) return;
                 rowObj = database[rowIndex];
             }
@@ -414,7 +433,7 @@ $(function () {
                 return;
             }
 
-            if (target == '*') {
+            if (target == current.id) {
                 current.user = rowObj.user;
                 current.duration = rowObj.duration;
                 current.note = rowObj.note;
@@ -429,30 +448,44 @@ $(function () {
             log(`Edited.`);
         } break;
 
-        case 'remove-log': {
-            if (badArity(2)) return;
-            const target = args[0];
-            const confirmation = args[1];
-            let rowIndex;
-            if (target == '*') {
-                rowIndex = -1;
-            } else {
-                rowIndex = getRowIndex(target);
-                if (rowIndex == -1) return;
-            }
-            if (confirmation == 'confirm') {
-                if (target == '*') {
-                    current = null;
-                    removeLastTr();
-                } else {
-                    database.splice(rowIndex, 1);
-                    refreshLogs();
-                }
-                log(`Remove log ${target}`);
-            } else {
-                log(`Need "confirm" as an argument. Got ${confirmation}.`);
+        case 'note': {
+            if (current == null) {
+                log(`Can't note. Aborted.`);
                 return;
             }
+            current.note += args[0] + '\n';
+            scrollLog();
+
+            log('Note added.');
+        } break;
+
+        case 'add-users': {
+            args.forEach(user => {
+                if (users.includes(user)) {
+                    log(`User ${user} already exists. Skipped.`);
+                    return;
+                }
+                users.push(user);
+
+                log(`User ${user} is added.`);
+            });
+
+            refreshUsers(); // could be more efficient, but we don't care here
+        } break;
+
+        case 'delete-users': {
+            args.forEach(user => {
+                const idx = users.indexOf(user);
+                if (idx == -1) {
+                    log(`${user} is not a user. Skipped.`);
+                    return;
+                }
+                users.splice(idx, 1);
+
+                log(`User ${user} is removed.`);
+            });
+
+            refreshUsers(); // could be more efficient, but we don't care here
         } break;
 
         default:
@@ -463,8 +496,13 @@ $(function () {
 
     setInterval(() => {
         if (current != null) {
-            removeLastTr();
-            appendTr(rowToTr(currentRow(), true));
+            const elem = document.getElementById('app-container');
+            const offset = elem.scrollHeight - elem.scrollTop - elem.clientHeight;
+            removeLastRowUnsafe();
+            appendTableRow(recordToRow(getCurrentRecordUnsafe()));
+            if (Math.abs(offset) <= 2) {
+                elem.scrollTop = elem.scrollHeight;
+            }
         }
     }, 500);
 
@@ -472,25 +510,20 @@ $(function () {
     $('#command').typeahead({
         highlight: true,
     }, {
-        source: substringMatcher
+        source: prefixMatcher
     });
 
     $('#command').keyup(e => {
         if (e.keyCode == 13) {
             update($('#command').val());
-            $('#command').typeahead('close');
             $('#command').typeahead('val', '');
-        } else if (e.keyCode == 9) {
-            const val = $('#command').typeahead('val');
-            $('#command').typeahead('close');
-            $('#command').typeahead('val', '');
-            $('#command').typeahead('val', val);
-            $('#command').typeahead('open');
         }
     });
 
     $('body').keyup(e => {
-        $('#command').focus();
+        if (e.keyCode == 9) {
+            $('#command').focus();
+        }
     });
 
     refreshUsers();
@@ -498,12 +531,12 @@ $(function () {
     $('#command').focus();
 
     $('#file-save').click(e => {
-        log("Save requested");
+        log('Save requested');
         const saver = $('#file-save');
         saver.attr('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(
-            Papa.unparse(users.map(user => makeRow(-1, user, 0, "")).concat(getFreshDatabase()))
+            Papa.unparse(users.map(user => makeRecord(-1, user, 0, '')).concat(getFreshDatabase()))
         ));
-        saver.attr('download', 'haskness-log.csv');
+        saver.attr('download', 'harkness-log.csv');
     });
 
     $('#file-load').change(e => {
@@ -520,21 +553,190 @@ $(function () {
                 // TODO: need to handle malformed csv
                 users = [];
                 database = [];
-                current = null;
-                currentId = 0; // set to 0 so that if currentId is not set below at all, currentId + 1 = 1
-                data.data.forEach(row => {
-                    if (row.id == -1) {
-                        users.push(row.user);
+                data.data.forEach(record => {
+                    if (record.id == -1) {
+                        users.push(record.user);
                     } else {
-                        database.push(row);
-                        appendTr(rowToTr(row, false));
-                        currentId = row.id;
+                        database.push(record);
+                        appendTableRow(recordToRow(record));
                     }
                 });
-                currentId++;
+
+                const lastRow = database.pop();
+                setCurrent(lastRow.id, lastRow.user, lastRow.duration, null, lastRow.note);
                 refreshUsers();
-                log("Load successfully");
+                log('Load successfully');
             };
         }
     });
-});
+
+    $('#help').click(e => {
+        $('#dialog').dialog('open');
+    });
+
+    $('#dialog').dialog({
+        width: 900,
+        height: 500,
+        autoOpen: false,
+        modal: true,
+    });
+
+    function d3eval() {
+        const b = 300;
+        const a = 100;
+        var diameter = 400,
+            width = 800,
+            radius = diameter / 2,
+            innerRadius = radius - 50;
+
+        var cluster = d3.cluster()
+            .size([360, innerRadius]);
+
+        function getNewDY(d) {
+            const theta = Math.abs(d.x / 180 * Math.PI);
+            const cosComp = b * Math.cos(theta);
+            const sinComp = a * Math.sin(theta);
+            return a * b * d.y / (innerRadius *
+                                  Math.sqrt(cosComp * cosComp +
+                                            sinComp * sinComp));
+        }
+
+        function getLine() {
+            const randomFactor = 0.5 + (Math.random() * 0.5);
+            return d3.radialLine()
+                .curve(d3.curveBundle.beta(randomFactor))
+                .radius(getNewDY)
+                .angle(function(d) { return d.x / 180 * Math.PI; });
+        }
+
+        var svg = d3.select("#vizDiv").append("svg")
+            .attr("width", width)
+            .attr("height", diameter)
+            .append("g")
+            .attr("transform", "translate(" + width/2 + "," + diameter/2 + ")");
+
+        var link = svg.append("g").selectAll(".link"),
+            node = svg.append("g").selectAll(".node");
+
+        function load(classes) {
+            var root = packageHierarchy(classes)
+                .sum(function(d) { return d.size; });
+
+            cluster(root);
+
+            link = link
+                .data(packageImports(root.leaves()))
+                .enter().append("path")
+                .each(function(d) {
+                    d.source = d[0], d.target = d[d.length - 1];
+                })
+                .attr("class", "link")
+                .each(function(d) {
+                    d3.select(this).attr("d", getLine());
+                });
+
+            node = node
+                .data(root.leaves())
+                .enter().append("text")
+                .attr("class", "node")
+                .attr("dy", "0.31em")
+                .attr("transform", function(d) { return "rotate(" + (d.x - 90) + ")translate(" + (getNewDY(d) + 8) + ",0)" + (d.x < 180 ? "" : "rotate(180)"); })
+                .attr("text-anchor", function(d) { return d.x < 180 ? "start" : "end"; })
+                .text(function(d) { return d.data.key; })
+                .on("mouseover", mouseovered)
+                .on("mouseout", mouseouted);
+        };
+
+        function mouseovered(d) {
+            node
+                .each(function(n) { n.target = n.source = false; });
+
+            link
+                .classed("link--target", l => {
+                    if (l.target === d) return l.source.source = true;
+                    return null;
+                })
+                .classed("link--source", l => {
+                    if (l.source === d) return l.target.target = true;
+                    return null;
+                })
+                .filter(l => l.target === d || l.source === d)
+                .raise();
+
+            node
+                .classed("node--target", n => n.target)
+                .classed("node--source", n => n.source);
+        }
+
+        function mouseouted(d) {
+            link
+                .classed("link--target", false)
+                .classed("link--source", false);
+
+            node
+                .classed("node--target", false)
+                .classed("node--source", false);
+        }
+
+        // Lazily construct the package hierarchy from class names.
+        function packageHierarchy(classes) {
+            var map = {};
+
+            function find(name, data) {
+                var node = map[name], i;
+                if (!node) {
+                    node = map[name] = data || {name: name, children: []};
+                    if (name.length) {
+                        node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
+                        node.parent.children.push(node);
+                        node.key = name.substring(i + 1);
+                    }
+                }
+                return node;
+            }
+
+            classes.forEach(function(d) {
+                find(d.name, d);
+            });
+
+            return d3.hierarchy(map[""]);
+        }
+
+        // Return a list of imports for the given array of nodes.
+        function packageImports(nodes) {
+            var map = {},
+                imports = [];
+
+            // Compute a map from name to node.
+            nodes.forEach(function(d) {
+                map[d.data.name] = d;
+            });
+
+            // For each import, construct a link from the source to target node.
+            nodes.forEach(function(d) {
+                if (d.data.links) d.data.links.forEach(function(i) {
+                    imports.push(map[d.data.name].path(map[i]));
+                });
+            });
+
+            return imports;
+        }
+
+        const mapUsers = {};
+        const freshData = getFreshDatabase();
+        const allUsers = new Set(freshData.map(e => e.user));
+        freshData.forEach(e => {
+            mapUsers[e.user] = [];
+        });
+        for (let i = 0; i < freshData.length - 1; i++) {
+            mapUsers[freshData[i].user].push(freshData[i + 1].user);
+        }
+        load(Array.from(allUsers).map(e => ({name: e, links: mapUsers[e]})));
+    }
+
+    $('#viz-tab').click(e => {
+        $('#vizDiv').empty();
+        d3eval();
+    });
+
+})();

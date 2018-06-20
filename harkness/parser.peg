@@ -1,24 +1,21 @@
 Arguments
-  = _ head:Atom tail:(__ Atom)* _ { return [head].concat(tail.map(e => e[1])); } /
-  _ { return []; }
+  = _ head:Atom tail:(__ Atom)* _ { return [head].concat(tail.map(e => e[1])); }
+  / _ { return []; }
 
-Atom
-  = Value / String
+Atom = Value / String
 
-Value "value"
-  = val:[^" ]+ {
-    return val.join("");
-  }
+Value "value" = chars:[^" ]+ /* " */ { return chars.join(""); }
 
-String
-  = "\"" val:StringContent* "\"" {
-    return val.join("");
-  }
+String "string" = '"' chars:Char* '"' { return chars.join(""); }
 
-StringContent "string content" = [^"]
+Char "character"
+  = !('"' / "\\") char:. { return char; }
+  / "\\" sequence:EscapeSequence { return sequence; }
 
-_ "whitespace"
-  = [ ]*
+EscapeSequence "escape character"
+  = '"'
+  / "\\"
+  / "n"  { return "\n"; }
 
-__ "mandatory whitespace"
-  = [ ]+
+_ "whitespace" = " "*
+__ "mandatory whitespace" = " "*

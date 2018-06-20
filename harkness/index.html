@@ -1,86 +1,196 @@
 <!doctype html>
 <html lang="en">
     <head>
+        <title>Harkness.js</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css">
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <div class="custom-container container">
-            <div class="row mb-2">
+        <div class="container box mt-2">
+            <div class="row fixed mb-2 ">
                 <div class="col-sm-12">
                     <h1>Harkness.js</h1>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-sm-9">
-                    <div class="mb-3">
+            <div class="row variable">
+                <div class="col-sm-9 box">
+                    <div class="mb-3 fixed">
                         <input type="text" id="command" placeholder="Type ':add-user johny' or '+johny'" class="form-control">
                     </div>
-                    <div>
-                        <ul class="nav nav-tabs" id="myTab" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="log-tab" data-toggle="tab" href="#log" role="tab" aria-controls="log" aria-selected="true">Log</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="console-tab" data-toggle="tab" href="#console" role="tab" aria-controls="console" aria-selected="false">Console</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content" id="myTabContent">
-                            <div class="tab-pane fade show active" id="log" role="tabpanel" aria-labelledby="log-tab">
-                                <div class="scrollable fix" id="app-container"><table class="table-striped table">
-                                    <thead>
-                                        <th>#</th>
-                                        <th>User</th>
-                                        <th>Duration</th>
-                                        <th>Note</th>
-                                    </thead>
-                                    <tbody id="app-table-body"></tbody>
-                                </table></div>
-                            </div>
-                            <div class="tab-pane fade" id="console" role="tabpanel" aria-labelledby="console-tab">
-                                <div class="fix"><textarea id="message" readonly>
+                    <div class="variable">
+                        <div class="box">
+                            <ul class="nav nav-tabs fixed" id="myTab" role="tablist">
+                                <li class="nav-item">
+                                    <a class="nav-link active" id="log-tab" data-toggle="tab" href="#log" role="tab" aria-controls="log" aria-selected="true">Log</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="console-tab" data-toggle="tab" href="#console" role="tab" aria-controls="console" aria-selected="false">Console</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link" id="viz-tab" data-toggle="tab" href="#viz" role="tab" aria-controls="viz" aria-selected="false">Visualizer</a>
+                                </li>
+                            </ul>
+                            <div class="tab-content variable" id="myTabContent">
+                                <div class="tab-pane fade show active box" id="log" role="tabpanel" aria-labelledby="log-tab">
+                                    <div class="box scrollable" id="app-container"><table class="table">
+                                        <thead>
+                                            <th>#</th>
+                                            <th>User</th>
+                                            <th>Duration</th>
+                                            <th>Note</th>
+                                        </thead>
+                                        <tbody id="app-table-body"></tbody>
+                                    </table></div>
+                                </div>
+                                <div class="tab-pane fade box" id="console" role="tabpanel" aria-labelledby="console-tab">
+                                    <textarea id="message" readonly>
   ___ ___               __                                         __
  /   |   \_____ _______|  | __ ____   ____   ______ ______        |__| ______
 /    ~    \__  \\_  __ \  |/ //    \_/ __ \ /  ___//  ___/        |  |/  ___/
 \    Y    // __ \|  | \/    <|   |  \  ___/ \___ \ \___ \         |  |\___ \
  \___|_  /(____  /__|  |__|_ \___|  /\___  >____  >____  > /\ /\__|  /____  >
        \/      \/           \/    \/     \/     \/     \/  \/ \______|    \/
-                                </textarea></div>
+                                    </textarea>
+                                </div>
+                                <div class="tab-pane fade box" id="viz" role="tabpanel" aria-labelledby="viz-tab">
+                                    <div id="vizDiv"></div>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3 right-pane">
-                    <div class="row">
-				                <div class="col-sm-4">
+                <div class="col-sm-3 right-pane box">
+                    <div class="row fixed mt-2">
+				                <div class="col-6 hcenter">
 					                  <input type="file" id="file-load" class="inputfile" accept=".csv" />
 					                  <label for="file-load"><span>Load</span></label>
 				                </div>
-                        <div class="col-sm-4">
+                        <div class="col-6 hcenter">
                             <a id="file-save">Save</a>
                         </div>
-                        <div class="col-sm-4">
-                        </div>
                     </div>
-                    <div class="row">
-                        <div class="col-sm-12">
-                            <h4>User List</h4>
-                            <div class="scrollable fix mt-3"><table class="table-hover table"><tbody id="userList"></tbody></table></div>
-                        </div>
+                    <!-- <div class="row fixed"> -->
+                    <!-- <div class="col"> -->
+                    <!-- <h4>User List</h4> -->
+                    <!-- </div> -->
+                    <!-- </div> -->
+                    <div class="variable scrollable">
+                        <table id="userList"><tbody></tbody></table>
                     </div>
                 </div>
             </div>
         </div>
 
-        <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+        <footer class="footer vcenter">
+            <div class="container">
+                <a href="#" id="help">Help</a>
+            </div>
+        </footer>
+
+        <div id="dialog" title="Help!">
+            <h2>Help</h2>
+
+            <table class="table">
+                <thead>
+                    <th>Command</th>
+                    <th>Description</th>
+                    <th>Example</th>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><code>:add-users</code></td>
+                        <td>Add users.</td>
+                        <td><code>:add-users Panthon Nine Jaja Binks</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>:delete-users</code></td>
+                        <td>Delete users (names must be on the user list).</td>
+                        <td><code>:delete-users Binks</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>:start-log</code></td>
+                        <td>Start or resume logging. Expect either 0 or 1 argument, which is a user name. When there is no argument, it resumes the current log entry.</td>
+                        <td><code>:start-log Jaja</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>:pause-log</code></td>
+                        <td>Pause the current log entry. Expect no argument.</td>
+                        <td><code>:pause-log</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>:remove-log</code></td>
+                        <td>Remove a log entry. Expect one argument, which is an id. The id must exists.</td>
+                        <td><code>:remove-log 42</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>:edit-log</code></td>
+                        <td>Edit a log entry. Expect three arguments: an id, an action, and a new value. An action can be either <code>user</code>, <code>duration</code>, or <code>note</code></td>
+                        <td><code>:edit-log 1 user Nine</code></td>
+                    </tr>
+                    <tr>
+                        <td><code>:note</code></td>
+                        <td>Add a line of note to the current log entry.</td>
+                        <td><code>:note "Foo is \"bar\" baz"</code></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <p>
+                To input an argument with spaces, wrap it in double quotes.
+                Double quotes allow three escape sequences:
+
+                <ul>
+                    <li><code>\"</code> (double quote)</li>
+                    <li><code>\n</code> (new line)</li>
+                    <li><code>\\</code> (backslash)</li>
+                </ul>
+
+                For example, <code>"foo \"bar\" baz\nblah \\ blah"</code> is:
+
+                <pre>
+foo "bar" baz
+blah \ blah
+                </pre>
+
+            </p>
+
+            <p>
+                For convenience, the command <code>+<em>&lt;whatever&gt;</em></code> is equivalent to <code>:start-log <em>&lt;whatever&gt;</em></code>. For example, <code>+Panthon</code> is equivalent to <code>:start-log Panthon</code>.
+            </p>
+            <p>
+                If the first character of the input command is neither <code>:</code> nor <code>+</code>, the note action will be triggered literally. That is. <code>hello "world". {1, 2, 3} \ {1, 4} = {1, 3}</code> is equivalent to <code>:note "hello \"world\". {1, 2, 3} \\ {1, 4} = {1, 3}"</code>. Note that you can't input a new line character with this mechanism, but you can use this mechanism several times to enter new lines.
+            </p>
+
+            <p>
+                You can click on user names in the user list. This will trigger either <code>:start-log</code> or <code>:pause-log</code>, depending on the status of the current log entry.
+            </p>
+
+            <p>
+                You can also click on cells in the table. This will populate the <code>:edit-log</code> command for that cell for you.
+            </p>
+
+            <h4>Known bugs</h4>
+
+            <ul>
+                <li>If user names have spaces (by using double quotes), autocomplete will be off.</li>
+                <li>If the current log entry's user name is deleted. The entry won't be able to resume.</li>
+                <li>CSV file can't be malformed.</li>
+            </ul>
+        </div>
+
+        <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js" integrity="sha384-ZMP7rVo3mIykV+2+9J3UJ46jBk0WLaUAdn689aCwoqbBJiSnjAK/l8WvCWPIPm49" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.5.0/papaparse.min.js"></script>
+        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js" integrity="sha256-j2LsvgOlQFIb2Mphb+tX7d5pNmFdpsJU+s5GNo3z63g=" crossorigin="anonymous"></script>
         <script src="parser.js"></script>
+        <script src="arity.js"></script>
         <script src="script.js"></script>
     </body>
 </html>
