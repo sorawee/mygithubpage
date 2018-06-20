@@ -154,6 +154,7 @@
             currentId = lastRow.id;
         } else {
             current = null;
+            currentId = 1;
         }
         removeLastRowUnsafe();
     }
@@ -553,7 +554,10 @@
                 // TODO: need to handle malformed csv
                 users = [];
                 database = [];
+                clearLogTable();
                 data.data.forEach(record => {
+                    // TODO: this should log an error message if it errors
+                    record.duration = Number(record.duration);
                     if (record.id == -1) {
                         users.push(record.user);
                     } else {
@@ -562,8 +566,12 @@
                     }
                 });
 
-                const lastRow = database.pop();
-                setCurrent(lastRow.id, lastRow.user, lastRow.duration, null, lastRow.note);
+                // this is so that we can call popRecordAndRow
+                // which will set everything up
+                setCurrent(0, '', 0, null, '');
+                appendTableRow(recordToRow(getCurrentRecordUnsafe()));
+                popRecordAndRow();
+
                 refreshUsers();
                 log('Load successfully');
             };
