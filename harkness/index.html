@@ -9,62 +9,52 @@
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="style.css">
     </head>
-    <body>
-        <div class="container box mt-2">
-            <div class="row fixed mb-2 ">
-                <div class="col-sm-12">
-                    <h1>Harkness.js</h1>
-                </div>
-            </div>
-            <div class="row variable">
-                <div class="col-sm-9 box">
-                    <div class="mb-3 fixed">
-                        <input type="text" id="command" placeholder="Type ':add-user johny' or '+johny'" class="form-control">
-                    </div>
-                    <div class="variable">
-                        <div class="box">
-                            <ul class="nav nav-tabs fixed" id="myTab" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="log-tab" data-toggle="tab" href="#log" role="tab" aria-controls="log" aria-selected="true">Log</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="console-tab" data-toggle="tab" href="#console" role="tab" aria-controls="console" aria-selected="false">Console</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="viz-tab" data-toggle="tab" href="#viz" role="tab" aria-controls="viz" aria-selected="false">Visualizer</a>
-                                </li>
-                            </ul>
-                            <div class="tab-content variable" id="myTabContent">
-                                <div class="tab-pane fade show active box" id="log" role="tabpanel" aria-labelledby="log-tab">
-                                    <div class="box scrollable" id="app-container"><table class="table">
-                                        <thead>
-                                            <th>#</th>
-                                            <th>User</th>
-                                            <th>Duration</th>
-                                            <th>Note</th>
-                                        </thead>
-                                        <tbody id="app-table-body"></tbody>
-                                    </table></div>
-                                </div>
-                                <div class="tab-pane fade box" id="console" role="tabpanel" aria-labelledby="console-tab">
-                                    <textarea id="message" readonly>
+    <body class="flex-box">
+        <div class="container py-2 flex-var flex-box">
+            <h1 class="">Harkness.js</h1>
+            <div class="row flex-var">
+                <div class="col-9 flex-box">
+                    <input type="text" id="command" placeholder="Type ':add-user johny' or '+johny'" class="form-control mb-3">
+                    <ul class="nav nav-tabs" id="myTab" role="tablist">
+                        <li class="nav-item">
+                            <a class="nav-link active" id="log-tab" data-toggle="tab" href="#log" role="tab" aria-controls="log" aria-selected="true">Log</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="console-tab" data-toggle="tab" href="#console" role="tab" aria-controls="console" aria-selected="false">Console</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" id="viz-tab" data-toggle="tab" href="#viz" role="tab" aria-controls="viz" aria-selected="false">Visualizer</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content flex-var flex-box" id="myTabContent">
+                        <div class="tab-pane fade show active h-100" id="log" role="tabpanel" aria-labelledby="log-tab">
+                            <div class="scrollable h-100" id="app-container"><table class="table">
+                                <thead>
+                                    <th>#</th>
+                                    <th>User</th>
+                                    <th>Duration</th>
+                                    <th>Note</th>
+                                </thead>
+                                <tbody id="app-table-body"></tbody>
+                            </table></div>
+                        </div>
+                        <div class="tab-pane fade h-100" id="console" role="tabpanel" aria-labelledby="console-tab">
+                            <textarea id="message" readonly>
   ___ ___               __                                         __
  /   |   \_____ _______|  | __ ____   ____   ______ ______        |__| ______
 /    ~    \__  \\_  __ \  |/ //    \_/ __ \ /  ___//  ___/        |  |/  ___/
 \    Y    // __ \|  | \/    <|   |  \  ___/ \___ \ \___ \         |  |\___ \
  \___|_  /(____  /__|  |__|_ \___|  /\___  >____  >____  > /\ /\__|  /____  >
        \/      \/           \/    \/     \/     \/     \/  \/ \______|    \/
-                                    </textarea>
-                                </div>
-                                <div class="tab-pane fade box" id="viz" role="tabpanel" aria-labelledby="viz-tab">
-                                    <div id="vizDiv"></div>
-                                </div>
-                            </div>
+                            </textarea>
+                        </div>
+                        <div class="tab-pane fade" id="viz" role="tabpanel" aria-labelledby="viz-tab">
+                            <div id="vizDiv"></div>
                         </div>
                     </div>
                 </div>
-                <div class="col-sm-3 right-pane box">
-                    <div class="row fixed mt-2">
+                <div class="col-3 right-pane flex-box">
+                    <div class="row mt-2">
 				                <div class="col-6 hcenter">
 					                  <input type="file" id="file-load" class="inputfile" accept=".csv" />
 					                  <label for="file-load"><span>Load</span></label>
@@ -73,19 +63,14 @@
                             <a id="file-save">Save</a>
                         </div>
                     </div>
-                    <!-- <div class="row fixed"> -->
-                    <!-- <div class="col"> -->
-                    <!-- <h4>User List</h4> -->
-                    <!-- </div> -->
-                    <!-- </div> -->
-                    <div class="variable scrollable">
+                    <div class="scrollable">
                         <table id="userList"><tbody></tbody></table>
                     </div>
                 </div>
             </div>
         </div>
 
-        <footer class="footer vcenter">
+        <footer class="vcenter">
             <div class="container">
                 <a href="#" id="help">Help</a>
             </div>

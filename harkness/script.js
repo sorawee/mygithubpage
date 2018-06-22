@@ -14,15 +14,15 @@
      * @property {string} user
      * @property {number} duration
      * @property {string} note
-     * @property {number} latestStartTime
+     * @property {?number} latestStartTime
      */
 
 
     /* Constants */
 
-    const userColumns = 2;
-
-    const commands = [
+    const USER_COLUMNS = 2;
+    const OFFSET_PIXELS = 3;
+    const COMMANDS = [
         'start-log',
         'pause-log',
         'edit-log',
@@ -96,7 +96,7 @@
             },
             {
                 pattern: ':',
-                target: () => commands
+                target: () => COMMANDS
             },
             {
                 pattern: '\\+',
@@ -191,7 +191,7 @@
 
         while (tds.length > 0) {
             const tr = $('<tr/>');
-            for (let i = 0; i < userColumns && tds.length > 0; i++) {
+            for (let i = 0; i < USER_COLUMNS && tds.length > 0; i++) {
                 tr.append(tds.pop());
             }
             ul.append(tr);
@@ -475,14 +475,19 @@
         } break;
 
         case 'delete-users': {
+            const currentFreshDatabase = getFreshDatabase();
             args.forEach(user => {
                 const idx = users.indexOf(user);
                 if (idx == -1) {
                     log(`${user} is not a user. Skipped.`);
                     return;
                 }
-                users.splice(idx, 1);
+                if (currentFreshDatabase.some(record => record.user == user)) {
+                    log(`${user} exists in the log. Skipped.`);
+                    return;
+                }
 
+                users.splice(idx, 1);
                 log(`User ${user} is removed.`);
             });
 
@@ -501,7 +506,7 @@
             const offset = elem.scrollHeight - elem.scrollTop - elem.clientHeight;
             removeLastRowUnsafe();
             appendTableRow(recordToRow(getCurrentRecordUnsafe()));
-            if (Math.abs(offset) <= 2) {
+            if (Math.abs(offset) <= OFFSET_PIXELS) {
                 elem.scrollTop = elem.scrollHeight;
             }
         }
@@ -540,42 +545,43 @@
         saver.attr('download', 'harkness-log.csv');
     });
 
+    const reader = new FileReader();
+    reader.onload = (e) => {
+        const data = Papa.parse(reader.result, {header: true});
+        if (data.errors.length > 0) {
+            log(`Can't load ${f.name}. Aborted.`);
+            return;
+        }
+        // TODO: need to handle malformed csv
+        // this includes when users appear in log entries but not
+        // user lists
+        users = [];
+        database = [];
+        clearLogTable();
+        data.data.forEach(record => {
+            // TODO: this should log an error message if it errors
+            record.duration = Number(record.duration);
+            if (record.id == -1) {
+                users.push(record.user);
+            } else {
+                database.push(record);
+                appendTableRow(recordToRow(record));
+            }
+        });
+
+        // this is so that we can call popRecordAndRow
+        // which will set everything up
+        setCurrent(0, '', 0, null, '');
+        appendTableRow(recordToRow(getCurrentRecordUnsafe()));
+        popRecordAndRow();
+
+        refreshUsers();
+        log('Load successfully');
+    };
+
     $('#file-load').change(e => {
         const f = e.target.files[0];
-        if (f) {
-            const reader = new FileReader();
-            reader.readAsText(f);
-            reader.onload = (e) => {
-                const data = Papa.parse(reader.result, {header: true});
-                if (data.errors.length > 0) {
-                    log(`Can't load ${f.name}. Aborted.`);
-                    return;
-                }
-                // TODO: need to handle malformed csv
-                users = [];
-                database = [];
-                clearLogTable();
-                data.data.forEach(record => {
-                    // TODO: this should log an error message if it errors
-                    record.duration = Number(record.duration);
-                    if (record.id == -1) {
-                        users.push(record.user);
-                    } else {
-                        database.push(record);
-                        appendTableRow(recordToRow(record));
-                    }
-                });
-
-                // this is so that we can call popRecordAndRow
-                // which will set everything up
-                setCurrent(0, '', 0, null, '');
-                appendTableRow(recordToRow(getCurrentRecordUnsafe()));
-                popRecordAndRow();
-
-                refreshUsers();
-                log('Load successfully');
-            };
-        }
+        if (f) reader.readAsText(f);
     });
 
     $('#help').click(e => {
@@ -732,14 +738,14 @@
 
         const mapUsers = {};
         const freshData = getFreshDatabase();
-        const allUsers = new Set(freshData.map(e => e.user));
-        freshData.forEach(e => {
-            mapUsers[e.user] = [];
+        users.forEach(user => {
+            mapUsers[user] = [];
         });
         for (let i = 0; i < freshData.length - 1; i++) {
+            if (freshData[i].user == freshData[i + 1].user) continue;
             mapUsers[freshData[i].user].push(freshData[i + 1].user);
         }
-        load(Array.from(allUsers).map(e => ({name: e, links: mapUsers[e]})));
+        load(users.map(e => ({name: e, links: mapUsers[e]})));
     }
 
     $('#viz-tab').click(e => {
