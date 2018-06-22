@@ -164,8 +164,10 @@ html, body {
 .flex-box {
     display: flex;
     flex-flow: column;
+    height: 100%;
 }
 
 .flex-var {
-    flex: 1;
+    flex: 1 1 auto;
+    min-height: 0px;
 }
