@@ -109,11 +109,11 @@
             if (result == null) return false;
 
             const matches = [];
-            target().forEach(str => {
+            for (const str of target()) {
                 if ((result[0] + str).toLowerCase().startsWith(q.toLowerCase())) {
                     matches.push(result[0] + str + ' ');
                 }
-            });
+            }
             cb(matches);
             return true;
         });
@@ -200,7 +200,9 @@
 
     function refreshLogs() {
         clearLogTable();
-        getFreshDatabase().forEach(row => appendTableRow(recordToRow(row)));
+        for (const row of getFreshDatabase()) {
+            appendTableRow(recordToRow(row));
+        }
     }
 
     /**
@@ -247,16 +249,16 @@
     }
 
     function appendTableRow(tr) {
-        $('#app-table-body').append(tr);
+        $('#app-table tbody').append(tr);
     }
 
     /* Precondition: current != null */
     function removeLastRowUnsafe() {
-        $('#app-table-body tr:last').remove();
+        $('#app-table tbody tr:last').remove();
     }
 
     function clearLogTable() {
-        $('#app-table-body').empty();
+        $('#app-table tbody').empty();
     }
 
     function parse(cmd) {
@@ -461,7 +463,7 @@
         } break;
 
         case 'add-users': {
-            args.forEach(user => {
+            for (const user of args) {
                 if (users.includes(user)) {
                     log(`User ${user} already exists. Skipped.`);
                     return;
@@ -469,14 +471,14 @@
                 users.push(user);
 
                 log(`User ${user} is added.`);
-            });
+            }
 
             refreshUsers(); // could be more efficient, but we don't care here
         } break;
 
         case 'delete-users': {
             const currentFreshDatabase = getFreshDatabase();
-            args.forEach(user => {
+            for (const user of args) {
                 const idx = users.indexOf(user);
                 if (idx == -1) {
                     log(`${user} is not a user. Skipped.`);
@@ -489,7 +491,7 @@
 
                 users.splice(idx, 1);
                 log(`User ${user} is removed.`);
-            });
+            }
 
             refreshUsers(); // could be more efficient, but we don't care here
         } break;
@@ -558,7 +560,7 @@
         users = [];
         database = [];
         clearLogTable();
-        data.data.forEach(record => {
+        for (const record of data.data) {
             // TODO: this should log an error message if it errors
             record.duration = Number(record.duration);
             if (record.id == -1) {
@@ -567,7 +569,7 @@
                 database.push(record);
                 appendTableRow(recordToRow(record));
             }
-        });
+        }
 
         // this is so that we can call popRecordAndRow
         // which will set everything up
@@ -584,16 +586,6 @@
         if (f) reader.readAsText(f);
     });
 
-    $('#help').click(e => {
-        $('#dialog').dialog('open');
-    });
-
-    $('#dialog').dialog({
-        width: 900,
-        height: 500,
-        autoOpen: false,
-        modal: true,
-    });
 
     function d3eval() {
         const b = 300;
@@ -694,26 +686,14 @@
 
         // Lazily construct the package hierarchy from class names.
         function packageHierarchy(classes) {
-            var map = {};
-
-            function find(name, data) {
-                var node = map[name], i;
-                if (!node) {
-                    node = map[name] = data || {name: name, children: []};
-                    if (name.length) {
-                        node.parent = find(name.substring(0, i = name.lastIndexOf(".")));
-                        node.parent.children.push(node);
-                        node.key = name.substring(i + 1);
-                    }
-                }
-                return node;
-            }
-
-            classes.forEach(function(d) {
-                find(d.name, d);
+            const root = {name: '', children: []};
+            root.children = classes.map(d => {
+                d.parent = root;
+                d.children = [];
+                d.key = d.name;
+                return d;
             });
-
-            return d3.hierarchy(map[""]);
+            return d3.hierarchy(root);
         }
 
         // Return a list of imports for the given array of nodes.
@@ -738,9 +718,9 @@
 
         const mapUsers = {};
         const freshData = getFreshDatabase();
-        users.forEach(user => {
+        for (const user of users) {
             mapUsers[user] = [];
-        });
+        }
         for (let i = 0; i < freshData.length - 1; i++) {
             if (freshData[i].user == freshData[i + 1].user) continue;
             mapUsers[freshData[i].user].push(freshData[i + 1].user);

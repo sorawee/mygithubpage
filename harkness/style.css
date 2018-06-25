@@ -34,34 +34,12 @@ textarea {
     z-index: -1;
 }
 
-.inputfile + label, #file-save {
-    font-size: 1rem;
-    /* 20px */
-    font-weight: 700;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-    cursor: pointer;
-    display: inline-block;
-    overflow: hidden;
-    padding: 0.40rem 0.9rem;
-    /* 10px 20px */
-
-    color: #f1e5e6;
-    background-color: #d3394c;
-}
-
 td {
     white-space: pre-wrap;
     word-wrap: break-word;
     cursor: pointer;
 }
 
-.inputfile:focus + label,
-.inputfile.has-focus + label,
-.inputfile + label:hover,
-#file-save:hover {
-    background-color: #722040;
-}
 
 .right-pane {
     padding: 10px;
@@ -93,34 +71,27 @@ td {
     table-layout: fixed
 }
 
-footer {
-    width: 100%;
-    background-color: #222;
-    flex: 0 1 35px;
-}
-
-#help {
-    color: white;
-}
-
 tr.active {
     background-color: #dcedc8;
 }
 
-#dialog {
-    display: none;
+
+html, body {
+    height: 100%;
+}
+
+.flex-box {
+    display: flex;
+    flex-flow: column;
+    height: 100%;
+}
+
+.flex-var {
+    flex: 1;
+    min-height: 0px;
 }
 
 /* --------------------------------- */
-
-.node {
-    font: 300 11px "Helvetica Neue", Helvetica, Arial, sans-serif;
-    fill: #bbb;
-}
-
-.node:hover {
-    fill: #000;
-}
 
 .link {
     stroke: steelblue;
@@ -157,17 +128,3 @@ tr.active {
     stroke: #2ca02c;
 }
 
-html, body {
-    height: 100%;
-}
-
-.flex-box {
-    display: flex;
-    flex-flow: column;
-    height: 100%;
-}
-
-.flex-var {
-    flex: 1;
-    min-height: 0px;
-}

@@ -6,12 +6,18 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" integrity="sha384-WskhaSGFgHYWDcbwN70/dfYBj47jz9qbsMId/iRN3ewGhXQFZCSftd1LZCfmhktB" crossorigin="anonymous">
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js-bootstrap-css/1.2.1/typeaheadjs.min.css">
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <link rel="stylesheet" href="style.css">
     </head>
     <body class="flex-box">
         <div class="container py-2 flex-var flex-box">
-            <h1 class="">Harkness.js</h1>
+            <div class="row">
+                <div class="col-11">
+                    <h1>Harkness.js</h1>
+                </div>
+                <div class="col-1">
+                    <a id="help" data-toggle="modal" data-target="#dialog" class="btn btn-outline-info btn-sm" href="#" role="button">Help</a>
+                </div>
+            </div>
             <div class="row flex-var">
                 <div class="col-9 flex-box">
                     <input type="text" id="command" placeholder="Type ':add-user johny' or '+johny'" class="form-control mb-3">
@@ -28,14 +34,14 @@
                     </ul>
                     <div class="tab-content flex-var flex-box" id="myTabContent">
                         <div class="tab-pane fade show active h-100" id="log" role="tabpanel" aria-labelledby="log-tab">
-                            <div class="scrollable h-100" id="app-container"><table class="table">
+                            <div class="scrollable h-100" id="app-container"><table id="app-table" class="table">
                                 <thead>
                                     <th>#</th>
                                     <th>User</th>
                                     <th>Duration</th>
                                     <th>Note</th>
                                 </thead>
-                                <tbody id="app-table-body"></tbody>
+                                <tbody></tbody>
                             </table></div>
                         </div>
                         <div class="tab-pane fade h-100" id="console" role="tabpanel" aria-labelledby="console-tab">
@@ -55,12 +61,12 @@
                 </div>
                 <div class="col-3 right-pane flex-box">
                     <div class="row mt-2">
-				                <div class="col-6 hcenter">
-					                  <input type="file" id="file-load" class="inputfile" accept=".csv" />
-					                  <label for="file-load"><span>Load</span></label>
-				                </div>
                         <div class="col-6 hcenter">
-                            <a id="file-save">Save</a>
+                            <input type="file" id="file-load" class="inputfile" accept=".csv" />
+                            <label class="btn btn-primary" for="file-load">Load</label>
+                        </div>
+                        <div class="col-6 hcenter">
+                            <a href="#" id="file-save" class="btn btn-primary">Save</a>
                         </div>
                     </div>
                     <div class="scrollable">
@@ -70,102 +76,108 @@
             </div>
         </div>
 
-        <footer class="vcenter">
-            <div class="container">
-                <a href="#" id="help">Help</a>
-            </div>
-        </footer>
 
-        <div id="dialog" title="Help!">
-            <h2>Help</h2>
+        <div class="modal" tabindex="-1" role="dialog" id="dialog">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Help</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <table class="table">
+                            <thead>
+                                <th>Command</th>
+                                <th>Description</th>
+                                <th>Example</th>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><code>:add-users</code></td>
+                                    <td>Add users.</td>
+                                    <td><code>:add-users Panthon Nine Jaja Binks</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>:delete-users</code></td>
+                                    <td>Delete users (names must be on the user list).</td>
+                                    <td><code>:delete-users Binks</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>:start-log</code></td>
+                                    <td>Start or resume logging. Expect either 0 or 1 argument, which is a user name. When there is no argument, it resumes the current log entry.</td>
+                                    <td><code>:start-log Jaja</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>:pause-log</code></td>
+                                    <td>Pause the current log entry. Expect no argument.</td>
+                                    <td><code>:pause-log</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>:remove-log</code></td>
+                                    <td>Remove a log entry. Expect one argument, which is an id. The id must exists.</td>
+                                    <td><code>:remove-log 42</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>:edit-log</code></td>
+                                    <td>Edit a log entry. Expect three arguments: an id, an action, and a new value. An action can be either <code>user</code>, <code>duration</code>, or <code>note</code></td>
+                                    <td><code>:edit-log 1 user Nine</code></td>
+                                </tr>
+                                <tr>
+                                    <td><code>:note</code></td>
+                                    <td>Add a line of note to the current log entry.</td>
+                                    <td><code>:note "Foo is \"bar\" baz"</code></td>
+                                </tr>
+                            </tbody>
+                        </table>
 
-            <table class="table">
-                <thead>
-                    <th>Command</th>
-                    <th>Description</th>
-                    <th>Example</th>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td><code>:add-users</code></td>
-                        <td>Add users.</td>
-                        <td><code>:add-users Panthon Nine Jaja Binks</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>:delete-users</code></td>
-                        <td>Delete users (names must be on the user list).</td>
-                        <td><code>:delete-users Binks</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>:start-log</code></td>
-                        <td>Start or resume logging. Expect either 0 or 1 argument, which is a user name. When there is no argument, it resumes the current log entry.</td>
-                        <td><code>:start-log Jaja</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>:pause-log</code></td>
-                        <td>Pause the current log entry. Expect no argument.</td>
-                        <td><code>:pause-log</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>:remove-log</code></td>
-                        <td>Remove a log entry. Expect one argument, which is an id. The id must exists.</td>
-                        <td><code>:remove-log 42</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>:edit-log</code></td>
-                        <td>Edit a log entry. Expect three arguments: an id, an action, and a new value. An action can be either <code>user</code>, <code>duration</code>, or <code>note</code></td>
-                        <td><code>:edit-log 1 user Nine</code></td>
-                    </tr>
-                    <tr>
-                        <td><code>:note</code></td>
-                        <td>Add a line of note to the current log entry.</td>
-                        <td><code>:note "Foo is \"bar\" baz"</code></td>
-                    </tr>
-                </tbody>
-            </table>
+                        <p>
+                            To input an argument with spaces, wrap it in double quotes.
+                            Double quotes allow three escape sequences:
 
-            <p>
-                To input an argument with spaces, wrap it in double quotes.
-                Double quotes allow three escape sequences:
+                            <ul>
+                                <li><code>\"</code> (double quote)</li>
+                                <li><code>\n</code> (new line)</li>
+                                <li><code>\\</code> (backslash)</li>
+                            </ul>
 
-                <ul>
-                    <li><code>\"</code> (double quote)</li>
-                    <li><code>\n</code> (new line)</li>
-                    <li><code>\\</code> (backslash)</li>
-                </ul>
+                            For example, <code>"foo \"bar\" baz\nblah \\ blah"</code> is:
 
-                For example, <code>"foo \"bar\" baz\nblah \\ blah"</code> is:
-
-                <pre>
+                            <pre>
 foo "bar" baz
 blah \ blah
-                </pre>
+                            </pre>
 
-            </p>
+                        </p>
 
-            <p>
-                For convenience, the command <code>+<em>&lt;whatever&gt;</em></code> is equivalent to <code>:start-log <em>&lt;whatever&gt;</em></code>. For example, <code>+Panthon</code> is equivalent to <code>:start-log Panthon</code>.
-            </p>
-            <p>
-                If the first character of the input command is neither <code>:</code> nor <code>+</code>, the note action will be triggered literally. That is. <code>hello "world". {1, 2, 3} \ {1, 4} = {1, 3}</code> is equivalent to <code>:note "hello \"world\". {1, 2, 3} \\ {1, 4} = {1, 3}"</code>. Note that you can't input a new line character with this mechanism, but you can use this mechanism several times to enter new lines.
-            </p>
+                        <p>
+                            For convenience, the command <code>+<em>&lt;whatever&gt;</em></code> is equivalent to <code>:start-log <em>&lt;whatever&gt;</em></code>. For example, <code>+Panthon</code> is equivalent to <code>:start-log Panthon</code>.
+                        </p>
+                        <p>
+                            If the first character of the input command is neither <code>:</code> nor <code>+</code>, the note action will be triggered literally. That is. <code>hello "world". {1, 2, 3} \ {1, 4} = {1, 3}</code> is equivalent to <code>:note "hello \"world\". {1, 2, 3} \\ {1, 4} = {1, 3}"</code>. Note that you can't input a new line character with this mechanism, but you can use this mechanism several times to enter new lines.
+                        </p>
 
-            <p>
-                You can click on user names in the user list. This will trigger either <code>:start-log</code> or <code>:pause-log</code>, depending on the status of the current log entry.
-            </p>
+                        <p>
+                            You can click on user names in the user list. This will trigger either <code>:start-log</code> or <code>:pause-log</code>, depending on the status of the current log entry.
+                        </p>
 
-            <p>
-                You can also click on cells in the table. This will populate the <code>:edit-log</code> command for that cell for you.
-            </p>
+                        <p>
+                            You can also click on cells in the table. This will populate the <code>:edit-log</code> command for that cell for you.
+                        </p>
 
-            <h4>Known bugs</h4>
+                        <h4>Known bugs</h4>
 
-            <ul>
-                <li>If user names have spaces (by using double quotes), autocomplete will be off.</li>
-                <li>If the current log entry's user name is deleted. The entry won't be able to resume.</li>
-                <li>CSV file can't be malformed.</li>
-                <li>Visualizer doesn't display all users.</li>
-            </ul>
+                        <ul>
+                            <li>If user names have spaces (by using double quotes), autocomplete will be off.</li>
+                            <li>If the current log entry's user name is deleted. The entry won't be able to resume.</li>
+                            <li>CSV file can't be malformed.</li>
+                            <li>Visualizer doesn't display all users.</li>
+                        </ul>
+                    </div>
+
+                </div>
+            </div>
         </div>
 
         <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
@@ -173,7 +185,6 @@ blah \ blah
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js" integrity="sha384-smHYKdLADwkXOn1EmN1qk/HfnUcbVRZyYmZ4qpPea6sjB/pTJ0euyQp0Mk8ck+5T" crossorigin="anonymous"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/4.5.0/papaparse.min.js"></script>
-        <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.js" integrity="sha256-j2LsvgOlQFIb2Mphb+tX7d5pNmFdpsJU+s5GNo3z63g=" crossorigin="anonymous"></script>
         <script src="parser.js"></script>
         <script src="arity.js"></script>
