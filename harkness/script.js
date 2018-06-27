@@ -549,9 +549,9 @@
 
     const reader = new FileReader();
     reader.onload = (e) => {
-        const data = Papa.parse(reader.result, {header: true});
+        const data = Papa.parse(reader.result, {header: true, skipEmptyLines: true});
         if (data.errors.length > 0) {
-            log(`Can't load ${f.name}. Aborted.`);
+            log(`Can't load. because of the following errors: ${data.errors}. Aborted.`);
             return;
         }
         // TODO: need to handle malformed csv
